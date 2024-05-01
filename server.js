@@ -1,29 +1,30 @@
-const { createServer } = require('http');
-const next = require('next');
-
-const app = next({
-  dev: process.env.NODE_ENV !== 'production',
-  conf: {
-    webpack: config => {
-      config.devtool = false;
-
-      for (const r of config.module.rules) {
-        if (r.loader === 'babel-loader') {
-          r.options.sourceMaps = false;
-        }
-      }
-
-      return config;
-    }
+{
+  "name": "crowd-funding-update-2024",
+  "version": "1.0.0",
+  "description": "A description of your project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "next"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/S2BCBCDev/crowd-funding-update-2024.git"
+  },
+  "author": "Your Name",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/S2BCBCDev/crowd-funding-update-2024/issues"
+  },
+  "homepage": "https://github.com/S2BCBCDev/crowd-funding-update-2024#readme",
+  "dependencies": {
+    "next": "^12.3.4",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "semantic-ui-react": "^2.0.0",
+    "web3": "^1.5.0"
+  },
+  "devDependencies": {
+    "hardhat": "^2.22.3"
   }
-});
-
-const routes = require('./routes');
-const handler = routes.getRequestHandler(app);
-
-app.prepare().then(() => {
-  createServer(handler).listen(3000, err => {
-    if (err) throw err;
-    console.log('Ready on localhost:3000');
-  });
-});
+}
