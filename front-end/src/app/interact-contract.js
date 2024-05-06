@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import Web3 from 'web3'; // Import web3 library
 import styles from "./page.module.css";
 import campaignCreatorArtifact from "../../../hardhat-deployment/artifacts/contracts/CampaignCreator.sol/CampaignCreator.json"; // Import the JSON file
+import CampaignInteraction from './CampaignInteraction'; // Import the new component
+
 
 // console.log(campaignCreatorArtifact.abi);
 
@@ -10,10 +12,15 @@ export default function InteractContract() {
   const [web3, setWeb3] = useState(null);
   const [contract, setContract] = useState(null);
   const [campaignCount, setCampaignCount] = useState(0);
+  const [deployedCampaigns, setDeployedCampaigns] = useState([]);
+
   const [isConnected, setIsConnected] = useState(false);
   const [userAddress, setUserAddress] = useState('');
   const [description, setDescription] = useState('');
   const [minContribution, setMinContribution] = useState('');
+
+  const [selectedCampaign, setSelectedCampaign] = useState(null); // State to hold selected campaign address
+
 
 
   useEffect(() => {
@@ -107,9 +114,16 @@ export default function InteractContract() {
     try {
       const deployedCampaigns = await contract.methods.getDeployedCampaigns().call();
       console.log("Deployed Campaigns:", deployedCampaigns);
+      setDeployedCampaigns(deployedCampaigns);
+
     } catch (error) {
       console.error('Error fetching deployed campaigns:', error);
     }
+  };
+
+   // Handle click on a campaign address
+   const handleCampaignClick = (campaignAddress) => {
+    setSelectedCampaign(campaignAddress);
   };
 
   return (
@@ -145,7 +159,36 @@ export default function InteractContract() {
           </h2>
           <p>Get all deployed campaigns</p>
         </button>
+
+
+
       </div>
+
+      {/* Display deployed campaigns */}
+<div className={styles.card}>
+          <h2>Deployed Campaigns</h2>
+          <ul>
+            {deployedCampaigns.map((campaign, index) => (
+             // <li key={index}>{campaign}</li>
+              <li key={index} onClick={() => handleCampaignClick(campaign)}>
+                {campaign}
+              </li>
+            ))}
+          </ul>
+        </div>
+        // Replace the list of deployed campaigns with an input field
+<div className={styles.card}>
+    <h2>Enter Campaign Address</h2>
+    <input 
+        type="text" 
+        placeholder="Campaign Address"
+        value={selectedCampaign} 
+        onChange={(e) => setSelectedCampaign(e.target.value)} 
+    />
+</div>
+
+{/* Conditionally render CampaignInteraction component */}
+{selectedCampaign && <CampaignInteraction contractAddress={selectedCampaign} />}
     </main>
   );
 }
