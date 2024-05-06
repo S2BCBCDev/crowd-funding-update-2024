@@ -1,12 +1,11 @@
-'use client'
-import React, { useEffect, useState } from 'react';
-import Web3 from 'web3'; // Import web3 library
+"use client";
+import React, { useEffect, useState } from "react";
+import Web3 from "web3"; // Import web3 library
 import styles from "./page.module.css";
 import campaignCreatorArtifact from "../../../hardhat-deployment/artifacts/contracts/CampaignCreator.sol/CampaignCreator.json"; // Import the JSON file
-import CampaignInteraction from './CampaignInteraction'; // Import the new component
+import crowdCollabArtifact from "../../../hardhat-deployment/artifacts/contracts/CrowdCollab.sol/CrowdCollab.json";
 
-
-// console.log(campaignCreatorArtifact.abi);
+const contractCollabAbi = crowdCollabArtifact.abi;
 
 export default function InteractContract() {
   const [web3, setWeb3] = useState(null);
@@ -15,13 +14,13 @@ export default function InteractContract() {
   const [deployedCampaigns, setDeployedCampaigns] = useState([]);
 
   const [isConnected, setIsConnected] = useState(false);
-  const [userAddress, setUserAddress] = useState('');
-  const [description, setDescription] = useState('');
-  const [minContribution, setMinContribution] = useState('');
+  const [userAddress, setUserAddress] = useState("");
+  const [description, setDescription] = useState("");
+  const [minContribution, setMinContribution] = useState("");
 
-  const [selectedCampaign, setSelectedCampaign] = useState(null); // State to hold selected campaign address
+  const [campaignDescriptions, setCampaignDescriptions] = useState({});
 
-
+  const [selectedCampaign, setSelectedCampaign] = useState(""); // State to hold selected campaign address
 
   useEffect(() => {
     const initializeWeb3 = async () => {
@@ -30,13 +29,16 @@ export default function InteractContract() {
         const web3Instance = new Web3(window.ethereum);
         try {
           // Request account access if needed
-          await window.ethereum.request({ method: 'eth_requestAccounts' });
+          await window.ethereum.request({ method: "eth_requestAccounts" });
           setWeb3(web3Instance);
 
           // Initialize your contract
           const contractAddress = "0xe7f1725e7734ce288f8367e1bb143e90bb3f0512"; // Replace with your contract address
           const contractABI = campaignCreatorArtifact.abi; // Replace with your contract ABI
-          const contractInstance = new web3Instance.eth.Contract(contractABI, contractAddress);
+          const contractInstance = new web3Instance.eth.Contract(
+            contractABI,
+            contractAddress
+          );
           setContract(contractInstance);
 
           // Set isConnected to true if MetaMask is connected
@@ -46,7 +48,10 @@ export default function InteractContract() {
           const accounts = await web3Instance.eth.getAccounts();
           setUserAddress(accounts[0]); // Assuming the first account is the user's address
         } catch (error) {
-          console.error('User denied account access or an error occurred:', error);
+          console.error(
+            "User denied account access or an error occurred:",
+            error
+          );
         }
       } else if (window.web3) {
         // Legacy dapp browsers
@@ -56,7 +61,10 @@ export default function InteractContract() {
         // Initialize your contract
         const contractAddress = "0xe7f1725e7734ce288f8367e1bb143e90bb3f0512"; // Replace with your contract address
         const contractABI = campaignCreatorArtifact.abi; // Replace with your contract ABI
-        const contractInstance = new web3Instance.eth.Contract(contractABI, contractAddress);
+        const contractInstance = new web3Instance.eth.Contract(
+          contractABI,
+          contractAddress
+        );
         setContract(contractInstance);
 
         // Set isConnected to true if MetaMask is connected
@@ -67,7 +75,9 @@ export default function InteractContract() {
         setUserAddress(accounts[0]); // Assuming the first account is the user's address
       } else {
         // Non-dapp browsers
-        console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
+        console.log(
+          "Non-Ethereum browser detected. You should consider trying MetaMask!"
+        );
       }
     };
 
@@ -80,22 +90,28 @@ export default function InteractContract() {
     try {
       const count = await contract.methods.getDeployedCampaigns().call();
       setCampaignCount(count.length);
+      console.log(campaignCount);
     } catch (error) {
-      console.error('Error fetching campaign count:', error);
+      console.error("Error fetching campaign count:", error);
     }
   };
+
+  useEffect(() => {
+    if (contract) {
+      getCampaignCount();
+    }
+  }, [contract]);
 
   const createCampaign = async () => {
     if (!contract) return;
 
     try {
-      await contract.methods.createCampaign(
-        parseInt(minContribution), 
-        description
-      ).send({ from: userAddress });
+      await contract.methods
+        .createCampaign(parseInt(minContribution), description)
+        .send({ from: userAddress });
       console.log("Campaign created successfully!");
     } catch (error) {
-      console.error('Error creating campaign:', error);
+      console.error("Error creating campaign:", error);
     }
   };
 
@@ -112,45 +128,57 @@ export default function InteractContract() {
     if (!contract) return;
 
     try {
-      const deployedCampaigns = await contract.methods.getDeployedCampaigns().call();
+      const deployedCampaigns = await contract.methods
+        .getDeployedCampaigns()
+        .call();
       console.log("Deployed Campaigns:", deployedCampaigns);
       setDeployedCampaigns(deployedCampaigns);
-
     } catch (error) {
-      console.error('Error fetching deployed campaigns:', error);
+      console.error("Error fetching deployed campaigns:", error);
     }
   };
 
-   // Handle click on a campaign address
-   const handleCampaignClick = (campaignAddress) => {
+  // Handle click on a campaign address
+  const handleCampaignClick = (campaignAddress) => {
     setSelectedCampaign(campaignAddress);
   };
+
+  // Utility function to truncate Ethereum addresses
+  const truncateAddress = (address) => {
+    const start = address.substring(0, 7);
+    const end = address.substring(address.length - 4, address.length);
+    return `${start}...${end}`;
+  };
+
+  useEffect(() => {
+    const fetchCampaignDescriptions = async () => {
+      const descriptions = {};
+      try {
+        console.log("Fetching campaign descriptions...");
+        if (contract && deployedCampaigns.length > 0) {
+          const web3 = new Web3("http://localhost:8545");
+          for (const campaign of deployedCampaigns) {
+            const instance = new web3.eth.Contract(contractCollabAbi, campaign);
+            const description = await instance.methods
+              .campaignDescription()
+              .call();
+            descriptions[campaign] = description;
+          }
+          setCampaignDescriptions(descriptions);
+        }
+      } catch (error) {
+        console.error("Error fetching campaign descriptions:", error);
+      }
+    };
+
+    fetchCampaignDescriptions();
+  }, [contract, deployedCampaigns]);
 
   return (
     <main className={styles.main}>
       <div className={styles.grid}>
-        <button className={styles.card} onClick={getCampaignCount}>
-          <h2>
-            Get Campaign Count <span>-&gt;</span>
-          </h2>
+        <div className={styles.card} onClick={getCampaignCount}>
           <p>Current Campaign Count: {campaignCount}</p>
-        </button>
-
-        <div className={styles.card}>
-          <h2>Create Campaign</h2>
-          <input 
-            type="text" 
-            placeholder="Description" 
-            value={description} 
-            onChange={handleDescriptionChange} 
-          />
-          <input 
-            type="number" 
-            placeholder="Minimum Contribution" 
-            value={minContribution} 
-            onChange={handleMinContributionChange} 
-          />
-          <button onClick={createCampaign}>Create Campaign</button>
         </div>
 
         <button className={styles.card} onClick={getDeployedCampaigns}>
@@ -160,35 +188,49 @@ export default function InteractContract() {
           <p>Get all deployed campaigns</p>
         </button>
 
-
-
+        <div className={styles.card}>
+          <h2>Create Campaign</h2>
+          <input
+            type="text"
+            placeholder="Description"
+            value={description}
+            onChange={handleDescriptionChange}
+          />
+          <input
+            type="number"
+            placeholder="Minimum Contribution"
+            value={minContribution}
+            onChange={handleMinContributionChange}
+          />
+          <button onClick={createCampaign}>Create Campaign</button>
+        </div>
       </div>
 
       {/* Display deployed campaigns */}
-<div className={styles.card}>
-          <h2>Deployed Campaigns</h2>
-          <ul>
-            {deployedCampaigns.map((campaign, index) => (
-             // <li key={index}>{campaign}</li>
-              <li key={index} onClick={() => handleCampaignClick(campaign)}>
-                {campaign}
-              </li>
-            ))}
-          </ul>
-        </div>
-        // Replace the list of deployed campaigns with an input field
-<div className={styles.card}>
-    <h2>Enter Campaign Address</h2>
-    <input 
-        type="text" 
-        placeholder="Campaign Address"
-        value={selectedCampaign} 
-        onChange={(e) => setSelectedCampaign(e.target.value)} 
-    />
-</div>
+      <div className={styles.card}>
+        <div className={styles.grid}>
+          {deployedCampaigns.map((campaign, index) => (
+            <div
+              className={styles.card}
+              key={index}
+              onClick={() => handleCampaignClick(campaign)} // not used, find alternative to this
+            >
+              <h2>{campaignDescriptions[campaign]}</h2>
 
-{/* Conditionally render CampaignInteraction component */}
-{selectedCampaign && <CampaignInteraction contractAddress={selectedCampaign} />}
+              <hr />
+
+              <h4>id: {index + 0}</h4>
+              <h3>{truncateAddress(campaign)}</h3>
+
+              <hr />
+
+              <p style={{ wordBreak: "break-all" }}>
+                Instance address: {campaign}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
     </main>
   );
 }
