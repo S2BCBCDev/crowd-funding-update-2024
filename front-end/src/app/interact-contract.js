@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Web3 from "web3"; // Import web3 library
 import styles from "./page.module.css";
+import Image from "next/image";
 import campaignCreatorArtifact from "../../../hardhat-deployment/artifacts/contracts/CampaignCreator.sol/CampaignCreator.json"; // Import the JSON file
 import crowdCollabArtifact from "../../../hardhat-deployment/artifacts/contracts/CrowdCollab.sol/CrowdCollab.json";
 
@@ -156,7 +157,7 @@ export default function InteractContract() {
       try {
         console.log("Fetching campaign descriptions...");
         if (contract && deployedCampaigns.length > 0) {
-          const web3 = new Web3("http://localhost:8545");
+          const web3 = new Web3("http://127.0.0.1:8545");
           for (const campaign of deployedCampaigns) {
             const instance = new web3.eth.Contract(contractCollabAbi, campaign);
             const description = await instance.methods
@@ -174,11 +175,65 @@ export default function InteractContract() {
     fetchCampaignDescriptions();
   }, [contract, deployedCampaigns]);
 
+  const connectMetaMask = async () => {
+    if (window.ethereum) {
+      const web3Instance = new Web3(window.ethereum);
+      try {
+        await window.ethereum.request({ method: "eth_requestAccounts" });
+        setWeb3(web3Instance);
+        setIsConnected(true);
+        const accounts = await web3Instance.eth.getAccounts();
+        setUserAddress(accounts[0]);
+        console.log("Connected to MetaMask!", accounts[0]);
+      } catch (error) {
+        console.error(
+          "User denied account access or an error occurred:",
+          error
+        );
+      }
+    } else {
+      console.log("MetaMask not found. Please install MetaMask to connect.");
+    }
+  };
+
+  // Add this function to handle the connection
+  const handleConnectButtonClick = () => {
+    connectMetaMask();
+    setIsConnected(true); // Update isConnected state when connected
+  };
+
   return (
     <main className={styles.main}>
+      <div className={styles.card} onClick={() => window.location.reload()}>
+        <Image
+          src="s2bc/s2bc-logo.svg"
+          width={96}
+          height={96}
+          alt="Description of the image"
+          style={{ textAlign: "center", cursor: "pointer" }} // Add cursor pointer for indicating it's clickable
+        />
+      </div>
+
+      <button className={styles.card} onClick={handleConnectButtonClick}>
+        {!isConnected ? (
+          <>
+            <h2>Connect MetaMask</h2>
+            <p>Click here to connect your MetaMask wallet</p>
+          </>
+        ) : (
+          <>
+            <h2>Connected to MetaMask!</h2>
+            <p>Account:</p>
+            <p style={{ wordBreak: "break-all" }}>{userAddress}</p>
+          </>
+        )}
+      </button>
+
       <div className={styles.grid}>
         <div className={styles.card} onClick={getCampaignCount}>
-          <p>Current Campaign Count: {campaignCount}</p>
+          <p style={{ textAlign: "center" }}>
+            Total Campaign Count: {campaignCount}
+          </p>
         </div>
 
         <button className={styles.card} onClick={getDeployedCampaigns}>
