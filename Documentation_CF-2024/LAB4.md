@@ -1,4 +1,4 @@
-# Blockchain & Solidity Lab4 – Voting dApp Development
+# Blockchain & Solidity Lab4 – Crowdfunding dApp Development
 
 ### S2BC
 
@@ -9,6 +9,7 @@
 ---
 
 ### Lab 4: Run a dApp and Consider Next Steps
+
 - BUILD / TEST / INTEGRATE / **RUN**
 
 ---
@@ -20,14 +21,16 @@ So far, you've followed the steps in Labs 1 to 3, gaining valuable insights into
 Follow these steps to run the frontend of your voting Dapp:
 
 1. **Start the Frontend Server:**
+
    - Navigate to the `voting-dapp-2023/frontend` directory.
    - Run the following command:
      ```bash
      node server.js
      ```
-   This will initiate the server for your Dapp's frontend.
+     This will initiate the server for your Dapp's frontend.
 
 2. **Open the Web App in Morpheus:**
+
    - In your Morpheus IDE interface, locate the CDE menu in the left menu bar.
 
    <div style="text-align: center;">
@@ -41,15 +44,18 @@ These steps ensure that your frontend server is up and running, and you can acce
 ## 2. Trying the Voting Dapp
 
 1. **Connect to Metamask:**
+
    - Click the connect button. A Metamask popup will appear, asking if you want to connect. Accept using the deployer account.
 
 2. **Check Voting Status:**
+
    - View the Voting status in the Vote Panel:
      <div style="text-align: center;">
        <img src="src/morpheus-screeshoot/votingPanel.png" alt="Voting Panel" style="width:500px">
      </div>
 
 3. **Start an Election:**
+
    - Visit the Administrator Panel to initiate an election:
      <div style="text-align: center;">
        <img src="src/ui-screenshoot/start-election.jpg" alt="Start Election" style="width:300px">
@@ -62,22 +68,28 @@ These steps ensure that your frontend server is up and running, and you can acce
    </div>
 
 5. **Monitor Ongoing Election:**
+
    - Return to the Vote Panel to view ongoing election information.
 
 6. **Cast a Vote:**
+
    - Participate in the election by casting your vote.
 
 7. **End the Election:**
+
    - In the Admin Panel, conclude the election by clicking the "End Election" button.
 
 8. **Mint Results:**
+
    - Once the election is completed, mint the results using the "Mint Results" button.
 
 9. **Reinitialize Election:**
+
    - After everything is finished, reinitialize the election by clicking on "Reinitialize" in the Admin Panel.
 
 10. **Console Logs:**
-   - Open your browser's developer console (F12) to view relevant console logs while navigating the app.
+
+- Open your browser's developer console (F12) to view relevant console logs while navigating the app.
 
 ## 3. Migrating to Sepolia Testnet and Utilizing Etherscan
 
@@ -95,7 +107,7 @@ To successfully migrate your dApp to the Sepolia Testnet and leverage Etherscan 
 
 ```env
 RPC_URL="https://eth-sepolia.g.alchemy.com/v2/APIKEY"
-PRIVATE_KEY="00000...000" 
+PRIVATE_KEY="00000...000"
 API_KEY="APIKEYFROMETHERSCAN"
 ```
 
@@ -167,7 +179,7 @@ To ensure that your frontend connects to the Sepolia chainID, follow these steps
 
 5. Save the file.
 
---- 
+---
 
 ### Step 3: Redeploy the Contract on Sepolia
 
@@ -186,7 +198,7 @@ npx hardhat run scripts/deploy.js --network sepolia
 4.2 Copy the contract address and update the variable in `frontend/public/script.js` as follows:
 
 ```javascript
-const contractAddress = 'votingcontractaddress';
+const contractAddress = "votingcontractaddress";
 ```
 
 ### Step 5: Restart the Server
@@ -236,7 +248,6 @@ Choose the method that best fits your workflow or preference. Successful verific
 By following these steps, your dApp should now be successfully migrated to the Sepolia Testnet, utilizing the specified RPC_URL and providing enhanced insights through Etherscan verification.
 
 Explore the following Etherscan screenshots for a visual confirmation:
-
 
 https://sepolia.etherscan.io/
 
@@ -302,11 +313,8 @@ https://sepolia.etherscan.io/
 
 For detailed steps on uploading your dApp, refer to the [documentation](https://docs.morpheuslabs.io/docs/submit-app-to-the-app-store).
 
-https://docs.morpheuslabs.io/docs/submit-app-to-the-app-store
----
+## https://docs.morpheuslabs.io/docs/submit-app-to-the-app-store
 
 <div style="text-align: center;">
   <img src="src/s2bc-logo.svg" alt="S2BC Logo" width="96">
 </div>
-
-

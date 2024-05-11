@@ -1,4 +1,4 @@
-# Blockchain & Solidity Lab2 – Voting dApp Development
+# Blockchain & Solidity Lab2 – Crowdfunding dApp Development
 
 ### S2BC
 
@@ -77,7 +77,7 @@ Test cases serve as a form of documentation for your smart contracts. By examini
 
 As your smart contract evolves with new features or optimizations, running the existing test suite ensures that the changes do not introduce regressions. Regression testing is crucial for maintaining the integrity of the codebase over time. Hardhat simplifies this process by providing a reliable testing framework that can be easily integrated into your development workflow.
 
-####  Conclusion
+#### Conclusion
 
 Incorporating comprehensive testing practices with Hardhat is not just a best practice; it's a fundamental step toward building secure and reliable Ethereum smart contracts. By investing time in testing during the development phase, you mitigate risks, improve code quality, and contribute to the overall success of your blockchain project.
 
@@ -118,11 +118,11 @@ describe("Voting Contract", function () {
 
 ```javascript
 beforeEach(async function () {
-    [owner, addr1, addr2] = await ethers.getSigners();
+  [owner, addr1, addr2] = await ethers.getSigners();
 
-    const VotingFactory = await ethers.getContractFactory("Voting");
-    voting = await VotingFactory.deploy();
-    Voting = await VotingFactory.connect(owner);
+  const VotingFactory = await ethers.getContractFactory("Voting");
+  voting = await VotingFactory.deploy();
+  Voting = await VotingFactory.connect(owner);
 });
 ```
 
@@ -132,17 +132,17 @@ beforeEach(async function () {
 
 ```javascript
 it("should have the correct owner after deployment", async function () {
-    expect(await voting.owner()).to.equal(owner.address);
+  expect(await voting.owner()).to.equal(owner.address);
 });
 
 it("should start an election with the correct parameters", async function () {
-    // Test logic for starting an election
-    // Assertions related to election start
+  // Test logic for starting an election
+  // Assertions related to election start
 });
 
 it("should handle voter registration and voting", async function () {
-    // Test logic for voter registration and voting
-    // Assertions related to the voting process
+  // Test logic for voter registration and voting
+  // Assertions related to the voting process
 });
 ```
 
@@ -152,15 +152,15 @@ it("should handle voter registration and voting", async function () {
 
 ```javascript
 it("should start an election with the correct parameters", async function () {
-    const electionTitle = "Test Election";
-    const candidates = ["Candidate1", "Candidate2"];
-    const votingDuration = 10; // in minutes
+  const electionTitle = "Test Election";
+  const candidates = ["Candidate1", "Candidate2"];
+  const votingDuration = 10; // in minutes
 
-    await voting.startElection(electionTitle, candidates, votingDuration);
+  await voting.startElection(electionTitle, candidates, votingDuration);
 
-    expect(await voting.electionStarted()).to.be.true;
-    // Additional assertions related to the election start
-    // ...
+  expect(await voting.electionStarted()).to.be.true;
+  // Additional assertions related to the election start
+  // ...
 });
 ```
 
@@ -181,75 +181,72 @@ const { expect } = require("chai");
 
 // Describe block for the Voting Contract test suite
 describe("Voting Contract", function () {
-    let Voting;  // Declare variable for the Voting contract
-    let voting;  // Declare variable for the deployed instance of the Voting contract
-    let owner;   // Declare variable for the owner of the contract
-    let addr1;   // Declare variable for address 1
-    let addr2;   // Declare variable for address 2
+  let Voting; // Declare variable for the Voting contract
+  let voting; // Declare variable for the deployed instance of the Voting contract
+  let owner; // Declare variable for the owner of the contract
+  let addr1; // Declare variable for address 1
+  let addr2; // Declare variable for address 2
 
-    // Before each test case, deploy a fresh instance of the Voting contract
-    beforeEach(async function () {
-        // Get signers (addresses) from ethers
-        [owner, addr1, addr2] = await ethers.getSigners();
+  // Before each test case, deploy a fresh instance of the Voting contract
+  beforeEach(async function () {
+    // Get signers (addresses) from ethers
+    [owner, addr1, addr2] = await ethers.getSigners();
 
-        // Deploy the Voting contract using the factory
-        const VotingFactory = await ethers.getContractFactory("Voting");
-        voting = await VotingFactory.deploy();
+    // Deploy the Voting contract using the factory
+    const VotingFactory = await ethers.getContractFactory("Voting");
+    voting = await VotingFactory.deploy();
 
-        // Connect the contract factory to the owner
-        Voting = await VotingFactory.connect(owner);
-    });
+    // Connect the contract factory to the owner
+    Voting = await VotingFactory.connect(owner);
+  });
 
-    // Test case 1: Should check if the correct owner is set after deployment
-    it("should have the correct owner after deployment", async function () {
-        // Assert that the owner of the contract is equal to the expected owner's address
-        expect(await voting.owner()).to.equal(owner.address);
-    });
+  // Test case 1: Should check if the correct owner is set after deployment
+  it("should have the correct owner after deployment", async function () {
+    // Assert that the owner of the contract is equal to the expected owner's address
+    expect(await voting.owner()).to.equal(owner.address);
+  });
 
-    // Test case 2: Should start an election with the correct parameters
-    it("should start an election with the correct parameters", async function () {
-        const electionTitle = "Test Election";
-        const candidates = ["Candidate1", "Candidate2"];
-        const votingDuration = 10; // in minutes
+  // Test case 2: Should start an election with the correct parameters
+  it("should start an election with the correct parameters", async function () {
+    const electionTitle = "Test Election";
+    const candidates = ["Candidate1", "Candidate2"];
+    const votingDuration = 10; // in minutes
 
-        // Start an election with the specified parameters
-        await voting.startElection(electionTitle, candidates, votingDuration);
+    // Start an election with the specified parameters
+    await voting.startElection(electionTitle, candidates, votingDuration);
 
-        // Additional assertions related to the election start
-        expect(await voting.electionStarted()).to.be.true;
-        expect(await voting.votingStartTimeStamp()).to.not.equal(0);
-        expect(await voting.votingEndTimeStamp()).to.not.equal(0);
-        expect(await voting.electionTitle()).to.equal(electionTitle);
-    });
+    // Additional assertions related to the election start
+    expect(await voting.electionStarted()).to.be.true;
+    expect(await voting.votingStartTimeStamp()).to.not.equal(0);
+    expect(await voting.votingEndTimeStamp()).to.not.equal(0);
+    expect(await voting.electionTitle()).to.equal(electionTitle);
+  });
 
-    // Test case 3: Should handle voter registration and voting
-    it("should handle voter registration and voting", async function () {
+  // Test case 3: Should handle voter registration and voting
+  it("should handle voter registration and voting", async function () {
+    // Start an election before registering voters and casting votes
+    const electionTitle = "Test Election";
+    const candidates = ["Candidate1", "Candidate2"];
+    const votingDuration = 10; // in minutes
+    await voting.startElection(electionTitle, candidates, votingDuration);
 
-       // Start an election before registering voters and casting votes
-        const electionTitle = "Test Election";
-        const candidates = ["Candidate1", "Candidate2"];
-        const votingDuration = 10; // in minutes
-        await voting.startElection(electionTitle, candidates, votingDuration);
+    // Register voters for this specific test scenario
+    await voting.registerVoter(addr1.address);
+    await voting.registerVoter(addr2.address);
+    await voting.registerVoter(owner.address);
 
-        // Register voters for this specific test scenario
-        await voting.registerVoter(addr1.address);
-        await voting.registerVoter(addr2.address);
-        await voting.registerVoter(owner.address);
+    // Cast votes for Candidate with ID 0
+    await voting.connect(addr1).voteTo(0);
+    await voting.connect(addr2).voteTo(0);
+    await voting.connect(owner).voteTo(0);
 
-        // Cast votes for Candidate with ID 0
-        await voting.connect(addr1).voteTo(0);
-        await voting.connect(addr2).voteTo(0);
-        await voting.connect(owner).voteTo(0);
+    // Additional assertions related to the voting process
+    const voteCountCandidate0 = (await voting.retrieveVotes())[0].numberOfVotes;
 
-        // Additional assertions related to the voting process
-        const voteCountCandidate0 = (await voting.retrieveVotes())[0].numberOfVotes;
-
-        // Assert various conditions for the voting process, here all voters voted for candidate ID 0, so he should get 3 votes.
-        expect(voteCountCandidate0).to.equal(3); // Assuming three voters
-    });
-
+    // Assert various conditions for the voting process, here all voters voted for candidate ID 0, so he should get 3 votes.
+    expect(voteCountCandidate0).to.equal(3); // Assuming three voters
+  });
 });
-
 ```
 
 ## 4. Running the test
@@ -318,5 +315,3 @@ Feel free to review and run the extended tests to gain a deeper understanding of
 <div style="text-align: center;">
   <img src="src/s2bc-logo.svg" alt="S2BC Logo" width="96">
 </div>
-
-
