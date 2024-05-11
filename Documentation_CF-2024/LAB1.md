@@ -34,10 +34,10 @@ Let's dive in and get started with the first part of our journey: Developing Eth
 
 ---
 
-## dApp structure Overview
+## dApp folder structure Overview
 
 <div style="text-align: center;">
-  <img style="border: 3px solid #0684C2; border-radius: 12px;" src="src/diagrams/d-of-structure.png" alt="S2BC Logo" width="500">
+  <img style="border: 3px solid #0684C2; border-radius: 12px;" src="src/diagrams/d-of-structure-flow.png" alt="S2BC Logo" width="500">
 </div>
 
 ## Flow overview
@@ -52,12 +52,20 @@ Let's dive in and get started with the first part of our journey: Developing Eth
 
 ---
 
-## Overview contract Voting.sol
+## Overview contract CrowdCreator.sol
 
 ### Diagram of interactions
 
 <div style="text-align: center;">
-  <img style="border: 3px solid #0684C2; border-radius: 12px;" src="src/diagrams/d-of-interactions.png" alt="S2BC Logo" width="500">
+  <img style="border: 3px solid #0684C2; border-radius: 12px;" src="src/diagrams/campainCreator-flow.png" alt="S2BC Logo" width="500">
+</div>
+
+## Overview contract CrowdCollab.sol
+
+### Diagram of interactions
+
+<div style="text-align: center;">
+  <img style="border: 3px solid #0684C2; border-radius: 12px;" src="src/diagrams/campainCollab-flow.png" alt="S2BC Logo" width="500">
 </div>
 
 ## DEVELOPING ETHEREUM SMART CONTRACTS
@@ -136,13 +144,7 @@ Let's dive in and get started with the first part of our journey: Developing Eth
 
 ---
 
-## Overview contract Voting.sol
-
-### Diagram of interactions
-
-<div style="text-align: center;">
-  <img style="border: 3px solid #0684C2; border-radius: 12px;" src="src/diagrams/d-of-interactions.png" alt="S2BC Logo" width="500">
-</div>
+## Overview contract CrowdCollab.sol
 
 ## DEVELOPING ETHEREUM SMART CONTRACTS
 
