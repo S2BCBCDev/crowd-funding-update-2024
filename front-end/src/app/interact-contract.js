@@ -5,6 +5,7 @@ import styles from "./page.module.css";
 import Image from "next/image";
 import campaignCreatorArtifact from "../../../hardhat-deployment/artifacts/contracts/CampaignCreator.sol/CampaignCreator.json"; // Import the JSON file
 import crowdCollabArtifact from "../../../hardhat-deployment/artifacts/contracts/CrowdCollab.sol/CrowdCollab.json";
+import CampaignInteraction from "./CampaignInteraction";
 
 const contractCollabAbi = crowdCollabArtifact.abi;
 
@@ -34,7 +35,7 @@ export default function InteractContract() {
           setWeb3(web3Instance);
 
           // Initialize your contract
-          const contractAddress = "0xe7f1725e7734ce288f8367e1bb143e90bb3f0512"; // Replace with your contract address
+          const contractAddress = "0x4ed7c70f96b99c776995fb64377f0d4ab3b0e1c1"; // Replace with your contract address
           const contractABI = campaignCreatorArtifact.abi; // Replace with your contract ABI
           const contractInstance = new web3Instance.eth.Contract(
             contractABI,
@@ -60,7 +61,7 @@ export default function InteractContract() {
         setWeb3(web3Instance);
 
         // Initialize your contract
-        const contractAddress = "0xe7f1725e7734ce288f8367e1bb143e90bb3f0512"; // Replace with your contract address
+        const contractAddress = "0x4ed7c70f96b99c776995fb64377f0d4ab3b0e1c1"; // Replace with your contract address
         const contractABI = campaignCreatorArtifact.abi; // Replace with your contract ABI
         const contractInstance = new web3Instance.eth.Contract(
           contractABI,
@@ -282,6 +283,7 @@ export default function InteractContract() {
               <p style={{ wordBreak: "break-all" }}>
                 Instance address: {campaign}
               </p>
+              <CampaignInteraction contractAddress={campaign} />
             </div>
           ))}
         </div>
