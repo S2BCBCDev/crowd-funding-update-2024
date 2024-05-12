@@ -50,7 +50,7 @@ const CampaignInteraction = ({ contractAddress, web3 }) => {
           setMinimumContribution(minimumContribution);
 
           setNumberSupporters(numSupporters);
-          console.log(numSupporters);
+          // console.log(numSupporters);
         }
       } catch (error) {
         console.error("Error getting contract summary:", error);
@@ -59,31 +59,6 @@ const CampaignInteraction = ({ contractAddress, web3 }) => {
 
     getSummary();
   }, [contractInstance]);
-
-  const connectMetaMask = async () => {
-    if (window.ethereum) {
-      const web3Instance = new Web3(window.ethereum);
-      try {
-        await window.ethereum.request({ method: "eth_requestAccounts" });
-        setWeb3(web3Instance);
-        setIsConnected(true);
-        const accounts = await web3Instance.eth.getAccounts();
-        setUserAddress(accounts[0]);
-        console.log("Connected to MetaMask!", accounts[0]);
-      } catch (error) {
-        console.error(
-          "User denied account access or an error occurred:",
-          error
-        );
-      }
-    } else {
-      console.log("MetaMask not found. Please install MetaMask to connect.");
-    }
-  };
-
-  const handleConnectButtonClick = () => {
-    connectMetaMask();
-  };
 
   const handleContribution = async () => {
     try {

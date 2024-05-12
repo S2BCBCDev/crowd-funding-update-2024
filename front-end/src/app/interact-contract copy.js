@@ -26,26 +26,61 @@ export default function InteractContract() {
 
   useEffect(() => {
     const initializeWeb3 = async () => {
-      const provider = new Web3.providers.HttpProvider("http://localhost:8545"); // Manually set up the provider
-      const web3Instance = new Web3(provider);
-      setWeb3(web3Instance);
+      if (window.ethereum) {
+        // Modern dapp browsers
+        const web3Instance = new Web3(window.ethereum);
+        try {
+          // Request account access if needed
+          await window.ethereum.request({ method: "eth_requestAccounts" });
+          setWeb3(web3Instance);
 
-      // Initialize your contract
-      const contractAddress = "0x4ed7c70f96b99c776995fb64377f0d4ab3b0e1c1"; // Replace with your contract address
-      const contractABI = campaignCreatorArtifact.abi; // Replace with your contract ABI
-      const contractInstance = new web3Instance.eth.Contract(
-        contractABI,
-        contractAddress
-      );
-      setContract(contractInstance);
+          // Initialize your contract
+          const contractAddress = "0x4ed7c70f96b99c776995fb64377f0d4ab3b0e1c1"; // Replace with your contract address
+          const contractABI = campaignCreatorArtifact.abi; // Replace with your contract ABI
+          const contractInstance = new web3Instance.eth.Contract(
+            contractABI,
+            contractAddress
+          );
+          setContract(contractInstance);
 
-      // Check if MetaMask is connected
-      if (web3Instance.currentProvider.isMetaMask) {
+          // Set isConnected to true if MetaMask is connected
+          setIsConnected(true);
+
+          // Get the connected user's address
+          const accounts = await web3Instance.eth.getAccounts();
+          setUserAddress(accounts[0]); // Assuming the first account is the user's address
+        } catch (error) {
+          console.error(
+            "User denied account access or an error occurred:",
+            error
+          );
+        }
+      } else if (window.web3) {
+        // Legacy dapp browsers
+        const web3Instance = new Web3(window.web3.currentProvider);
+        setWeb3(web3Instance);
+
+        // Initialize your contract
+        const contractAddress = "0x4ed7c70f96b99c776995fb64377f0d4ab3b0e1c1"; // Replace with your contract address
+        const contractABI = campaignCreatorArtifact.abi; // Replace with your contract ABI
+        const contractInstance = new web3Instance.eth.Contract(
+          contractABI,
+          contractAddress
+        );
+        setContract(contractInstance);
+
+        // Set isConnected to true if MetaMask is connected
+        setIsConnected(true);
+
+        // Get the connected user's address
         const accounts = await web3Instance.eth.getAccounts();
         setUserAddress(accounts[0]); // Assuming the first account is the user's address
-        setIsConnected(true);
+      } else {
+        // Non-dapp browsers
+        console.log(
+          "Non-Ethereum browser detected. You should consider trying MetaMask!"
+        );
       }
-      console.log(isConnected);
     };
 
     initializeWeb3();
@@ -66,7 +101,6 @@ export default function InteractContract() {
   useEffect(() => {
     if (contract) {
       getCampaignCount();
-      getDeployedCampaigns();
     }
   }, [contract]);
 
@@ -96,7 +130,6 @@ export default function InteractContract() {
     if (!contract) return;
 
     try {
-      // connectMetaMask();
       const deployedCampaigns = await contract.methods
         .getDeployedCampaigns()
         .call();
@@ -148,15 +181,7 @@ export default function InteractContract() {
       const web3Instance = new Web3(window.ethereum);
       try {
         await window.ethereum.request({ method: "eth_requestAccounts" });
-        // Initialize your contract
-        const contractAddress = "0x4ed7c70f96b99c776995fb64377f0d4ab3b0e1c1"; // Replace with your contract address
-        const contractABI = campaignCreatorArtifact.abi; // Replace with your contract ABI
-        const contractInstance = new web3Instance.eth.Contract(
-          contractABI,
-          contractAddress
-        );
         setWeb3(web3Instance);
-        setContract(contractInstance);
         setIsConnected(true);
         const accounts = await web3Instance.eth.getAccounts();
         setUserAddress(accounts[0]);
