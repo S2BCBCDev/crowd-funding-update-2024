@@ -283,7 +283,12 @@ export default function InteractContract() {
               <p style={{ wordBreak: "break-all" }}>
                 Instance address: {campaign}
               </p>
-              <CampaignInteraction contractAddress={campaign} />
+              <CampaignInteraction
+                contractAddress={campaign}
+                isConnected={isConnected}
+                userAddress={userAddress}
+                web3={web3}
+              />
             </div>
           ))}
         </div>

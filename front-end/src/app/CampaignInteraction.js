@@ -6,7 +6,7 @@ import crowdCollabArtifact from "../../../hardhat-deployment/artifacts/contracts
 
 const contractAbi = crowdCollabArtifact.abi;
 
-const CampaignInteraction = ({ contractAddress }) => {
+const CampaignInteraction = ({ contractAddress, web3 }) => {
   const [contractInstance, setContractInstance] = useState(null);
   const [campaignDescription, setCampaignDescription] = useState("");
   const [manager, setManager] = useState("");
@@ -15,6 +15,9 @@ const CampaignInteraction = ({ contractAddress }) => {
 
   const [numberSupporters, setNumberSupporters] = useState(0);
   const [requests, setRequests] = useState([]);
+  const [contributionAmount, setContributionAmount] = useState("");
+  const [isConnected, setIsConnected] = useState(false);
+  const [userAddress, setUserAddress] = useState("");
 
   useEffect(() => {
     const web3 = new Web3("http://localhost:8545");
@@ -57,6 +60,64 @@ const CampaignInteraction = ({ contractAddress }) => {
     getSummary();
   }, [contractInstance]);
 
+  const connectMetaMask = async () => {
+    if (window.ethereum) {
+      const web3Instance = new Web3(window.ethereum);
+      try {
+        await window.ethereum.request({ method: "eth_requestAccounts" });
+        setWeb3(web3Instance);
+        setIsConnected(true);
+        const accounts = await web3Instance.eth.getAccounts();
+        setUserAddress(accounts[0]);
+        console.log("Connected to MetaMask!", accounts[0]);
+      } catch (error) {
+        console.error(
+          "User denied account access or an error occurred:",
+          error
+        );
+      }
+    } else {
+      console.log("MetaMask not found. Please install MetaMask to connect.");
+    }
+  };
+
+  const handleConnectButtonClick = () => {
+    connectMetaMask();
+  };
+
+  const handleContribution = async () => {
+    try {
+      if (!window.ethereum) {
+        console.error("MetaMask extension not detected");
+        return;
+      }
+
+      // Request account access if needed
+      await window.ethereum.request({ method: "eth_requestAccounts" });
+
+      const web3Instance = new Web3(window.ethereum);
+      const accounts = await web3Instance.eth.getAccounts();
+      const senderAddress = accounts[0];
+
+      // Initialize contract instance
+      const contractInstance = new web3Instance.eth.Contract(
+        contractAbi,
+        contractAddress
+      );
+
+      // Perform the contribution
+      await contractInstance.methods.contribute().send({
+        value: contributionAmount,
+        from: senderAddress,
+      });
+
+      // Refresh campaign summary after contribution
+      // getSummary();
+    } catch (error) {
+      console.error("Error contributing to campaign:", error);
+    }
+  };
+
   return (
     <div>
       <h2>Campaign Interactions:</h2>
@@ -66,6 +127,18 @@ const CampaignInteraction = ({ contractAddress }) => {
         Minimum Contribution: {minimumContribution.toString()}
       </p>
       <p>Number of Supporters: {numberSupporters.toString()}</p>
+
+      {/* Input field for contribution amount */}
+      <input
+        type="number"
+        value={contributionAmount}
+        onChange={(e) => setContributionAmount(e.target.value)}
+        placeholder="Enter contribution amount"
+      />
+
+      {/* Button to trigger contribution */}
+      <button onClick={handleContribution}>Contribute</button>
+
       {/* Render requests here */}
     </div>
   );
