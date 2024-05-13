@@ -31,7 +31,7 @@ export default function InteractContract() {
       setWeb3(web3Instance);
 
       // Initialize your contract
-      const contractAddress = "0x4ed7c70f96b99c776995fb64377f0d4ab3b0e1c1"; // Replace with your contract address
+      const contractAddress = "0xcf7ed3acca5a467e9e704c703e8d87f634fb0fc9"; // Replace with your contract address
       const contractABI = campaignCreatorArtifact.abi; // Replace with your contract ABI
       const contractInstance = new web3Instance.eth.Contract(
         contractABI,
@@ -44,8 +44,9 @@ export default function InteractContract() {
         const accounts = await web3Instance.eth.getAccounts();
         setUserAddress(accounts[0]); // Assuming the first account is the user's address
         setIsConnected(true);
+        getCampaignCount();
       }
-      console.log(isConnected);
+      console.log("metamask account connected? ", isConnected);
     };
 
     initializeWeb3();
@@ -57,7 +58,7 @@ export default function InteractContract() {
     try {
       const count = await contract.methods.getDeployedCampaigns().call();
       setCampaignCount(count.length);
-      console.log(campaignCount);
+      console.log("count", campaignCount);
     } catch (error) {
       console.error("Error fetching campaign count:", error);
     }
@@ -81,6 +82,7 @@ export default function InteractContract() {
     } catch (error) {
       console.error("Error creating campaign:", error);
     }
+    window.location.reload();
   };
 
   const handleDescriptionChange = (event) => {
@@ -123,7 +125,7 @@ export default function InteractContract() {
     const fetchCampaignDescriptions = async () => {
       const descriptions = {};
       try {
-        console.log("Fetching campaign descriptions...");
+        // console.log("Fetching campaign descriptions...");
         if (contract && deployedCampaigns.length > 0) {
           const web3 = new Web3("http://127.0.0.1:8545");
           for (const campaign of deployedCampaigns) {
@@ -149,7 +151,7 @@ export default function InteractContract() {
       try {
         await window.ethereum.request({ method: "eth_requestAccounts" });
         // Initialize your contract
-        const contractAddress = "0x4ed7c70f96b99c776995fb64377f0d4ab3b0e1c1"; // Replace with your contract address
+        const contractAddress = "0xcf7ed3acca5a467e9e704c703e8d87f634fb0fc9"; // Replace with your contract address
         const contractABI = campaignCreatorArtifact.abi; // Replace with your contract ABI
         const contractInstance = new web3Instance.eth.Contract(
           contractABI,

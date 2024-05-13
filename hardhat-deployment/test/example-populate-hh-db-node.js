@@ -61,7 +61,7 @@ describe("CampaignCreator", function () {
 
   it("should create multiple campaigns with random parameters and check if they have been deployed successfully", async function () {
     // Loop to create multiple campaigns
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 12; i++) {
       // Generate random description and minimum contribution amount
       const description = generateRandomDescription();
       const minContribution = generateRandomMinContribution();
@@ -74,7 +74,7 @@ describe("CampaignCreator", function () {
     const deployedCampaigns = await campaignCreator.getDeployedCampaigns();
 
     // Expect the length of deployedCampaigns array to be 10
-    expect(deployedCampaigns.length).to.equal(100);
+    expect(deployedCampaigns.length).to.equal(12);
 
     // Log the addresses of the deployed campaigns
     console.log("Deployed Campaign Addresses:", deployedCampaigns);
