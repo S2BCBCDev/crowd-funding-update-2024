@@ -759,7 +759,7 @@ Metamask -> accounts -> import account -> past private key
   <img style="border: 3px solid #0684C2; border-radius: 12px;" src="src/morpheus-screeshoot/Morpheus-votingchain/import-account-pk.png" alt="screenshoot of morpheus">
 </div>
 
-Then we have our Metamask ready to connect to the new network, click on change network and select the newly created custum network "votingchain"
+Then we have our Metamask ready to connect to the new network, click on change network and select the newly created custum network "votingchain" (poa)
 
 <div style="text-align: center;">
   <img style="border: 3px solid #0684C2; border-radius: 12px;" src="src/morpheus-screeshoot/Morpheus-votingchain/change-network.png" alt="screenshoot of morpheus">
