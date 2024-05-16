@@ -1,4 +1,9 @@
 "use client";
+
+import dotenv from "dotenv";
+dotenv.config();
+console.log(process.env.RPC_URL);
+
 import React, { useEffect, useState } from "react";
 import Web3 from "web3"; // Import web3 library
 import styles from "./page.module.css";
@@ -26,12 +31,12 @@ export default function InteractContract() {
 
   useEffect(() => {
     const initializeWeb3 = async () => {
-      const provider = new Web3.providers.HttpProvider("http://localhost:8545"); // Manually set up the provider
+      const provider = new Web3.providers.HttpProvider("http://127.0.0.1:8545"); // Manually set up the provider
       const web3Instance = new Web3(provider);
       setWeb3(web3Instance);
 
       // Initialize your contract
-      const contractAddress = "0xcf7ed3acca5a467e9e704c703e8d87f634fb0fc9"; // Replace with your contract address
+      const contractAddress = "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318"; // Replace with your contract address
       const contractABI = campaignCreatorArtifact.abi; // Replace with your contract ABI
       const contractInstance = new web3Instance.eth.Contract(
         contractABI,
@@ -151,7 +156,7 @@ export default function InteractContract() {
       try {
         await window.ethereum.request({ method: "eth_requestAccounts" });
         // Initialize your contract
-        const contractAddress = "0xcf7ed3acca5a467e9e704c703e8d87f634fb0fc9"; // Replace with your contract address
+        const contractAddress = "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318"; // Replace with your contract address
         const contractABI = campaignCreatorArtifact.abi; // Replace with your contract ABI
         const contractInstance = new web3Instance.eth.Contract(
           contractABI,
