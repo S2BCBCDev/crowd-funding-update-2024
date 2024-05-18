@@ -16,18 +16,18 @@
 
 So far, you've followed the steps in Labs 1 to 3, gaining valuable insights into the core components of blockchain development. Now, in Lab 4, we will discuss crucial considerations for running a dApp in Morpheus.
 
-## 1. Running the Frontend
+## 1. Running the front-end
 
-Follow these steps to run the frontend of your voting Dapp:
+Follow these steps to run the front-end of your crowdfunding Dapp:
 
-1. **Start the Frontend Server:**
+1. **Start the front-end Server:**
 
-   - Navigate to the `voting-dapp-2023/frontend` directory.
+   - Navigate to the `crowd-funding-update-2024/front-end` directory.
    - Run the following command:
      ```bash
      node server.js
      ```
-     This will initiate the server for your Dapp's frontend.
+     This will initiate the server for your Dapp's front-end.
 
 2. **Open the Web App in Morpheus:**
 
@@ -39,9 +39,9 @@ Follow these steps to run the frontend of your voting Dapp:
 
    - Click on the node service to open your web app.
 
-These steps ensure that your frontend server is up and running, and you can access your voting Dapp through Morpheus.
+These steps ensure that your front-end server is up and running, and you can access your voting Dapp through Morpheus.
 
-## 2. Trying the Voting Dapp
+## 2. Trying the Crowdfunding Dapp
 
 1. **Connect to Metamask:**
 
@@ -141,7 +141,7 @@ module.exports = {
 
 ```
 
-2.3 In your `frontend/public/script.js` file, replace all occurrences of "1303" with "11155111" to ensure the frontend connects to the Sepolia chainID.
+2.3 In your `front-end/public/script.js` file, replace all occurrences of "1303" with "11155111" to ensure the front-end connects to the Sepolia chainID.
 
 Tip: You can select **1305**, then do Ctrl+D several times to get all occurences selected, and then past 11155111.
 
@@ -149,13 +149,13 @@ Certainly! Here's an organized and clear version of your tutorial:
 
 ---
 
-**2.3 Update ChainID in `frontend/public/script.js` File**
+**2.3 Update ChainID in `front-end/public/script.js` File**
 
-To ensure that your frontend connects to the Sepolia chainID, follow these steps to replace all occurrences of "1303" with "11155111" in the `frontend/public/script.js` file.
+To ensure that your front-end connects to the Sepolia chainID, follow these steps to replace all occurrences of "1303" with "11155111" in the `front-end/public/script.js` file.
 
 **Manual Method:**
 
-1. Open your text editor and navigate to the `frontend/public/script.js` file.
+1. Open your text editor and navigate to the `front-end/public/script.js` file.
 
 2. Locate the first occurrence of "1303" and position your cursor at the beginning of the number.
 
@@ -169,7 +169,7 @@ To ensure that your frontend connects to the Sepolia chainID, follow these steps
 
 **Alternative Method using Find and Replace:**
 
-1. Open the `frontend/public/script.js` file in your text editor.
+1. Open the `front-end/public/script.js` file in your text editor.
 
 2. Use the find function (`Ctrl + F` or `Cmd + F`) to search for "1303."
 
@@ -191,11 +191,11 @@ To ensure that your frontend connects to the Sepolia chainID, follow these steps
 npx hardhat run scripts/deploy.js --network sepolia
 ```
 
-### Step 4: Update Contract Address in Frontend
+### Step 4: Update Contract Address in front-end
 
 4.1 Once the deployment is complete, locate the voting contract address.
 
-4.2 Copy the contract address and update the variable in `frontend/public/script.js` as follows:
+4.2 Copy the contract address and update the variable in `front-end/public/script.js` as follows:
 
 ```javascript
 const contractAddress = "votingcontractaddress";
@@ -206,7 +206,7 @@ const contractAddress = "votingcontractaddress";
 5.1 Start or restart your server using the following command:
 
 ```bash
-node frontend/server.js
+node front-end/server.js
 ```
 
 ### Step 6: Verification on Etherscan

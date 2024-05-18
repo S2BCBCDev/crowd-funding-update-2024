@@ -14,7 +14,7 @@
 
 ---
 
-**Objective:** The aim of this Lab3 is to integrate the smart contracts you developed in Lab1 and Lab2 with a Voting dApp for users to access the dApp using the web browser.
+**Objective:** The aim of this Lab3 is to integrate the smart contracts you developed in Lab1 and Lab2 with a Crowdfunding dApp for users to access the dApp using the web browser.
 
 ---
 
@@ -39,9 +39,6 @@ RPC_URL="https://example.com/rpc" (optain from morpheus)
 # This is a private key for signing transactions (private key of the deployer account)
 PRIVATE_KEY="your_private_key_here"
 
-# This is an API key for accessing a specific service like etherscan API to use hardhat verify to verify your contracts
-API_KEY="your_api_key_here"
-
 # This is the chain ID for the Ethereum network
 CHAIN_ID=12345
 
@@ -57,21 +54,16 @@ Modify your `hardhat.config.js` file as follows:
 require("@nomicfoundation/hardhat-toolbox");
 require("dotenv").config();
 
+/** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
   solidity: "0.8.22",
   networks: {
-    votingchain: {
-      chainId: 1303,
-      url: process.env.RPC_URL,
-      accounts: [process.env.PRIVATE_KEY],
+    // Add your network configuration here
+    poa: {
+      url: process.env.RPC_URL, // RPC URL of your network
+      chainId: parseInt(process.env.CHAIN_ID), // Chain ID of your network
+      accounts: [process.env.PRIVATE_KEY], // Array of private keys to use with this network
     },
-  },
-  etherscan: {
-    apiKey: process.env.API_KEY,
-  },
-  paths: {
-    artifacts: "./src/artifacts",
-    contracts: "./src/contracts",
   },
 };
 ```
@@ -81,90 +73,59 @@ module.exports = {
 Create a new file named `deploy.js` inside the `hardhat/scripts` directory. Add the following content to the file:
 
 ```javascript
-// Import required libraries
-const hre = require("hardhat");
+const { ethers } = require("hardhat");
 const fs = require("fs");
 
-// Function to deploy the Voting contract
-async function deployVotingContract() {
+async function deployCampaignCreator() {
   // Get the deployer's address
-  const [deployer] = await hre.ethers.getSigners();
-  console.log("Deploying Voting contract with the account:", deployer.address);
-
-  // Get the Voting contract factory
-  const votingContract = await hre.ethers.getContractFactory("Voting");
-
-  // Deploy the Voting contract
-  const deployedVotingContract = await votingContract.deploy();
-
-  // Save deployment information to a text file
-  const deploymentInfo = `Deployer Address: ${deployer.address}\nVoting Contract Address: ${deployedVotingContract.address}`;
+  const [deployer] = await ethers.getSigners();
   console.log(
-    `Voting Contract Address deployed: ${deployedVotingContract.address}`
-  );
-  fs.writeFileSync("deploymentInfoVoting.txt", deploymentInfo);
-
-  // Return the deployed Voting contract instance
-  return deployedVotingContract;
-}
-
-// Function to deploy the ElectionNFT contract
-async function deployElectionNFTContract(votingContract) {
-  // Get the deployer's address
-  const [deployer] = await hre.ethers.getSigners();
-  console.log(
-    "Deploying ElectionNFT contract with the account:",
+    "Deploying CampaignCreator contract with the account:",
     deployer.address
   );
 
-  // Get the ElectionNFT contract factory
-  const electionNFTContract = await hre.ethers.getContractFactory(
-    "ElectionNFT"
-  );
+  // Get the CampaignCreator contract factory
+  const CampaignCreator = await ethers.getContractFactory("CampaignCreator");
 
-  // Deploy the ElectionNFT contract, passing the address of the Voting contract
-  const deployedElectionNFTContract = await electionNFTContract.deploy(
-    votingContract.address
-  );
+  // Deploy the CampaignCreator contract
+  const campaignCreator = await CampaignCreator.deploy();
+  // console.log(campaignCreator.target);
 
   // Save deployment information to a text file
-  const deploymentInfo = `Deployer Address: ${deployer.address}\nElectionNFT Contract Address: ${deployedElectionNFTContract.address}`;
+  const deploymentInfo = `Deployer Address: ${deployer.address}\nCampaignCreator Contract Address: ${campaignCreator.target}`;
   console.log(
-    `ElectionNFT Contract Address deployed: ${deployedElectionNFTContract.address}`
+    `CampaignCreator Contract Address deployed: ${campaignCreator.target}`
   );
-  fs.writeFileSync("deploymentInfoNFT.txt", deploymentInfo);
+  fs.writeFileSync("deploymentInfoCampaignCreator.txt", deploymentInfo);
 
-  // Call the setElectionNFTContract function in the Voting contract
-  await votingContract.setElectionNFTContract(
-    deployedElectionNFTContract.address
-  );
+  // Return the deployed CampaignCreator contract instance
+  return campaignCreator;
 }
 
-// Main function
 async function main() {
-  // Deploy the Voting contract
-  const votingContract = await deployVotingContract();
+  try {
+    // Deploy the CampaignCreator contract
+    const campaignCreator = await deployCampaignCreator();
 
-  // Deploy the ElectionNFT contract and set the ElectionNFT contract address in the Voting contract
-  await deployElectionNFTContract(votingContract);
+    console.log("Deployment completed successfully!");
+  } catch (error) {
+    console.error("Error deploying contracts:", error);
+    process.exitCode = 1;
+  }
 }
 
-// Handle errors during deployment
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+main();
 ```
 
 To deploy the contracts, use the following command in your terminal:
 
 ```bash
-npx hardhat run scripts/deploy.js --network votingchain
+npx hardhat run scripts/deploy.js --network poa
 ```
 
 The result output from the terminal will provide the contract addresses.
 
-A "deploymentInfoVoting.txt" file will be created with the Voting contract address, and a "deploymentInfoNFT.txt" file will be created with the ElectionNFT contract address.
+A "deploymentInfoCampaignCreator.txt" file will be created with the CampaignCreator contract address.
 
 ---
 

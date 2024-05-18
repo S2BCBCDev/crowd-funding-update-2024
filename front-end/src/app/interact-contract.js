@@ -36,7 +36,7 @@ export default function InteractContract() {
       setWeb3(web3Instance);
 
       // Initialize your contract
-      const contractAddress = "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318"; // Replace with your contract address
+      const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3"; // Replace with your contract address
       const contractABI = campaignCreatorArtifact.abi; // Replace with your contract ABI
       const contractInstance = new web3Instance.eth.Contract(
         contractABI,
@@ -156,7 +156,7 @@ export default function InteractContract() {
       try {
         await window.ethereum.request({ method: "eth_requestAccounts" });
         // Initialize your contract
-        const contractAddress = "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318"; // Replace with your contract address
+        const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3"; // Replace with your contract address
         const contractABI = campaignCreatorArtifact.abi; // Replace with your contract ABI
         const contractInstance = new web3Instance.eth.Contract(
           contractABI,

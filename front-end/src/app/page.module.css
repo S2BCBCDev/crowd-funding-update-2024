@@ -51,12 +51,38 @@
   border-radius: var(--border-radius);
   background: rgba(var(--card-rgb), 0);
   border: 1px solid rgba(var(--card-border-rgb), 0);
-  transition: background 200ms, border 200ms;
+  transition: background 50ms, border 50ms;
+  margin: 0.5rem 0.5rem;
+
+}
+
+.card input {
+  padding: 0.5rem 0.8rem;
+  border-radius: var(--border-radius);
+  background: rgba(var(--card-rgb), 0);
+  border: 1px solid rgba(var(--card-border-rgb), 0.7);
+  transition: background 50ms, border 50ms;
+  font-size: medium;
+  font-weight: 700;
+  font-family: monospace;
+  margin: 0.5rem 0.5rem;
+}
+
+.card button {
+  padding: 0.5rem 0.8rem;
+  border-radius: var(--border-radius);
+  background: rgba(var(--card-rgb), 0);
+  border: 1px solid rgba(var(--card-border-rgb), 0.7);
+  transition: background 50ms, border 50ms;
+  font-size: medium;
+  font-weight: 700;
+  font-family: monospace;
+  margin: 0.5rem 0.5rem;
 }
 
 .card span {
   display: inline-block;
-  transition: transform 200ms;
+  transition: transform 50ms;
 }
 
 .card h2 {

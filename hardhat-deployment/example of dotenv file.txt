@@ -4,9 +4,6 @@ RPC_URL="https://example.com/rpc"
 # This is a private key for signing transactions
 PRIVATE_KEY="your_private_key_here"
 
-# This is an API key for accessing a specific service
-API_KEY="your_api_key_here"
-
 # This is the chain ID for the Ethereum network
 CHAIN_ID=12345
 
