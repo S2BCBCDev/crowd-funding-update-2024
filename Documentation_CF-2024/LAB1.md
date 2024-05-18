@@ -828,9 +828,9 @@ npx hardhat --version
 
 With these initial steps completed, we're now ready to proceed with the creation of our smart contract for the decentralized voting system. Let's move on to the next section!
 
-## Creating the `CampaignCreator.sol` smart contract with Solidity
+## Creating the `CampaignCreator.sol` Smart Contract with Solidity
 
-In this section, we'll guide you through the process of creating the `CampaignCreator.sol` file, which will house the smart contract for our decentralized crowdfunding application. This Solidity file will define the behavior and rules of our crowdfunding system on the Ethereum blockchain.
+In this section, we'll guide you through the process of creating the `CampaignCreator.sol` file, which will house the smart contract for our decentralized crowdfunding application. This Solidity file will define the behavior and rules of our crowdfunding system on the Ethereum blockchain. The campaign creator contract is a factory contract to deploy new campaigns, but the main contract is `CrowdCollab`.
 
 ### Step 0: Create a file named CampaignCreator.sol in your contracts folder
 
@@ -982,179 +982,173 @@ This sets the stage for implementing the remaining functionality of the `CrowdCo
 
 Now you have the complete structure for both the `CampaignCreator` and `CrowdCollab` contracts, ready to be deployed and used for crowdfunding on the Ethereum blockchain.
 
-## Step 3: Implementing the Voting System Logic part 1
+## Step 3: Implementing the Crowdfunding System Logic part 1
 
-In this step, we will dive into the actual implementation of the decentralized voting system. This encompasses defining essential data structures, setting up administrator roles, managing candidates, registering voters, and orchestrating the entire voting process.
+In this step, we'll dive into the actual implementation of the decentralized crowdfunding system. This encompasses defining essential data structures, setting up manager roles, managing campaigns, registering contributors, and orchestrating the entire crowdfunding process.
 
 ### Defining Data Structures
 
-We begin by defining the necessary data structures that will facilitate the functioning of our voting system.
+We begin by defining the necessary data structures that will facilitate the functioning of our crowdfunding system.
 
 ```solidity
-contract Voting {
-    address public electionNFTContract;
-
-    // Define data structures, modifiers, and events
-
-    struct Candidate {
-        uint256 id;
-        string name;
-        uint256 numberOfVotes;
+contract CrowdCollab {
+    struct Request {
+        string description;
+        uint256 amount;
+        address payable recipient;
+        bool complete;
+        address[] approvals; // Using an array instead of a mapping
     }
 
-    uint256 public electionID = 0;
-    Candidate[] public candidates;
-    address public owner;
-    // ... (more variables)
+    address public manager;
+    uint256 public minimumContribution;
+    string public campaignDescription;
+    mapping(address => bool) public supporters;
+    uint256 public numberSupporters;
+    Request[] public requests;
 }
 ```
 
-Here, we've declared a `Candidate` struct to represent each individual in the election. It includes an ID, a name, and a count of their received votes. Additionally, we have variables like `electionID`, `candidates`, and `owner` that will be crucial throughout the process.
+Here, we've defined a `Request` struct to represent funding requests made by the campaign manager. It includes fields such as description, amount, recipient, completion status, and approvals. Additionally, we have variables like `manager`, `minimumContribution`, `campaignDescription`, `supporters`, `numberSupporters`, and `requests` that will be crucial throughout the crowdfunding process.
 
 ### Setting Access Modifiers
 
 Access modifiers are essential for controlling who can execute certain functions. We'll use modifiers to restrict access to specific actions.
 
 ```solidity
-    modifier onlyOwner() {
-        // Modifier code to restrict access
+    modifier managerOnly() {
+        require(msg.sender == manager, "Only manager can call this function");
+        _;
     }
 
-    modifier electionOnGoing() {
-        // Modifier code to check if election is ongoing
+    modifier supporterOnly() {
+        require(
+            supporters[msg.sender],
+            "Only supporters can call this function"
+        );
+        _;
     }
 ```
 
-The `onlyOwner` modifier ensures that certain functions can only be executed by the contract owner. The `electionOnGoing` modifier verifies if an election is currently in progress.
-
-### Declaring Events
-
-Events in Solidity allow smart contracts to communicate information to external consumers. We'll define events to signal important occurrences in our voting system.
-
-```solidity
-    event ElectionStarted(
-        address indexed owner,
-        uint256 startTimestamp,
-        uint256 endTimestamp
-    );
-    // ... (more events)
-```
-
-For instance, the `ElectionStarted` event will be emitted when a new election commences, providing details like the owner's address and the start/end timestamps.
+The `managerOnly` modifier ensures that only the campaign manager can call certain functions, while the `supporterOnly` modifier restricts certain functions to be callable only by supporters of the campaign.
 
 ### Implementing Functions
 
-We'll create functions to perform crucial tasks, such as initiating an election, registering voters, casting votes, and more.
+We'll create functions to perform crucial tasks, such as initiating a campaign, accepting contributions, managing requests, and finalizing the campaign.
 
 ```solidity
-    function startElection(string[] memory _candidates, uint256 _votingDuration)
-        public
-        onlyOwner
-    {
-        // Function code to start an election
+    function contribute() public payable {
+        // Function code to accept contributions and track supporters
     }
 
     // ... (more functions)
 ```
 
-The `startElection` function, for instance, allows the owner to start a new election by specifying candidate names and the voting duration.
+The `contribute` function, for instance, allows contributors to make contributions to the campaign, updating the list of supporters and handling contribution amounts.
 
 ---
 
-## Step 4: Implementing the Voting System Logic in `Voting.sol` part 2
+## Step 4: Implementing the Crowdfunding System Logic part 2
 
-Now that we've set up the basic structure of our decentralized voting system in `Voting.sol`, it's time to delve into the actual logic that governs the election process. In this step, we'll be adding functions and features that handle candidate management, voter registration, voting, and more.
+Now that we've established the fundamental structure of our crowdfunding system in the `CrowdCollab.sol` contract, let's dive deeper into implementing the logic that governs the crowdfunding process. In this step, we'll enhance our contract with additional functionalities such as managing funding requests, approving requests, finalizing requests, and providing summary information about the campaign.
 
-### Managing Candidates
+### Managing Funding Requests
 
-In our smart contract, each candidate is represented by a `Candidate` struct. This struct includes essential details such as an ID, name, and the number of votes received.
+In our crowdfunding system, the campaign manager can create funding requests to specify the purpose and amount required for particular activities. We'll implement functions to handle the creation, approval, and finalization of funding requests.
 
 ```solidity
-struct Candidate {
-    uint256 id;
-    string name;
-    uint256 numberOfVotes;
+function createRequest(
+    string memory description,
+    uint256 amount,
+    address payable recipient
+) public managerOnly {
+    // Function code to create a funding request
+    Request memory newRequest;
+    newRequest.description = description;
+    newRequest.amount = amount;
+    newRequest.recipient = recipient;
+    newRequest.complete = false;
+    requests.push(newRequest);
+}
+
+function approveRequest(uint256 requestId) public supporterOnly {
+    // Function code to approve a funding request
+    Request storage request = requests[requestId];
+    require(!isApproved(request, msg.sender), "Request already approved");
+    request.approvals.push(msg.sender);
+}
+
+function finalizeRequest(uint256 requestId) public managerOnly {
+    // Function code to finalize a funding request
+    Request storage request = requests[requestId];
+    require(!request.complete, "Request already completed");
+    require(
+        request.approvals.length > (numberSupporters / 2),
+        "Not enough approvals"
+    );
+    payable(request.recipient).transfer(request.amount);
+    request.complete = true;
 }
 ```
 
-We have implemented functions to facilitate the addition and removal of candidates, allowing for flexibility even during an ongoing election. Additionally, these functions provide the capability to reset the election session, facilitating the creation of a new election process when needed.
+These functions allow the manager to create funding requests, supporters to approve them, and the manager to finalize them once they receive sufficient approvals.
+
+### Providing Campaign Summary
+
+We'll add functions to retrieve summary information about the campaign, including the minimum contribution, total funding, number of funding requests, number of supporters, and the campaign manager's address.
 
 ```solidity
-function addCandidate(string memory _name) public onlyOwner electionOnGoing {
-    // ... (Function code to add a new candidate)
-    emit CandidateAdded(candidates.length - 1, _name);
+function getSummary()
+    public
+    view
+    returns (
+        uint256,
+        uint256,
+        uint256,
+        uint256,
+        address
+    )
+{
+    return (
+        minimumContribution,
+        address(this).balance,
+        requests.length,
+        numberSupporters,
+        manager
+    );
 }
 
-function removeCandidate(uint256 _candidateId) public onlyOwner {
-    // ... (Function code to remove a candidate)
+function getRequestsCount() public view returns (uint256) {
+    return requests.length;
 }
 ```
 
-### Voter Registration and Voting
+These functions provide transparency and insight into the campaign's progress and status.
 
-The voting process involves ensuring that each voter can only cast one vote. We track voters through the `voters` mapping and verify eligibility using the `eligibleVoters` mapping.
+### Auxiliary Function
+
+We'll also implement an auxiliary function to check whether a specific supporter has already approved a funding request.
 
 ```solidity
-mapping(address => bool) public voters;
-mapping(address => bool) public eligibleVoters;
-
-// ... (other mappings and variables)
-
-function registerVoter(address _eligible_voter) public onlyOwner {
-    // ... (Function code to register an eligible voter)
-}
-
-function voteTo(uint256 _id) public electionOnGoing {
-    // ... (Function code to cast a vote)
-    emit VoteCast(msg.sender, _id);
+function isApproved(Request storage request, address approver)
+    internal
+    view
+    returns (bool)
+{
+    for (uint256 i = 0; i < request.approvals.length; i++) {
+        if (request.approvals[i] == approver) {
+            return true;
+        }
+    }
+    return false;
 }
 ```
 
-### Election Management
+This function ensures that a supporter can only approve a funding request once, preventing duplicate approvals.
 
-The contract provides functionality to start, end, and reset elections. The owner can also extend the duration of an ongoing election.
+---
 
-```solidity
-function startElection(string[] memory _candidates, uint256 _votingDuration) public onlyOwner {
-    // ... (Function code to start a new election)
-    emit ElectionStarted(owner, votingStartTimeStamp, votingEndTimeStamp);
-}
-
-function endElection() public onlyOwner electionOnGoing {
-    // ... (Function code to end the current election)
-    emit ElectionFinished(owner);
-}
-
-function resetElection() public onlyOwner {
-    // ... (Function code to reset the election)
-    emit ElectionReset(owner);
-}
-
-function changeElectionDuration(uint256 _newDuration) public onlyOwner electionOnGoing {
-    // ... (Function code to change the duration of the ongoing election)
-    emit ElectionDurationChanged(_newDuration);
-}
-```
-
-### Winner Determination and NFT Minting
-
-The contract determines the winner based on the candidate with the highest number of votes. Additionally, it supports minting NFTs for voters and participants.
-
-```solidity
-function getWinnerInfo() public view returns (Winner memory) {
-    // ... (Function code to determine the winner)
-}
-
-function mintResultNFTs(string memory _tokenURI) public onlyOwner {
-    // ... (Function code to mint NFTs for all voters)
-}
-
-function mintResult(address _participant, string memory _tokenURI) public onlyOwner {
-    // ... (Function code to mint an NFT for a specific participant)
-}
-```
-
-### Election Metadata
+With these enhancements, our crowdfunding system becomes more robust and feature-rich, enabling efficient management of funding requests and providing transparency regarding the campaign's status.
 
 The `generateMetadata` function provides essential metadata about the election.
 
@@ -1168,50 +1162,96 @@ This marks the completion of the implementation of the voting system logic in ou
 
 ---
 
-## Step 5: Managing Candidates and Reviewing Results
+## Step 5: Managing Campaigns and Reviewing Results
 
-### Handling Candidate Removal
+### Managing Campaign Requests
 
-In a dynamic voting system, the ability to remove candidates is crucial. We'll add functionality to remove a candidate, updating the state and ensuring a fair and accurate representation of the election.
+The `CrowdCollab` contract allows the manager to create requests for specific actions, such as withdrawing funds or executing project tasks. These requests are submitted through the `createRequest` function.
+
+#### Function: `createRequest`
 
 ```solidity
-function removeCandidate(uint256 _candidateId) public onlyOwner electionOnGoing {
-    // ... (Function code to remove a candidate)
-    emit CandidateRemoved(_candidateId);
+function createRequest(
+    string memory description,
+    uint256 amount,
+    address payable recipient
+) public managerOnly {
+    // Create a new request with the provided description, amount, and recipient
+    // Add the request to the array of requests
 }
 ```
 
-This function allows the owner to remove a candidate during an ongoing election, triggering the `CandidateRemoved` event.
+````
+
+**Description:** This function enables the manager to create a new request with a description, amount, and recipient address. Once created, the request is added to the array of requests.
+
+### Approving Requests
+
+Supporters of the crowdfunding campaign can approve requests submitted by the manager. Each supporter can only approve a request once to prevent double voting.
+
+#### Function: `approveRequest`
+
+```solidity
+function approveRequest(uint256 requestId) public supporterOnly {
+    // Retrieve the request by its ID
+    // Ensure the caller hasn't already approved the request
+    // Add the caller's address to the list of approvals for the request
+}
+```
+
+**Description:** This function allows supporters to approve a specific request identified by its ID. It checks whether the caller has already approved the request and adds their address to the list of approvals if not.
+
+### Finalizing Requests
+
+Once a request has received enough approvals from supporters, the manager can finalize it, triggering the execution of the requested action.
+
+#### Function: `finalizeRequest`
+
+```solidity
+function finalizeRequest(uint256 requestId) public managerOnly {
+    // Retrieve the request by its ID
+    // Ensure the request is not already completed
+    // Ensure the request has received enough approvals
+    // Transfer the requested amount to the designated recipient
+    // Mark the request as complete
+}
+```
+
+**Description:** This function allows the manager to finalize a request once it has received sufficient approvals. It transfers the requested amount to the designated recipient and marks the request as complete to prevent further execution.
 
 ### Reviewing Final Results
 
-Once the election concludes, it's essential to review the final results. The contract provides functions to retrieve winner information and overall election metadata.
+After the crowdfunding campaign concludes, it's essential to review the final results, including the overall campaign summary and the status of each request.
+
+#### Function: `getSummary`
 
 ```solidity
-function getWinnerInfo() public view returns (Winner memory) {
-    // ... (Function code to determine the winner)
-}
-
-function generateMetadata() public view returns (ElectionMetadata memory) {
-    // ... (Function code to generate metadata)
+function getSummary() public view returns (uint256, uint256, uint256, uint256, address) {
+    // Return the minimum contribution, contract balance, number of requests, number of supporters, and manager's address
 }
 ```
 
-These functions provide a comprehensive overview of the election results, including the winner and additional metadata.
+**Description:** This function provides a summary of the campaign, including the minimum contribution required, the current contract balance, the number of requests created, the total number of supporters, and the manager's address.
 
-### Emitting Events for Transparency
-
-To ensure transparency and accountability, we emit events throughout the process. Events such as `CandidateRemoved` and `ElectionFinished` provide a clear record of actions taken.
+#### Function: `getRequestsCount`
 
 ```solidity
-event CandidateRemoved(uint256 indexed candidateId);
-event ElectionFinished(address indexed owner);
-// ... (other events)
+function getRequestsCount() public view returns (uint256) {
+    // Return the total number of requests created
+}
 ```
 
-These events serve as a transparent log of significant occurrences within the contract.
+**Description:** This function returns the total number of requests created during the campaign.
 
----
+### Conclusion
+
+In this step, we've covered the management of campaign requests, including creating, approving, and finalizing requests. Additionally, we've discussed the importance of reviewing the final results of the crowdfunding campaign, which can be achieved through functions like `getSummary` and `getRequestsCount`.
+
+```
+
+This section provides a detailed explanation of managing campaign requests, reviewing final results, and accessing key campaign statistics using functions from the `CrowdCollab` contract.
+```
+````
 
 ### Full CampaignCreator.sol contract code
 
@@ -1380,167 +1420,5 @@ contract CrowdCollab {
 
 ```
 
-### CREATING THE ElectionNFT.SOL FILE
-
-In this section, we'll guide you through the process of creating the `ElectionNFT.sol` file, which will handle the creation of unique NFTs for each voter in our decentralized voting application.
-
-Create a new file named `ElectionNFT.sol` and paste the following code:
-
-It's a good start for the explanation of the `ElectionNFT.sol` file. However, you can provide more details and context for each part of the code to ensure that your audience, especially those new to blockchain and smart contracts, can understand the purpose and functionality of each component. Here's a more detailed breakdown of the code and additional explanations you can include:
-
-### CREATING THE ElectionNFT.SOL FILE
-
-In this section, we'll guide you through the process of creating the `ElectionNFT.sol` file, which will handle the creation of unique NFTs for each voter in our decentralized voting application.
-
-#### Code Explanation:
-
-```solidity
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.22;
-
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-
-contract ElectionNFT is ERC721 {
-    address public electionContractAddress;
-    uint256 public electionId;
-    uint256 private tokenIdCounter;
-    string private baseTokenURI;
-    mapping(uint256 => string) private tokenURIs;
-```
-
-- **SPDX-License-Identifier:** Specifies the license type under which the code is released. In this case, it's set to "UNLICENSED," indicating that the code doesn't have a specific license.
-
-- **Solidity Version:** Indicates the compiler version the code is compatible with (Solidity version 0.8.22 in this case).
-
-- **Importing ERC721:** This contract inherits from the ERC721 standard, which is the Ethereum standard for non-fungible tokens (NFTs). It provides the basic functionality needed for NFTs.
-
-- **Variables:**
-  - `electionContractAddress`: Stores the address of the election contract that interacts with this NFT contract.
-  - `electionId`: Represents the unique identifier for the election.
-  - `tokenIdCounter`: Keeps track of the unique token IDs minted.
-  - `baseTokenURI`: Stores the base URI for token metadata.
-  - `tokenURIs`: Maps token IDs to their respective token URIs.
-
-#### Constructor:
-
-```solidity
-    constructor(address _electionContractAddress) ERC721("Election NFT", "ENFT") {
-        electionContractAddress = _electionContractAddress;
-    }
-```
-
-- **Constructor:** Initializes the NFT contract with the name "Election NFT" and the symbol "ENFT." It also sets the `electionContractAddress` to the provided address.
-
-#### Base URI Function:
-
-```solidity
-    function _baseURI() internal view virtual override returns (string memory) {
-        return baseTokenURI;
-    }
-```
-
-- **Base URI Function:** Overrides the internal `_baseURI` function from the ERC721 standard. It returns the base URI for all token metadata.
-
-#### Set Base Token URI Function:
-
-```solidity
-    function setBaseTokenURI(string memory _newBaseTokenURI) external {
-        require(msg.sender == electionContractAddress, "Only the election contract can set base URI");
-        baseTokenURI = _newBaseTokenURI;
-    }
-```
-
-- **Set Base Token URI Function:** Allows the election contract to set the base URI for token metadata. This is essential for generating unique token URIs.
-
-#### Mint NFT Function:
-
-```solidity
-    function mintNFT(address _to, string memory _tokenURI) external {
-        require(msg.sender == electionContractAddress, "Only the election contract can mint NFTs");
-        _safeMint(_to, tokenIdCounter);
-        tokenURIs[tokenIdCounter] = _tokenURI;
-        tokenIdCounter++;
-    }
-```
-
-- **Mint NFT Function:** Enables the election contract to mint a new NFT for a specified address (`_to`). It uses `_safeMint` from the ERC721 standard and associates the new token ID with the provided token URI.
-
-#### Get Token URI Function:
-
-```solidity
-    function getTokenURI(uint256 _tokenId) external view returns (string memory) {
-        return tokenURIs[_tokenId];
-    }
-}
-```
-
-- **Get Token URI Function:** Allows external parties to retrieve the token URI associated with a specific token ID. (This is generaly the URL of already uploaded metadata on IPFS.)
-
-#### Conclusion:
-
-In conclusion, the `ElectionNFT.sol` file defines a contract that complements the main voting contract by handling the creation and management of unique NFTs for each voter. These NFTs serve as a transparent and verifiable record of each voter's participation in the election.
-
-### Full ElectionNFT.sol contract code
-
-Your smart contract `ElectionNFT.sol` should look like this:
-
-```solidity
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.22;
-
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-
-contract ElectionNFT is ERC721 {
-    address public electionContractAddress;
-    uint256 public electionId;
-    uint256 public tokenIdCounter;
-    string private baseTokenURI;
-    mapping(uint256 => string) private tokenURIs;
-
-    constructor(address _electionContractAddress)
-        ERC721("Election NFT", "ENFT")
-    {
-        electionContractAddress = _electionContractAddress;
-    }
-
-    event NFTMinted(address indexed to, uint256 tokenId, string tokenURI);
-
-    function _baseURI() internal view virtual override returns (string memory) {
-        return baseTokenURI;
-    }
-
-    function setBaseTokenURI(string memory _newBaseTokenURI) external {
-        require(
-            msg.sender == electionContractAddress,
-            "Only the election contract can set base URI"
-        );
-        baseTokenURI = _newBaseTokenURI;
-    }
-
-    function mintNFT(address _to, string memory _tokenURI) external {
-        require(
-            msg.sender == electionContractAddress,
-            "Only the election contract can mint NFTs"
-        );
-        tokenIdCounter++;
-        _safeMint(_to, tokenIdCounter);
-        tokenURIs[tokenIdCounter] = _tokenURI;
-        emit NFTMinted(_to, tokenIdCounter, _tokenURI);
-    }
-
-    function getTokenURI(uint256 _tokenId)
-        external
-        view
-        returns (string memory)
-    {
-        return tokenURIs[_tokenId];
-    }
-}
-
-```
-
----
-
-<div style="text-align: center;">
   <img style="border-radius: 12px;"  src="src/s2bc-logo.svg" alt="S2BC Logo" width="96">
 </div>
