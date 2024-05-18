@@ -19,8 +19,8 @@
 ### Table of Contents
 
 1. [Introduction to Testing Ethereum Smart Contracts](#introduction-to-testing-ethereum-smart-contracts)
-2. [Writing Tests for the "Voting" Smart Contract](#writing-tests-for-the-voting-smart-contract)
-3. [Voting.test.js (complete code)](#voting-test-js)
+2. [Writing Tests for the "CampaignCreator" Smart Contract](#writing-tests-for-the-CampaignCreator-smart-contract)
+3. [CampaignCreator.test.js (complete code)](#CampaignCreator-test-js)
 4. [Running the Tests](#running-the-tests)
 
 ---
@@ -83,13 +83,13 @@ Incorporating comprehensive testing practices with Hardhat is not just a best pr
 
 ---
 
-## 2. Writing Tests for the "Voting" Smart Contract
+## 2. Writing Tests for the "CampaignCreator" Smart Contract
 
-<a name="writing-tests-for-the-voting-smart-contract"></a>
+<a name="writing-tests-for-the-campaigncreator-smart-contract"></a>
 
 ### 2.1. **Create a Test File:**
 
-- Create a new file named `Voting.test.js` in your hardhat/test folder.
+- Create a new file named `CampaignCreator.test.js` in your `hardhat/test` folder.
 
 ### 2.2. **Import Dependencies:**
 
@@ -97,163 +97,102 @@ Incorporating comprehensive testing practices with Hardhat is not just a best pr
 
 ```javascript
 const { expect } = require("chai");
+require("@nomicfoundation/hardhat-toolbox");
+const { ethers } = require("hardhat");
 ```
 
 ### 2.3. **Setup Test Environment:**
 
-- Create a describe block for the "Voting Contract" test suite. Inside, declare variables for the Voting contract, deployed instance, owner, and two additional addresses.
+- Deploy the `CampaignCreator` contract before each test case.
 
 ```javascript
-describe("Voting Contract", function () {
-    let Voting;  // Declare variable for the Voting contract
-    let voting;  // Declare variable for the deployed instance of the Voting contract
-    let owner;   // Declare variable for the owner of the contract
-    let addr1;   // Declare variable for address 1
-    let addr2;   // Declare variable for address 2
+describe("CampaignCreator", function () {
+    let CampaignCreator;
+    let campaignCreator;
+    let deployer;
+
+    beforeEach(async () => {
+        [deployer] = await ethers.getSigners();
+
+        CampaignCreator = await ethers.getContractFactory("CampaignCreator");
+        campaignCreator = await CampaignCreator.deploy();
+    });
 ```
 
-### 2.4. **Deploy a Fresh Instance Before Each Test:**
+### 2.4. **Write Test Cases:**
 
-- Use the `beforeEach` hook to deploy a fresh instance of the Voting contract before each test.
-
-```javascript
-beforeEach(async function () {
-  [owner, addr1, addr2] = await ethers.getSigners();
-
-  const VotingFactory = await ethers.getContractFactory("Voting");
-  voting = await VotingFactory.deploy();
-  Voting = await VotingFactory.connect(owner);
-});
-```
-
-### 2.5. **Write Test Cases:**
-
-- Write test cases to check the correct owner after deployment, starting an election with the correct parameters, and handling voter registration and voting check.
+- Write test cases to ensure the functionality of the `CampaignCreator` contract, such as deploying the contract and creating new campaigns.
 
 ```javascript
-it("should have the correct owner after deployment", async function () {
-  expect(await voting.owner()).to.equal(owner.address);
+it("should initially return an empty list of deployed campaigns", async function () {
+  const deployedCampaigns = await campaignCreator.getDeployedCampaigns();
+  expect(deployedCampaigns).to.be.an("array").that.is.empty;
 });
 
-it("should start an election with the correct parameters", async function () {
-  // Test logic for starting an election
-  // Assertions related to election start
-});
+it("should create a new campaign with specified parameters and then check if a campaign exists in the array of the contract", async function () {
+  const minContribution = 1000;
+  const description = "Test Campaign";
 
-it("should handle voter registration and voting", async function () {
-  // Test logic for voter registration and voting
-  // Assertions related to the voting process
+  await campaignCreator.createCampaign(minContribution, description);
+
+  const deployedCampaigns = await campaignCreator.getDeployedCampaigns();
+  expect(deployedCampaigns.length).to.equal(1);
 });
 ```
 
-### 2.6. **Example Test Logic for "Start an Election":**
+### 2.5. **Running the Tests:**
 
-- Within the second test case, write logic to start an election with specific parameters and make assertions related to the election start.
+- Execute the tests using the Hardhat CLI.
 
-```javascript
-it("should start an election with the correct parameters", async function () {
-  const electionTitle = "Test Election";
-  const candidates = ["Candidate1", "Candidate2"];
-  const votingDuration = 10; // in minutes
-
-  await voting.startElection(electionTitle, candidates, votingDuration);
-
-  expect(await voting.electionStarted()).to.be.true;
-  // Additional assertions related to the election start
-  // ...
-});
+```bash
+npx hardhat test
 ```
 
-### 2.7. **Closing the Describe Block:**
+---
 
-- Close the describe block.
+## 3. CampaignCreator.test.js
 
-```javascript
-});
-```
-
-## 3. Voting.test.js
-
-<a name="voting-test-js"></a>
+<a name="CampaignCreator-test-js"></a>
 
 ```javascript
 const { expect } = require("chai");
+require("@nomicfoundation/hardhat-toolbox");
+const { ethers } = require("hardhat");
 
-// Describe block for the Voting Contract test suite
-describe("Voting Contract", function () {
-  let Voting; // Declare variable for the Voting contract
-  let voting; // Declare variable for the deployed instance of the Voting contract
-  let owner; // Declare variable for the owner of the contract
-  let addr1; // Declare variable for address 1
-  let addr2; // Declare variable for address 2
+describe("CampaignCreator", function () {
+  let CampaignCreator;
+  let campaignCreator;
+  let deployer;
 
-  // Before each test case, deploy a fresh instance of the Voting contract
-  beforeEach(async function () {
-    // Get signers (addresses) from ethers
-    [owner, addr1, addr2] = await ethers.getSigners();
+  beforeEach(async () => {
+    [deployer] = await ethers.getSigners();
 
-    // Deploy the Voting contract using the factory
-    const VotingFactory = await ethers.getContractFactory("Voting");
-    voting = await VotingFactory.deploy();
-
-    // Connect the contract factory to the owner
-    Voting = await VotingFactory.connect(owner);
+    CampaignCreator = await ethers.getContractFactory("CampaignCreator");
+    campaignCreator = await CampaignCreator.deploy();
   });
 
-  // Test case 1: Should check if the correct owner is set after deployment
-  it("should have the correct owner after deployment", async function () {
-    // Assert that the owner of the contract is equal to the expected owner's address
-    expect(await voting.owner()).to.equal(owner.address);
+  it("should initially return an empty list of deployed campaigns", async function () {
+    const deployedCampaigns = await campaignCreator.getDeployedCampaigns();
+    expect(deployedCampaigns).to.be.an("array").that.is.empty;
   });
 
-  // Test case 2: Should start an election with the correct parameters
-  it("should start an election with the correct parameters", async function () {
-    const electionTitle = "Test Election";
-    const candidates = ["Candidate1", "Candidate2"];
-    const votingDuration = 10; // in minutes
+  it("should create a new campaign with specified parameters and then check if a campaign exists in the array of the contract", async function () {
+    const minContribution = 1000;
+    const description = "Test Campaign";
 
-    // Start an election with the specified parameters
-    await voting.startElection(electionTitle, candidates, votingDuration);
+    await campaignCreator.createCampaign(minContribution, description);
 
-    // Additional assertions related to the election start
-    expect(await voting.electionStarted()).to.be.true;
-    expect(await voting.votingStartTimeStamp()).to.not.equal(0);
-    expect(await voting.votingEndTimeStamp()).to.not.equal(0);
-    expect(await voting.electionTitle()).to.equal(electionTitle);
-  });
-
-  // Test case 3: Should handle voter registration and voting
-  it("should handle voter registration and voting", async function () {
-    // Start an election before registering voters and casting votes
-    const electionTitle = "Test Election";
-    const candidates = ["Candidate1", "Candidate2"];
-    const votingDuration = 10; // in minutes
-    await voting.startElection(electionTitle, candidates, votingDuration);
-
-    // Register voters for this specific test scenario
-    await voting.registerVoter(addr1.address);
-    await voting.registerVoter(addr2.address);
-    await voting.registerVoter(owner.address);
-
-    // Cast votes for Candidate with ID 0
-    await voting.connect(addr1).voteTo(0);
-    await voting.connect(addr2).voteTo(0);
-    await voting.connect(owner).voteTo(0);
-
-    // Additional assertions related to the voting process
-    const voteCountCandidate0 = (await voting.retrieveVotes())[0].numberOfVotes;
-
-    // Assert various conditions for the voting process, here all voters voted for candidate ID 0, so he should get 3 votes.
-    expect(voteCountCandidate0).to.equal(3); // Assuming three voters
+    const deployedCampaigns = await campaignCreator.getDeployedCampaigns();
+    expect(deployedCampaigns.length).to.equal(1);
   });
 });
 ```
 
-## 4. Running the test
+## 4. Running the Tests
 
 <a name="running-the-tests"></a>
 
-1. Make sure you are located into "voting-dapp-2023/hardhat", directory where your `hardhat.config.js` file is located.
+1. Make sure you are located in the directory where your `hardhat.config.js` file is located.
 
 2. Run the following command to execute the tests:
 
@@ -263,54 +202,36 @@ npx hardhat test
 
 Hardhat will automatically detect and run all the test files in your `test` directory. It will then display the test results, indicating whether each test case passed or failed.
 
-The output should look like this:
+The output should resemble the following:
 
 ```bash
 $ npx hardhat test
 
+  CampaignCreator
+    ✔ should initially return an empty list of deployed campaigns (63ms)
+    ✔ should create a new campaign with specified parameters and then check if a campaign exists in the array of the contract (111ms)
 
-  Voting Contract
-    ✔ should have the correct owner after deployment
-    ✔ should start an election with the correct parameters (63ms)
-    ✔ should handle voter registration and voting (111ms)
-
-
-  3 passing (2s)
+  2 passing (2s)
 ```
 
 ---
 
-### Extended Testing Scenarios
+### Conclusion
 
-An extended test file, `VotingExtended.test.js`, has been included in the test folder to cover 16 scenarios, providing a more comprehensive examination of the "Voting" smart contract. This set of tests delves into various situations and edge cases, offering a robust evaluation of the contract's behavior.
+Testing Ethereum smart contracts, such as the `CampaignCreator` contract, is essential for ensuring their reliability and security. By following best practices and writing comprehensive test cases, developers can identify and fix potential issues early in the development process, leading to more robust and secure blockchain applications.
 
-To run the extended tests, follow these steps:
-
-1. Make sure you are located in the "voting-dapp-2023/hardhat" directory where your `hardhat.config.js` file is located.
-
-2. Run the following command to execute the extended tests:
-
-```bash
-npx hardhat test test/VotingExtended.test.js
+<div style="text-align: center;">
+  <img src="src/s2bc-logo.svg" alt="S2BC Logo" width="96">
+</div>
 ```
 
-The extended test file includes scenarios such as:
-
-- Verifying the correct owner after deployment.
-- Testing the handling of voter registration and voting.
-- Ensuring the proper ending/finalization of the election.
-- Reinitializing the election after ending it.
-- Verifying that additional votes are rejected if a voter has already voted.
-- Testing the rejection of attempts to end the election by a non-administrator.
-- Confirming that only the admin can register voters, start an election, reset an election, change the voting duration, and add candidates.
-- Ensuring that only registered voters can cast votes.
-- Restricting the admin from adding candidates after someone has voted.
-
-These scenarios aim to cover a wide range of functionalities and potential scenarios that your "Voting" smart contract may encounter.
-
-Feel free to review and run the extended tests to gain a deeper understanding of how your smart contract behaves in different situations.
+This adapted documentation provides instructions for testing the `CampaignCreator` smart contract and includes code snippets for writing and running tests using Hardhat.
 
 ---
+
+# Blockchain & Solidity Lab2 – Crowdfunding dApp Development
+
+### S2BC
 
 <div style="text-align: center;">
   <img src="src/s2bc-logo.svg" alt="S2BC Logo" width="96">

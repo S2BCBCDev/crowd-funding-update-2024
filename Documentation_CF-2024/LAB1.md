@@ -8,7 +8,7 @@
 
 ---
 
-### Lab 1 - Developing Ethereum Smart Contracts
+### Lab 1: Developing Ethereum Smart Contracts
 
 - **BUILD** / TEST / INTEGRATE / RUN
 
