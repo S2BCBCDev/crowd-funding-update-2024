@@ -52,7 +52,7 @@ Let's dive in and get started with the first part of our journey: Developing Eth
 
 ---
 
-## Overview contract CrowdCreator.sol
+## Overview contract CampaignCreator.sol
 
 ### Diagram of interactions
 
@@ -96,50 +96,6 @@ By leveraging blockchain technology and smart contracts, we can create a decentr
 
 <div style="text-align: center;">
   <img style="border-radius: 12px;"  src="src/s2bc-logo.svg" alt="S2BC Logo" width="96" height="96">
-</div>
-
----
-
-### Lab 1 - Developing Ethereum Smart Contracts
-
-- **BUILD** / TEST / INTEGRATE / RUN
-
----
-
-### This Hands on Module will build up of 4 Labs:
-
-1. Developing Ethereum Smart Contracts [**BUILD**]
-
-2. Test Ethereum Smart Contracts [TEST]
-
-3. Integrate Smart Contracts with Web3 and establish and run your 1st dApp [INTEGRATE]
-
-4. Run a dApp and considering next steps to create a possible contribution [RUN]
-
----
-
-## Prerequisites
-
-To make the most out of this lab, a basic understanding of programming concepts and familiarity with JavaScript will be beneficial. However, even if you're new to blockchain development, we'll guide you through each step.
-
-Let's dive in and get started with the first part of our journey: Developing Ethereum Smart Contracts!
-
----
-
-## dApp structure Overview
-
-<div style="text-align: center;">
-  <img style="border: 3px solid #0684C2; border-radius: 12px;" src="src/diagrams/d-of-structure.png" alt="S2BC Logo" width="500">
-</div>
-
-## Flow overview
-
-<div style="text-align: center;">
-  <img style="border: 3px solid #0684C2; border-radius: 12px;" src="src/diagrams/d-of-flow1.png" alt="S2BC Logo" width="500">
-</div>
-
-<div style="text-align: center;">
-  <img style="border: 3px solid #0684C2; border-radius: 12px;" src="src/diagrams/d-of-flow2.png" alt="S2BC Logo" width="500">
 </div>
 
 ---
@@ -478,22 +434,22 @@ Check what is in your project and then change directory to your app or go next s
 
 ## Set up the main dapp repository
 
-To get started with our decentralized voting application tutorial, we'll first set up the main repository. Follow these steps:
+To get started with our decentralized crowdfunding application tutorial, we'll first set up the main repository. Follow these steps:
 
 ### Step 1: Create a Folder
 
 Open a terminal and execute the following commands to create a new folder for our project:
 
 ```bash
-mkdir voting-dapp-tutorial
-cd voting-dapp-tutorial
+mkdir crowdfunding-dapp-tutorial
+cd crowdfunding-dapp-tutorial
 touch README.md
 git init
 git add .
 git commit -m "Initial commit"
 ```
 
-This will create a new directory named `voting-dapp-tutorial` and a `README.md` file, which will serve as the main documentation for our project. Additionaly this will initialise Git for our project.
+This will create a new directory named `crowdfunding-dapp-tutorial` and a `README.md` file, which will serve as the main documentation for our project. Additionaly this will initialise Git for our project.
 
 ### Step 2: Install HardHat
 
@@ -828,8 +784,6 @@ Check what is in your project and then change directory to your app or go next s
   <img style="border: 3px solid #0684C2; border-radius: 12px;" src="src/morpheus-screeshoot/change-directory.png" alt="screenshoot of morpheus" width="500">
 </div>
 
-## Set up the main dapp repository
-
 To get started with our decentralized voting application tutorial, we'll first set up the main repository. Follow these steps:
 
 ### Step 1: Create a Folder
@@ -874,131 +828,159 @@ npx hardhat --version
 
 With these initial steps completed, we're now ready to proceed with the creation of our smart contract for the decentralized voting system. Let's move on to the next section!
 
-## Creating the `Voting.sol` smart contract with Solidity
+## Creating the `CampaignCreator.sol` smart contract with Solidity
 
-In this section, we'll guide you through the process of creating the `Voting.sol` file, which will house the smart contract for our decentralized voting application. This Solidity file will define the behavior and rules of our voting system on the Ethereum blockchain.
+In this section, we'll guide you through the process of creating the `CampaignCreator.sol` file, which will house the smart contract for our decentralized crowdfunding application. This Solidity file will define the behavior and rules of our crowdfunding system on the Ethereum blockchain.
 
-### Step 0: Create a file named Voting.sol in hardhat/contract folder
+### Step 0: Create a file named CampaignCreator.sol in your contracts folder
 
 With vscode web interface:
 
-- navigate to voting-dapp-tutorial-2023/hardhat/contracts
-- create a new file named Voting.sol
+- Navigate to your project's contracts folder.
+- Create a new file named `CampaignCreator.sol`.
 
-or with the terminal:
+Or, using the terminal:
 
 ```bash
-cd hardhat/contracts
-touch Voting.sol
+cd your_project_directory/contracts
+touch CampaignCreator.sol
 ```
 
 ### Step 1: Set the Compiler Version and Import Dependencies
 
-- At the top of the file, specify the License type (SPDX-License-Identifier: UNLICENSED)
-- Then specify the compiler version pragma solidity (pragma solidity ^0.8.22;)
-- Then import any necessary dependencies. In our case, we're importing the `ElectionNFT.sol` (not yet created) contract, which will handle the creation of unique NFTs for each voter.
-- Finaly write the name of the contract and open curly braces {}
-
-Your file should looks like this:
-
 ```solidity
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.22; // Specifies the compiler version
 
-import "./ElectionNFT.sol"; // Import the future NFT contract
-
-contract Voting {
-    // ... (content of the Voting.sol contract will be added later)
-}
-
+import "./CrowdCollab.sol"; // Import the CrowdCollab contract
 ```
-
----
 
 ### Step 2: Define the Contract Structure
 
-Within the `Voting.sol` file, we'll outline the fundamental structure of our smart contract. This involves declaring variables, creating functions, and implementing modifiers. The entire content of the contract will be placed within the curly braces `{}`.
+Within the `CampaignCreator.sol` file, we'll outline the fundamental structure of our smart contract. This involves declaring variables, creating functions, and implementing modifiers. The entire content of the contract will be placed within the curly braces `{}`.
 
 ```solidity
-contract Voting {
+contract CampaignCreator {
     // Declare variables
-    address public electionNFTContract;
-
-    // Define data structures, modifiers, and events
-
-    struct Candidate {
-        uint256 id;
-        string name;
-        uint256 numberOfVotes;
-    }
-
-    uint256 public electionID = 0;
-    Candidate[] public candidates;
-    address public owner;
-
-    // Define access modifiers
-    modifier onlyOwner() {
-        // Modifier code to restrict access
-        require(msg.sender == owner, "Only the owner can call this function");
-        _;
-    }
-
-    modifier electionOnGoing() {
-        // Modifier code to check if election is ongoing
-        require(block.timestamp >= votingStartTimeStamp && block.timestamp <= votingEndTimeStamp, "Election is not ongoing");
-        _;
-    }
-
-    // Define events
-    event ElectionStarted(
-        address indexed owner,
-        uint256 startTimestamp,
-        uint256 endTimestamp
-    );
-
-    event CandidateAdded(
-        uint256 indexed candidateId,
-        string name
-    );
-
-    // ... (more events)
+    address[] public campaigns;
 
     // Define functions
-    function startElection(string[] memory _candidates, uint256 _votingDuration)
-        public
-        onlyOwner
-    {
-        // Function code to start an election
-        require(_candidates.length > 0, "At least one candidate is required");
-        require(electionNFTContract != address(0), "ElectionNFT contract address not set");
-
-        // Initialize election variables
-        electionID++;
-        votingStartTimeStamp = block.timestamp;
-        votingEndTimeStamp = block.timestamp + _votingDuration;
-
-        // Create candidates
-        for (uint256 i = 0; i < _candidates.length; i++) {
-            candidates.push(Candidate({
-                id: i,
-                name: _candidates[i],
-                numberOfVotes: 0
-            }));
-
-            emit CandidateAdded(i, _candidates[i]);
-        }
-
-        emit ElectionStarted(owner, votingStartTimeStamp, votingEndTimeStamp);
+    /**
+     * @dev Create a new campaign
+     * @param minContribution The minimum contribution required to participate in the campaign
+     * @param description Description of the campaign
+     */
+    function createCampaign(uint256 minContribution, string memory description) public {
+        address newCampaign = address(new CrowdCollab(msg.sender, minContribution, description));
+        campaigns.push(newCampaign);
     }
 
-    // ... (more functions)
-
+    /**
+     * @dev Get all deployed campaigns
+     * @return campaigns List of deployed campaign addresses
+     */
+    function getDeployedCampaigns() public view returns (address[] memory) {
+        return campaigns;
+    }
 }
 ```
 
-In this step, we've defined the basic structure of the `Voting.sol` contract. We've declared variables for essential components, defined a `Candidate` struct, implemented access modifiers for security, and created events for key occurrences. Additionally, we've started the implementation of the `startElection` function, which initializes the election and creates candidate entries.
+In this step, we've defined the basic structure of the `CampaignCreator.sol` contract. We've declared a variable to store deployed campaign addresses and implemented functions to create new campaigns and retrieve deployed campaigns.
 
 ---
+
+### Step 3: Deployment
+
+To deploy the `CampaignCreator` contract, you can follow these steps:
+
+1. Compile your Solidity contracts using your preferred development environment or Solidity compiler.
+2. Deploy the `CampaignCreator` contract to the Ethereum blockchain using a tool like Remix, Hardhat, or Truffle.
+3. Once deployed, you can interact with the `CampaignCreator` contract to create and manage crowdfunding campaigns.
+
+That's it! You've successfully created the `CampaignCreator.sol` contract, allowing users to create and manage crowdfunding campaigns on the Ethereum blockchain.
+
+Now, let's proceed to create the `CrowdCollab.sol` contract, which will define the behavior of individual crowdfunding campaigns.
+
+---
+
+## Creating the `CrowdCollab.sol` smart contract with Solidity
+
+### Step 0: Create a file named CrowdCollab.sol in your contracts folder
+
+With vscode web interface:
+
+- Navigate to your project's contracts folder.
+- Create a new file named `CrowdCollab.sol`.
+
+Or, using the terminal:
+
+```bash
+cd your_project_directory/contracts
+touch CrowdCollab.sol
+```
+
+### Step 1: Set the Compiler Version and Import Dependencies
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.22; // Specifies the compiler version
+```
+
+### Step 2: Define the Contract Structure
+
+```solidity
+contract CrowdCollab {
+    // Define data structures
+    struct Request {
+        string description;
+        uint256 amount;
+        address payable recipient;
+        bool complete;
+        address[] approvals;
+    }
+
+    // Declare variables
+    address public manager;
+    uint256 public minimumContribution;
+    string public campaignDescription;
+    mapping(address => bool) public supporters;
+    uint256 public numberSupporters;
+    Request[] public requests;
+
+    // Define modifiers
+    modifier managerOnly() {
+        require(msg.sender == manager, "Only manager can call this function");
+        _;
+    }
+
+    modifier supporterOnly() {
+        require(supporters[msg.sender], "Only supporters can call this function");
+        _;
+    }
+
+    // Define constructor
+    constructor(address creator, uint256 minContribution, string memory description) {
+        manager = creator;
+        minimumContribution = minContribution;
+        campaignDescription = description;
+    }
+
+    // Define functions
+    function contribute() public payable {
+        require(msg.value > minimumContribution, "Contribution must be greater than minimum contribution");
+        supporters[msg.sender] = true;
+        numberSupporters++;
+    }
+
+    // Add more functions as needed...
+}
+```
+
+In this step, we've defined the basic structure of the `CrowdCollab.sol` contract. We've declared data structures for requests, variables to store campaign information, implemented modifiers for access control, and defined a constructor to initialize the contract with essential parameters.
+
+This sets the stage for implementing the remaining functionality of the `CrowdCollab` contract, such as creating and managing funding requests.
+
+Now you have the complete structure for both the `CampaignCreator` and `CrowdCollab` contracts, ready to be deployed and used for crowdfunding on the Ethereum blockchain.
 
 ## Step 3: Implementing the Voting System Logic part 1
 
@@ -1231,420 +1213,169 @@ These events serve as a transparent log of significant occurrences within the co
 
 ---
 
-### Full Voting.sol contract code
+### Full CampaignCreator.sol contract code
 
-Your smart contract Voting.sol should looks like this:
+Your smart contract CampaignCreator.sol should looks like this:
 
 ```solidity
-
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.22;
 
-import "./ElectionNFT.sol";
+import "./CrowdCollab.sol";
 
-contract Voting {
-    address public electionNFTContract;
+/**
+ * @dev Campaign Factory contract to generate Crowdfund smart contract to run Crowd fund
+ */
+contract CampaignCreator {
+    // list of campaigns
+    address[] public campaigns;
 
-    // Create a structure template for each candidates
-    struct Candidate {
-        uint256 id; // Unique identifier for the candidate
-        string name; // Name of the candidate
-        uint256 numberOfVotes; // Number of votes received by the candidate
-    }
-
-    // Election ID ( is never deleted and increment at every starting new election )
-    uint256 public electionID = 0;
-
-    // Election Title
-    string public electionTitle;
-
-    // List of all candidates
-    Candidate[] public candidates;
-
-    // This will be the owner's address
-    address public owner;
-
-    // Mapp all voter addresses
-    mapping(address => bool) public voters;
-    mapping(address => bool) public eligibleVoters;
-
-    // List of voters
-    address[] internal hasVotedList;
-    address[] internal registeredVoters;
-
-    // voting start and end session
-    uint256 public votingStartTimeStamp;
-    uint256 public votingEndTimeStamp;
-
-    // Create an election status
-    bool public electionStarted;
-    bool public electionFinalised;
-
-    // Restrict creating vote to the owner only
-    modifier onlyOwner() {
-        require(msg.sender == owner, "not authorized to start election");
-        _;
-    }
-
-    // Check if an election is ongoing
-    modifier electionOnGoing() {
-        require(electionStarted, "no election yet");
-        _;
-    }
-
-    // Event emitted when the election starts
-    event ElectionStarted(
-        address indexed owner,
-        uint256 startTimestamp,
-        uint256 endTimestamp,
-        string title
-    );
-
-    // Event emitted when a vote is cast
-    event VoteCast(address indexed voter, uint256 candidateId);
-
-    // Event emitted when a new Candidate is added
-    event CandidateAdded(uint256 indexed id, string name);
-
-    // Event emitted when time has been added to the election period
-    event ElectionDurationChanged(uint256 newDuration);
-
-    // Event emitted when the election finishes
-    event ElectionFinished(address indexed owner);
-
-    // Event emitted when the election is reset
-    event ElectionReset(address indexed owner);
-
-    constructor() {
-        // Initialize owner
-        owner = msg.sender;
-    }
-
-    function startElection(
-        string memory _electionTitle,
-        string[] memory _candidates,
-        uint256 _votingDuration
-    ) public onlyOwner {
-        require(electionStarted == false, "Election is currently ongoing");
-        require(
-            electionFinalised == false,
-            "Election is not yet Reinitialized"
+    /**
+     * @dev Create new campaign and send default manager is caller
+     * @param minContribution minimum money can contribute for project (in ETH)
+     * @param description description of campaign, purpose of campaign
+     */
+    function createCampaign(
+        uint256 minContribution,
+        string memory description
+    ) public {
+        address newCampaign = address(
+            new CrowdCollab(msg.sender, minContribution, description)
         );
 
-        // Increment electionID
-        electionID += 1;
-
-        // Clear existing candidates
-        while (candidates.length > 0) {
-            removeCandidate(0);
-        }
-
-        // Add new candidates
-        for (uint256 i = 0; i < _candidates.length; i++) {
-            candidates.push(
-                Candidate({id: i, name: _candidates[i], numberOfVotes: 0})
-            );
-        }
-
-        // Set the election title
-        electionTitle = _electionTitle;
-
-        electionStarted = true;
-        votingStartTimeStamp = block.timestamp;
-        votingEndTimeStamp = block.timestamp + (_votingDuration * 1 minutes);
-
-        emit ElectionStarted(
-            owner,
-            votingStartTimeStamp,
-            votingEndTimeStamp,
-            electionTitle
-        );
+        campaigns.push(newCampaign);
     }
 
-    // Check voter's status
-    function voterStatus(address _voter)
-        public
-        view
-        electionOnGoing
-        returns (bool)
-    {
-        if (voters[_voter] == true) {
-            return true;
-        }
-        return false;
-    }
-
-    // To vote function
-    function voteTo(uint256 _id) public electionOnGoing {
-        require(checkElectionPeriod(), "Election period has ended");
-        require(
-            !voterStatus(msg.sender),
-            "You already voted. You can only vote once."
-        );
-        require(_id < candidates.length, "Invalid candidate ID");
-        require(eligibleVoters[msg.sender], "You are not an eligible voter.");
-
-        candidates[_id].numberOfVotes++;
-        voters[msg.sender] = true;
-
-        // Add to the has voted voters list
-        hasVotedList.push(msg.sender);
-
-        emit VoteCast(msg.sender, _id);
-    }
-
-    // Get the number of votes
-    function retrieveVotes() public view returns (Candidate[] memory) {
-        return candidates;
-    }
-
-    // Monitor the election time
-    function electionTimer() public view returns (uint256) {
-        if (block.timestamp >= votingEndTimeStamp) {
-            return 0;
-        }
-        return (votingEndTimeStamp - block.timestamp);
-    }
-
-    // Check if election period is still ongoing
-    function checkElectionPeriod() public view returns (bool) {
-        return electionTimer() > 0;
-    }
-
-    // Reset all voters status
-    function resetAllVoterStatus() public onlyOwner {
-        for (uint256 i = 0; i < hasVotedList.length; i++) {
-            voters[hasVotedList[i]] = false;
-        }
-        delete hasVotedList;
-
-        emit ElectionReset(owner);
-    }
-
-    // Completely resetting the entire election process
-    function resetElection() public onlyOwner {
-        require(!electionStarted, "Election is currently ongoing");
-
-        // Reset registeredVoters mappings
-        for (uint256 i = 0; i < registeredVoters.length; i++) {
-            eligibleVoters[registeredVoters[i]] = false;
-        }
-
-        // Clear registeredVoters
-        delete registeredVoters;
-
-        // Reset voter status
-        resetAllVoterStatus();
-
-        // Reset election status and timers
-        electionStarted = false;
-        votingStartTimeStamp = 0;
-        votingEndTimeStamp = 0;
-        electionFinalised = false;
-
-        // Remove all candidates
-        removeAllCandidates();
-
-        // Reset the election title to the default value
-        electionTitle = "No title yet";
-
-        // emit Election Reset
-        emit ElectionReset(owner);
-    }
-
-    function endElection() public onlyOwner electionOnGoing {
-        electionStarted = false;
-        votingEndTimeStamp = block.timestamp;
-        electionFinalised = true;
-
-        emit ElectionFinished(owner);
-    }
-
-    function removeCandidate(uint256 _candidateId) public onlyOwner {
-        require(_candidateId < candidates.length, "Invalid candidate ID");
-        require(!electionStarted, "Election is ongoing");
-
-        for (uint256 i = _candidateId; i < candidates.length - 1; i++) {
-            candidates[i] = candidates[i + 1];
-        }
-
-        delete candidates[candidates.length - 1];
-        candidates.pop();
-    }
-
-    function removeAllCandidates() public onlyOwner {
-        require(!electionStarted, "Election is currently ongoing");
-        while (candidates.length > 0) {
-            removeCandidate(0);
-        }
-    }
-
-    function transferOwnership(address newOwner) public onlyOwner {
-        require(newOwner != address(0), "Invalid new owner address");
-        owner = newOwner;
-    }
-
-    function changeElectionDuration(uint256 _newDuration)
-        public
-        onlyOwner
-        electionOnGoing
-    {
-        require(_newDuration > 0, "Invalid duration");
-
-        votingEndTimeStamp = votingStartTimeStamp + (_newDuration * 1 minutes);
-
-        emit ElectionDurationChanged(_newDuration);
-    }
-
-    function addCandidate(string memory _name)
-        public
-        onlyOwner
-        electionOnGoing
-    {
-        require(
-            hasVotedList.length == 0,
-            "Cannot add new candidates once votes have been cast."
-        );
-        candidates.push(
-            Candidate({id: candidates.length, name: _name, numberOfVotes: 0})
-        );
-
-        emit CandidateAdded(candidates.length - 1, _name);
-    }
-
-    function registerVoter(address _eligible_voter) public onlyOwner {
-        eligibleVoters[_eligible_voter] = true;
-        registeredVoters.push(_eligible_voter); // Add the voter to the registeredVoters
-    }
-
-    function registerVoters(address[] memory _eligible_voters)
-        public
-        onlyOwner
-    {
-        for (uint256 i = 0; i < _eligible_voters.length; i++) {
-            eligibleVoters[_eligible_voters[i]] = true;
-            registeredVoters.push(_eligible_voters[i]);
-        }
-    }
-
-    function mintResultNFTs(string memory _tokenURI) public onlyOwner {
-        require(!electionStarted, "Election is ongoing, cannot mint NFTs yet");
-        require(
-            votingStartTimeStamp != 0,
-            "Timestamp is 0, election not even started"
-        );
-
-        for (uint256 i = 0; i < registeredVoters.length; i++) {
-            // Mint NFT to each eligible voter
-            ElectionNFT(electionNFTContract).mintNFT(
-                registeredVoters[i],
-                _tokenURI
-            );
-        }
-    }
-
-    function mintResult(address _participant, string memory _tokenURI)
-        public
-        onlyOwner
-    {
-        require(!electionStarted, "Election is ongoing, cannot mint NFTs yet");
-        require(
-            votingStartTimeStamp != 0,
-            "Timestamp is 0, election not even started"
-        );
-        // Mint an NFT for the participant
-        ElectionNFT(electionNFTContract).mintNFT(_participant, _tokenURI);
-
-        // Mark the participant as having received an NFT
-        // voters[_participant] = true;
-    }
-
-    // Function to set ElectionNFT contract address
-    function setElectionNFTContract(address _electionNFTContract)
-        public
-        onlyOwner
-    {
-        electionNFTContract = _electionNFTContract;
-    }
-
-    // Structure template for election metadata
-    struct ElectionMetadata {
-        uint256 electionID;
-        uint256 winnerID;
-        string winnerName;
-        uint256 numberOfVotes;
-        uint256 startTime;
-        uint256 endTime;
-        string title;
-    }
-
-    struct Winner {
-        uint256 candidateID;
-        string name;
-        uint256 numberOfVotes;
-        uint256 electionID;
-    }
-
-    function getWinnerInfo() public view returns (Winner memory) {
-        require(!electionStarted, "Election is still ongoing");
-        require(candidates.length > 0, "No candidates available");
-
-        uint256 maxVotes = 0;
-        uint256 winningCandidateIndex;
-
-        for (uint256 i = 0; i < candidates.length; i++) {
-            if (candidates[i].numberOfVotes > maxVotes) {
-                maxVotes = candidates[i].numberOfVotes;
-                winningCandidateIndex = i;
-            }
-        }
-
-        Winner memory winner = Winner({
-            candidateID: candidates[winningCandidateIndex].id,
-            name: candidates[winningCandidateIndex].name,
-            numberOfVotes: maxVotes,
-            electionID: electionID
-        });
-
-        return winner;
-    }
-
-    function generateMetadata() public view returns (ElectionMetadata memory) {
-        require(!electionStarted, "Election is still ongoing");
-        require(candidates.length > 0, "No candidates available");
-
-        uint256 maxVotes = 0;
-        uint256 winningCandidateIndex;
-
-        for (uint256 i = 0; i < candidates.length; i++) {
-            if (candidates[i].numberOfVotes > maxVotes) {
-                maxVotes = candidates[i].numberOfVotes;
-                winningCandidateIndex = i;
-            }
-        }
-
-        Winner memory winner = Winner({
-            candidateID: candidates[winningCandidateIndex].id,
-            name: candidates[winningCandidateIndex].name,
-            numberOfVotes: maxVotes,
-            electionID: electionID
-        });
-
-        // Create ElectionMetadata struct
-        ElectionMetadata memory metadata = ElectionMetadata({
-            electionID: electionID,
-            winnerID: winner.candidateID,
-            winnerName: winner.name,
-            numberOfVotes: winner.numberOfVotes,
-            startTime: votingStartTimeStamp,
-            endTime: votingEndTimeStamp,
-            title: electionTitle
-        });
-
-        return metadata;
+    /**
+     * @dev get all deployed campaigns
+     */
+    function getDeployedCampaigns() public view returns (address[] memory) {
+        return campaigns;
     }
 }
 
+```
+
+### Full CrowdCollab.sol contract code
+
+Your smart contract CrowdCollab.sol should looks like this:
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.22;
+
+contract CrowdCollab {
+    struct Request {
+        string description;
+        uint256 amount;
+        address payable recipient;
+        bool complete;
+        address[] approvals; // Using an array instead of a mapping
+    }
+
+    address public manager;
+    uint256 public minimumContribution;
+    string public campaignDescription;
+    mapping(address => bool) public supporters;
+    uint256 public numberSupporters;
+    Request[] public requests;
+
+    modifier managerOnly() {
+        require(msg.sender == manager, "Only manager can call this function");
+        _;
+    }
+
+    modifier supporterOnly() {
+        require(
+            supporters[msg.sender],
+            "Only supporters can call this function"
+        );
+        _;
+    }
+
+    constructor(
+        address creator,
+        uint256 minContribution,
+        string memory description
+    ) {
+        manager = creator;
+        minimumContribution = minContribution;
+        campaignDescription = description;
+    }
+
+    function contribute() public payable {
+        require(
+            msg.value > minimumContribution,
+            "Contribution must be greater than minimum contribution"
+        );
+        supporters[msg.sender] = true;
+        numberSupporters++;
+    }
+
+    function support() public payable {
+        contribute();
+    }
+
+    function createRequest(
+        string memory description,
+        uint256 amount,
+        address payable recipient
+    ) public managerOnly {
+        Request memory newRequest;
+        newRequest.description = description;
+        newRequest.amount = amount;
+        newRequest.recipient = recipient;
+        newRequest.complete = false;
+        requests.push(newRequest);
+    }
+
+    function approveRequest(uint256 requestId) public supporterOnly {
+        Request storage request = requests[requestId];
+        require(!isApproved(request, msg.sender), "Request already approved");
+        request.approvals.push(msg.sender);
+    }
+
+    function finalizeRequest(uint256 requestId) public managerOnly {
+        Request storage request = requests[requestId];
+        require(!request.complete, "Request already completed");
+        require(
+            request.approvals.length > (numberSupporters / 2),
+            "Not enough approvals"
+        );
+        payable(request.recipient).transfer(request.amount);
+        request.complete = true;
+    }
+
+    function getSummary()
+        public
+        view
+        returns (uint256, uint256, uint256, uint256, address)
+    {
+        return (
+            minimumContribution,
+            address(this).balance,
+            requests.length,
+            numberSupporters,
+            manager
+        );
+    }
+
+    function getRequestsCount() public view returns (uint256) {
+        return requests.length;
+    }
+
+    function isApproved(
+        Request storage request,
+        address approver
+    ) internal view returns (bool) {
+        for (uint256 i = 0; i < request.approvals.length; i++) {
+            if (request.approvals[i] == approver) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
 
 
 ```
