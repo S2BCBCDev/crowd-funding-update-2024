@@ -139,7 +139,7 @@ const CampaignInteraction = ({ contractAddress, web3 }) => {
     } catch (error) {
       console.error("Error creating request:", error);
     }
-    // window.location.reload();
+    window.location.reload();
   };
 
   const approveRequest = async (requestId) => {
@@ -186,28 +186,42 @@ const CampaignInteraction = ({ contractAddress, web3 }) => {
 
   return (
     <div>
-      <h2>Campaign Interactions:</h2>
-      <p>Description: {campaignDescription}</p>
-      <p style={{ wordBreak: "break-all" }}>Manager: {manager}</p>
-      <p style={{ wordBreak: "break-all" }}>
-        Minimum Contribution: {minimumContribution.toString()}
+      <h4>Campaign details:</h4>
+      <p>
+        Description: <strong>{campaignDescription}</strong>
       </p>
       <p style={{ wordBreak: "break-all" }}>
-        Contract Balance: {contractBalance.toString()}
+        Manager: <strong>{manager}</strong>
       </p>
-      <p>Number of Supporters: {numberSupporters.toString()}</p>
-      <p>Number of Requests: {requests.length}</p>
+      <p style={{ wordBreak: "break-all" }}>
+        Minimum Contribution: <strong>{minimumContribution.toString()}</strong>
+      </p>
+      <p style={{ wordBreak: "break-all" }}>
+        Contract Balance: <strong>{contractBalance.toString()}</strong>
+      </p>
+      <p>
+        Number of Supporters: <strong>{numberSupporters.toString()}</strong>
+      </p>
+      <p>
+        Number of Requests: <strong>{requests.length}</strong>
+      </p>
       {/* Render request descriptions */}
       {requests.map((request, index) => (
         <div key={index}>
           <hr />
-          <p>Request {index + 1}:</p>
-          <p>Description: {request.description}</p>
-          <p>Amount: {request.amount.toString()}</p>
-          <p style={{ wordBreak: "break-all" }}>
-            Recipient Address: {request.recipient}
+          <h4>Request {index + 1}:</h4>
+          <p>
+            Description: <strong>{request.description}</strong>
           </p>
-          <p>Finalized ?: {request.complete.toString()}</p>
+          <p>
+            Amount: <strong>{request.amount.toString()}</strong>
+          </p>
+          <p style={{ wordBreak: "break-all" }}>
+            Recipient Address: <strong>{request.recipient}</strong>
+          </p>
+          <p>
+            Finalized ?: <strong>{request.complete.toString()}</strong>
+          </p>
           {console.log(request.complete)}
 
           {/* Button to approve request */}
@@ -218,7 +232,7 @@ const CampaignInteraction = ({ contractAddress, web3 }) => {
       ))}
       {/* Input field for contribution amount */}
       <hr />
-      Contribution/Support:
+      <h4>Contribute to campaign:</h4>
       <input
         type="number"
         value={contributionAmount}
@@ -230,25 +244,24 @@ const CampaignInteraction = ({ contractAddress, web3 }) => {
       <div>
         {/* Render requests here */}
         <hr />
-        Request:
-        <h3>Create Request</h3>
+        <h4>Create request:</h4>
         <input
           type="text"
           value={requestDescription}
           onChange={(e) => setRequestDescription(e.target.value)}
-          placeholder="Enter request description"
+          placeholder="request description"
         />
         <input
           type="number"
           value={requestAmount}
           onChange={(e) => setRequestAmount(e.target.value)}
-          placeholder="Enter request amount"
+          placeholder="request amount"
         />
         <input
           type="text"
           value={requestRecipient}
           onChange={(e) => setRequestRecipient(e.target.value)}
-          placeholder="Enter request recipient address"
+          placeholder="recipient address"
         />
         <button onClick={createRequest}>Create Request</button>
       </div>

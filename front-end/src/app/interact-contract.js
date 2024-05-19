@@ -50,6 +50,10 @@ export default function InteractContract() {
         setUserAddress(accounts[0]); // Assuming the first account is the user's address
         setIsConnected(true);
         getCampaignCount();
+      } else {
+        setIsConnected(false);
+        // If MetaMask is not connected, you can optionally call connectMetaMask() here
+        connectMetaMask();
       }
       console.log("metamask account connected? ", isConnected);
     };
@@ -78,6 +82,12 @@ export default function InteractContract() {
 
   const createCampaign = async () => {
     if (!contract) return;
+
+    // Check if connected variable is not true, then call connectMetaMask()
+    if (!isConnected) {
+      connectMetaMask();
+      return; // Stop execution until connection is established
+    }
 
     try {
       await contract.methods
@@ -224,41 +234,42 @@ export default function InteractContract() {
               Connected to MetaMask!
             </h2>
             <p>Account:</p>
-            <p style={{ wordBreak: "break-all" }}>{userAddress}</p>
+            <p style={{ wordBreak: "break-all" }}>
+              <strong>{userAddress}</strong>
+            </p>
           </>
         )}
       </button>
 
       <div className={styles.grid}>
         <div className={styles.card} onClick={getCampaignCount}>
-          <p style={{ textAlign: "center" }}>
-            Total Campaign Count: {campaignCount}
-          </p>
+          <h4 style={{ textAlign: "center" }}>
+            Total Campaign Count: <strong>{campaignCount}</strong>
+          </h4>
         </div>
 
         <button className={styles.card} onClick={getDeployedCampaigns}>
           <h2>
-            Get Deployed Campaigns <span>-&gt;</span>
+            Refresh Deployed Campaigns <span>-&gt;</span>
           </h2>
-          <p>Get all deployed campaigns</p>
         </button>
+      </div>
 
-        <div className={styles.card}>
-          <h2>Create Campaign</h2>
-          <input
-            type="text"
-            placeholder="Description"
-            value={description}
-            onChange={handleDescriptionChange}
-          />
-          <input
-            type="number"
-            placeholder="Minimum Contribution"
-            value={minContribution}
-            onChange={handleMinContributionChange}
-          />
-          <button onClick={createCampaign}>Create Campaign</button>
-        </div>
+      <div className={styles.card}>
+        <h2>Create Campaign</h2>
+        <input
+          type="text"
+          placeholder="Description"
+          value={description}
+          onChange={handleDescriptionChange}
+        />
+        <input
+          type="number"
+          placeholder="Minimum Contribution"
+          value={minContribution}
+          onChange={handleMinContributionChange}
+        />
+        <button onClick={createCampaign}>Create Campaign</button>
       </div>
 
       {/* Display deployed campaigns */}

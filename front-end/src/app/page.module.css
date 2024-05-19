@@ -3,7 +3,7 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 6rem;
+  padding: 3rem;
   min-height: 100vh;
 }
 
@@ -41,7 +41,7 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(25%, auto));
+  grid-template-columns: repeat(2, minmax(25%, auto));
   max-width: 100%;
   width: var(--max-width);
 }
@@ -50,7 +50,7 @@
   padding: 1rem 1.2rem;
   border-radius: var(--border-radius);
   background: rgba(var(--card-rgb), 0);
-  border: 1px solid rgba(var(--card-border-rgb), 0);
+  border: 1px solid rgba(var(--card-border-rgb), 0.3);
   transition: background 50ms, border 50ms;
   margin: 0.5rem 0.5rem;
 
@@ -66,6 +66,19 @@
   font-weight: 700;
   font-family: monospace;
   margin: 0.5rem 0.5rem;
+}
+
+.card hr {
+  margin: 1rem 0;
+  height: 3px;
+  background-color: #ffffff80; /* Light gray */
+  border: 3px;
+  border-radius: 12px;
+}
+
+.copyable {
+  cursor: pointer;
+  user-select: all;
 }
 
 .card button {
