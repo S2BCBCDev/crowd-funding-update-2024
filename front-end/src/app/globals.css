@@ -38,6 +38,10 @@
   --callout-border-rgb: 172, 175, 176;
   --card-rgb: 180, 185, 188;
   --card-border-rgb: 131, 134, 135;
+
+  --color-connect-button-connected: 97, 133, 252; /* Blue */
+  --color-connect-button-not-connected: 97, 200, 133; /* Green */
+
 }
 
 @media (prefers-color-scheme: dark) {

@@ -36,7 +36,7 @@ export default function InteractContract() {
       setWeb3(web3Instance);
 
       // Initialize your contract
-      const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3"; // Replace with your contract address
+      const contractAddress = "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9"; // Replace with your contract address
       const contractABI = campaignCreatorArtifact.abi; // Replace with your contract ABI
       const contractInstance = new web3Instance.eth.Contract(
         contractABI,
@@ -156,7 +156,7 @@ export default function InteractContract() {
       try {
         await window.ethereum.request({ method: "eth_requestAccounts" });
         // Initialize your contract
-        const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3"; // Replace with your contract address
+        const contractAddress = "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9"; // Replace with your contract address
         const contractABI = campaignCreatorArtifact.abi; // Replace with your contract ABI
         const contractInstance = new web3Instance.eth.Contract(
           contractABI,
@@ -200,12 +200,29 @@ export default function InteractContract() {
       <button className={styles.card} onClick={handleConnectButtonClick}>
         {!isConnected ? (
           <>
-            <h2>Connect MetaMask</h2>
+            <h2
+              style={{
+                background:
+                  "rgba(var(--color-connect-button-not-connected), 100)",
+                border: "1px solid rgba(var(--card-border-rgb), 100)",
+                borderRadius: "12px",
+              }}
+            >
+              Connect MetaMask
+            </h2>
             <p>Click here to connect your MetaMask wallet</p>
           </>
         ) : (
           <>
-            <h2>Connected to MetaMask!</h2>
+            <h2
+              style={{
+                background: "rgba(var(--color-connect-button-connected), 100)",
+                border: "1px solid rgba(var(--card-border-rgb), 100)",
+                borderRadius: "12px",
+              }}
+            >
+              Connected to MetaMask!
+            </h2>
             <p>Account:</p>
             <p style={{ wordBreak: "break-all" }}>{userAddress}</p>
           </>
