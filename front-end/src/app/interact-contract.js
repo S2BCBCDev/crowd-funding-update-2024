@@ -14,7 +14,7 @@ import CampaignInteraction from "./CampaignInteraction";
 
 const contractCollabAbi = crowdCollabArtifact.abi;
 
-const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3"; // Replace with your contract address Campaign Creator
+const contractAddress = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"; // Replace with your contract address Campaign Creator
 
 export default function InteractContract() {
   const [web3, setWeb3] = useState(null);
@@ -192,6 +192,13 @@ export default function InteractContract() {
     fetchCampaignDescriptions();
   }, [contract, deployedCampaigns]);
 
+  const handleRefreshButtonClick = () => {
+    getDeployedCampaigns();
+    window.location.reload(); // Reload the page after fetching deployed campaigns
+  };
+
+  const minContributionETH = minContribution / 10 ** 18;
+
   return (
     <main className={styles.main}>
       {/* Logo */}
@@ -245,69 +252,75 @@ export default function InteractContract() {
         {/* Get total campaign count */}
         <div className={styles.card} onClick={getCampaignCount}>
           <h4 style={{ textAlign: "center" }}>
-            Total Campaign Count: <strong>{campaignCount}</strong>
+            Total Campaign Count: <strong>{campaignCount}</strong>{" "}
+            <span>&#x1F4B0;</span>
           </h4>
         </div>
 
         {/* Button to refresh deployed campaigns */}
-        <button className={styles.card} onClick={getDeployedCampaigns}>
+        <button className={styles.card} onClick={handleRefreshButtonClick}>
           <h2>
-            Refresh Deployed Campaigns <span>-&gt;</span>
+            Refresh <span>&#x21BA;</span>
           </h2>
         </button>
       </div>
 
       {/* Form to create a new campaign */}
       <div className={styles.card}>
-        <h2>Create Campaign</h2>
+        <h2>Campaign Creation:</h2>
         <input
           type="text"
-          placeholder="Description"
+          placeholder="Description / title"
           value={description}
           onChange={handleDescriptionChange}
         />
         <input
           type="number"
-          placeholder="Minimum Contribution"
+          placeholder="Min Contrib (wei)"
           value={minContribution}
           onChange={handleMinContributionChange}
         />
-        <button onClick={createCampaign}>Create Campaign</button>
+        <button onClick={createCampaign}>
+          Create Campaign <span>&#x1F680;</span>
+        </button>
       </div>
+      <p style={{ textAlign: "center", fontSize: "smaller" }}>
+        1 eth = 10^18 wei | Minimum contribution: {minContributionETH} ETH
+      </p>
 
       {/* Display deployed campaigns */}
-      <div className={styles.card}>
-        <div className={styles.grid}>
-          {deployedCampaigns.map((campaign, index) => (
-            <div
-              className={styles.card}
-              key={index}
-              onClick={() => handleCampaignClick(campaign)} // not used, find alternative to this
-            >
-              <h2>{campaignDescriptions[campaign]}</h2>
+      <div className={styles.grid}>
+        {deployedCampaigns.map((campaign, index) => (
+          <div
+            className={styles.card}
+            key={index}
+            onClick={() => handleCampaignClick(campaign)} // not used, find alternative to this
+          >
+            <h2>
+              {campaignDescriptions[campaign]} <span>&#x1F4C4;</span>
+            </h2>
 
-              <hr />
+            <hr />
 
-              <h4>id: {index + 0}</h4>
-              <h3>{truncateAddress(campaign)}</h3>
+            <h4>id: {index + 0}</h4>
+            <h3>{truncateAddress(campaign)}</h3>
 
-              <hr />
+            <hr />
 
-              <p style={{ wordBreak: "break-all" }}>
-                Instance address: {campaign}
-              </p>
+            <p style={{ wordBreak: "break-all" }}>
+              Instance address: {campaign}
+            </p>
 
-              {/* Interact with campaign */}
-              <CampaignInteraction
-                contractAddress={campaign}
-                isConnected={isConnected}
-                userAddress={userAddress}
-                web3={web3}
-                campaignDescriptions={campaignDescriptions}
-              />
-            </div>
-          ))}
-        </div>
+            {/* Interact with campaign */}
+            <CampaignInteraction
+              contractAddress={campaign}
+              isConnected={isConnected}
+              userAddress={userAddress}
+              web3={web3}
+              campaignDescriptions={campaignDescriptions}
+            />
+          </div>
+        ))}
       </div>
     </main>
   );

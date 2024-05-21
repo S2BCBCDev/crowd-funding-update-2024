@@ -184,6 +184,9 @@ const CampaignInteraction = ({ contractAddress, web3 }) => {
     window.location.reload();
   };
 
+  const contributionAmountETH = contributionAmount / 10 ** 18;
+  const requestAmountETH = requestAmount / 10 ** 18;
+
   return (
     <div>
       {/* Campaign details section */}
@@ -227,22 +230,26 @@ const CampaignInteraction = ({ contractAddress, web3 }) => {
           </p>
 
           {/* Button to approve request */}
-          <button onClick={() => approveRequest(index)}>Approve</button>
+          <button onClick={() => approveRequest(index)}>
+            Approve <span>&#x2714;</span>
+          </button>
           {/* Button to finalize request */}
-          <button onClick={() => finalizeRequest(index)}>Finalize</button>
+          <button onClick={() => finalizeRequest(index)}>
+            Finalize <span>&#x1F389;</span>
+          </button>
           {/* Note about request finalization */}
           <h6>
-            <em>
+            <p style={{ fontSize: "smaller" }}>
               To finalize a request, the number of approvals must exceed half of
               the total supporters.
-            </em>
+            </p>
           </h6>
         </div>
       ))}
 
       {/* Input field for contribution amount */}
       <hr />
-      <h4>Contribute to campaign:</h4>
+      <h4>Support Campaign:</h4>
       <input
         type="number"
         value={contributionAmount}
@@ -250,12 +257,20 @@ const CampaignInteraction = ({ contractAddress, web3 }) => {
         placeholder="Enter contribution amount"
       />
       {/* Button to trigger contribution */}
-      <button onClick={handleContribution}>Contribute</button>
+      <button onClick={handleContribution}>
+        Contribute <span>&#x1F4B8;</span>
+      </button>
+      <p style={{ textAlign: "center", fontSize: "smaller" }}>
+        1 eth = 10^18 wei | Minimum contribution: {contributionAmountETH} ETH
+      </p>
 
       {/* Create release fund request section */}
       <div>
         <hr />
         <h4>Create release fund request:</h4>
+        <p style={{ fontSize: "smaller" }}>
+          Campaign manager can propose donation.
+        </p>
         <input
           type="text"
           value={requestDescription}
@@ -268,6 +283,10 @@ const CampaignInteraction = ({ contractAddress, web3 }) => {
           onChange={(e) => setRequestAmount(e.target.value)}
           placeholder="request amount"
         />
+        <p style={{ textAlign: "center", fontSize: "smaller" }}>
+          1 eth = 10^18 wei | {requestAmountETH} ETH
+        </p>
+
         <input
           type="text"
           value={requestRecipient}
@@ -275,7 +294,9 @@ const CampaignInteraction = ({ contractAddress, web3 }) => {
           placeholder="recipient address"
         />
         {/* Button to create request */}
-        <button onClick={createRequest}>Create Request</button>
+        <button onClick={createRequest}>
+          Create Request <span>&#x1F4DD;</span>
+        </button>
       </div>
     </div>
   );
