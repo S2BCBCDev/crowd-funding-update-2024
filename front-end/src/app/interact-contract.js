@@ -14,6 +14,8 @@ import CampaignInteraction from "./CampaignInteraction";
 
 const contractCollabAbi = crowdCollabArtifact.abi;
 
+const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3"; // Replace with your contract address Campaign Creator
+
 export default function InteractContract() {
   const [web3, setWeb3] = useState(null);
   const [contract, setContract] = useState(null);
@@ -29,33 +31,61 @@ export default function InteractContract() {
 
   const [selectedCampaign, setSelectedCampaign] = useState(""); // State to hold selected campaign address
 
+  const connectMetaMask = async () => {
+    if (window.ethereum) {
+      const web3Instance = new Web3(window.ethereum);
+      try {
+        await window.ethereum.request({ method: "eth_requestAccounts" });
+        // Initialize your contract
+        //  const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3"; // Replace with your contract address
+        const contractABI = campaignCreatorArtifact.abi; // Replace with your contract ABI
+        const contractInstance = new web3Instance.eth.Contract(
+          contractABI,
+          contractAddress
+        );
+        setWeb3(web3Instance);
+        setContract(contractInstance);
+        setIsConnected(true);
+        const accounts = await web3Instance.eth.getAccounts();
+        setUserAddress(accounts[0]);
+        console.log("Connected to MetaMask!", accounts[0]);
+      } catch (error) {
+        console.error(
+          "User denied account access or an error occurred:",
+          error
+        );
+      }
+    } else {
+      console.log("MetaMask not found. Please install MetaMask to connect.");
+    }
+  };
+
+  // Add this function to handle the connection
+  const handleConnectButtonClick = () => {
+    connectMetaMask();
+    setIsConnected(true); // Update isConnected state when connected
+  };
+
   useEffect(() => {
     const initializeWeb3 = async () => {
-      const provider = new Web3.providers.HttpProvider("http://127.0.0.1:8545"); // Manually set up the provider
-      const web3Instance = new Web3(provider);
-      setWeb3(web3Instance);
-
-      // Initialize your contract
-      const contractAddress = "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9"; // Replace with your contract address
-      const contractABI = campaignCreatorArtifact.abi; // Replace with your contract ABI
-      const contractInstance = new web3Instance.eth.Contract(
-        contractABI,
-        contractAddress
-      );
-      setContract(contractInstance);
-
-      // Check if MetaMask is connected
-      if (web3Instance.currentProvider.isMetaMask) {
-        const accounts = await web3Instance.eth.getAccounts();
-        setUserAddress(accounts[0]); // Assuming the first account is the user's address
-        setIsConnected(true);
-        getCampaignCount();
-      } else {
-        setIsConnected(false);
-        // If MetaMask is not connected, you can optionally call connectMetaMask() here
-        connectMetaMask();
+      try {
+        if (window.ethereum) {
+          await connectMetaMask();
+        } else {
+          console.log(
+            "MetaMask not found. Please install MetaMask to connect."
+          );
+          setIsConnected(false);
+        }
+      } catch (error) {
+        console.error("Error initializing web3:", error);
       }
-      console.log("metamask account connected? ", isConnected);
+      const web3Instance = new Web3(window.ethereum);
+      setWeb3(web3Instance);
+      const accounts = await web3Instance.eth.getAccounts();
+      setUserAddress(accounts[0]); // Assuming the first account is the user's address
+      setIsConnected(true);
+      // getCampaignCount();
     };
 
     initializeWeb3();
@@ -138,20 +168,22 @@ export default function InteractContract() {
 
   useEffect(() => {
     const fetchCampaignDescriptions = async () => {
-      const descriptions = {};
       try {
-        // console.log("Fetching campaign descriptions...");
-        if (contract && deployedCampaigns.length > 0) {
-          const web3 = new Web3("http://127.0.0.1:8545");
-          for (const campaign of deployedCampaigns) {
+        if (!contract || deployedCampaigns.length === 0) return;
+
+        const descriptions = {};
+
+        await Promise.all(
+          deployedCampaigns.map(async (campaign) => {
             const instance = new web3.eth.Contract(contractCollabAbi, campaign);
             const description = await instance.methods
               .campaignDescription()
               .call();
             descriptions[campaign] = description;
-          }
-          setCampaignDescriptions(descriptions);
-        }
+          })
+        );
+
+        setCampaignDescriptions(descriptions);
       } catch (error) {
         console.error("Error fetching campaign descriptions:", error);
       }
@@ -160,43 +192,9 @@ export default function InteractContract() {
     fetchCampaignDescriptions();
   }, [contract, deployedCampaigns]);
 
-  const connectMetaMask = async () => {
-    if (window.ethereum) {
-      const web3Instance = new Web3(window.ethereum);
-      try {
-        await window.ethereum.request({ method: "eth_requestAccounts" });
-        // Initialize your contract
-        const contractAddress = "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9"; // Replace with your contract address
-        const contractABI = campaignCreatorArtifact.abi; // Replace with your contract ABI
-        const contractInstance = new web3Instance.eth.Contract(
-          contractABI,
-          contractAddress
-        );
-        setWeb3(web3Instance);
-        setContract(contractInstance);
-        setIsConnected(true);
-        const accounts = await web3Instance.eth.getAccounts();
-        setUserAddress(accounts[0]);
-        console.log("Connected to MetaMask!", accounts[0]);
-      } catch (error) {
-        console.error(
-          "User denied account access or an error occurred:",
-          error
-        );
-      }
-    } else {
-      console.log("MetaMask not found. Please install MetaMask to connect.");
-    }
-  };
-
-  // Add this function to handle the connection
-  const handleConnectButtonClick = () => {
-    connectMetaMask();
-    setIsConnected(true); // Update isConnected state when connected
-  };
-
   return (
     <main className={styles.main}>
+      {/* Logo */}
       <div className={styles.card} onClick={() => window.location.reload()}>
         <Image
           src="s2bc/s2bc-logo.svg"
@@ -207,6 +205,7 @@ export default function InteractContract() {
         />
       </div>
 
+      {/* MetaMask connection button */}
       <button className={styles.card} onClick={handleConnectButtonClick}>
         {!isConnected ? (
           <>
@@ -241,13 +240,16 @@ export default function InteractContract() {
         )}
       </button>
 
+      {/* Grid for campaign-related actions */}
       <div className={styles.grid}>
+        {/* Get total campaign count */}
         <div className={styles.card} onClick={getCampaignCount}>
           <h4 style={{ textAlign: "center" }}>
             Total Campaign Count: <strong>{campaignCount}</strong>
           </h4>
         </div>
 
+        {/* Button to refresh deployed campaigns */}
         <button className={styles.card} onClick={getDeployedCampaigns}>
           <h2>
             Refresh Deployed Campaigns <span>-&gt;</span>
@@ -255,6 +257,7 @@ export default function InteractContract() {
         </button>
       </div>
 
+      {/* Form to create a new campaign */}
       <div className={styles.card}>
         <h2>Create Campaign</h2>
         <input
@@ -293,11 +296,14 @@ export default function InteractContract() {
               <p style={{ wordBreak: "break-all" }}>
                 Instance address: {campaign}
               </p>
+
+              {/* Interact with campaign */}
               <CampaignInteraction
                 contractAddress={campaign}
                 isConnected={isConnected}
                 userAddress={userAddress}
                 web3={web3}
+                campaignDescriptions={campaignDescriptions}
               />
             </div>
           ))}

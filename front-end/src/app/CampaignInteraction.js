@@ -27,7 +27,7 @@ const CampaignInteraction = ({ contractAddress, web3 }) => {
   const [contractBalance, setContractBalance] = useState([]);
 
   useEffect(() => {
-    const web3 = new Web3("http://localhost:8545");
+    //const web3 = new Web3("https://votingchain-29886.morpheuslabs.io");
     const instance = new web3.eth.Contract(contractAbi, contractAddress);
     setContractInstance(instance);
   }, [contractAddress]);
@@ -186,6 +186,7 @@ const CampaignInteraction = ({ contractAddress, web3 }) => {
 
   return (
     <div>
+      {/* Campaign details section */}
       <h4>Campaign details:</h4>
       <p>
         Description: <strong>{campaignDescription}</strong>
@@ -205,10 +206,12 @@ const CampaignInteraction = ({ contractAddress, web3 }) => {
       <p>
         Number of Requests: <strong>{requests.length}</strong>
       </p>
+
       {/* Render request descriptions */}
       {requests.map((request, index) => (
         <div key={index}>
           <hr />
+          {/* Request details */}
           <h4>Request {index + 1}:</h4>
           <p>
             Description: <strong>{request.description}</strong>
@@ -222,14 +225,21 @@ const CampaignInteraction = ({ contractAddress, web3 }) => {
           <p>
             Finalized ?: <strong>{request.complete.toString()}</strong>
           </p>
-          {console.log(request.complete)}
 
           {/* Button to approve request */}
           <button onClick={() => approveRequest(index)}>Approve</button>
           {/* Button to finalize request */}
           <button onClick={() => finalizeRequest(index)}>Finalize</button>
+          {/* Note about request finalization */}
+          <h6>
+            <em>
+              To finalize a request, the number of approvals must exceed half of
+              the total supporters.
+            </em>
+          </h6>
         </div>
       ))}
+
       {/* Input field for contribution amount */}
       <hr />
       <h4>Contribute to campaign:</h4>
@@ -241,10 +251,11 @@ const CampaignInteraction = ({ contractAddress, web3 }) => {
       />
       {/* Button to trigger contribution */}
       <button onClick={handleContribution}>Contribute</button>
+
+      {/* Create release fund request section */}
       <div>
-        {/* Render requests here */}
         <hr />
-        <h4>Create request:</h4>
+        <h4>Create release fund request:</h4>
         <input
           type="text"
           value={requestDescription}
@@ -263,6 +274,7 @@ const CampaignInteraction = ({ contractAddress, web3 }) => {
           onChange={(e) => setRequestRecipient(e.target.value)}
           placeholder="recipient address"
         />
+        {/* Button to create request */}
         <button onClick={createRequest}>Create Request</button>
       </div>
     </div>
