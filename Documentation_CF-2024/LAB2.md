@@ -159,107 +159,153 @@ const { expect } = require("chai");
 require("@nomicfoundation/hardhat-toolbox");
 const { ethers } = require("hardhat");
 
-describe("CampaignCreator", function () {
+describe("CampaignCreator Contract", function () {
   let CampaignCreator;
   let campaignCreator;
   let deployer; // Declare deployer variable outside beforeEach to make it accessible to other test cases
 
   beforeEach(async () => {
+    // Deploy the CampaignCreator contract before each test
     console.log(
-      "Before each hook executing... DEPLOY CampaignCreator smart contract:",
-      "\n"
+      "\n",
+      "Deploying the CampaignCreator contract for each test, and for the second test, creating a new campaign with the CrowdCollab contract instance address provided."
     );
     [deployer] = await ethers.getSigners();
 
     CampaignCreator = await ethers.getContractFactory("CampaignCreator");
     campaignCreator = await CampaignCreator.deploy();
 
-    // console.log(`json output: ${campaignCreator}`);
-    // console.log("CampaignCreator object:");
-    // console.dir(campaignCreator);
+    // Extract deployer and target contract addresses for reference
+    const deployerAddress = campaignCreator.runner.address;
+    console.log("\n", "Deployer Address:", deployerAddress);
 
-    // Extract runner address
-    const Runner = campaignCreator.runner.address;
-    console.log("Runner/Sender/Deployer Address:", Runner, "\n");
-
-    // Extract target property
-    const target = campaignCreator.target;
-    console.log("Contract Target address:", target, "\n");
+    const targetContractAddress = campaignCreator.target;
+    console.log(
+      "\n",
+      "Deployed CampaignCreator Contract Address:",
+      targetContractAddress
+    );
   });
 
-  it("The contract got just deployed so it should return an empty list of deployed campaigns initially", async function () {
+  it("TEST:should initially return an empty list of deployed campaigns", async function () {
+    // Test case to verify that the list of deployed campaigns is empty initially
     const deployedCampaigns = await campaignCreator.getDeployedCampaigns();
     expect(deployedCampaigns).to.be.an("array").that.is.empty;
   });
 
-  it("should create a new campaign with specified parameters and then check if a campaign exists in the array of the contract", async function () {
+  it("TEST:should create a new campaign with specified parameters and confirm its existence in the campaign list", async function () {
+    // Test case to confirm that a new campaign can be created with specified parameters and exists in the campaign list
     const minContribution = 1000;
-    const description = "Test Campaign";
+    const description = "Campaign Title Description";
 
     await campaignCreator.createCampaign(minContribution, description);
 
     const deployedCampaigns = await campaignCreator.getDeployedCampaigns();
     expect(deployedCampaigns.length).to.equal(1);
 
-    // Add more assertions to verify the properties of the newly created campaign
-
-    // Get the address of the last deployed campaign
+    // Get the address of the last deployed campaign and log it for reference
     const lastDeployedCampaignAddress =
       deployedCampaigns[deployedCampaigns.length - 1];
 
-    // Log the address of the last deployed campaign
-    console.log("Last deployed campaign address:", lastDeployedCampaignAddress);
+    console.log(
+      "\n",
+      "Deployed CrowdCollab Contract instance address, the new campaign:",
+      lastDeployedCampaignAddress
+    );
   });
 
-  // Add more test cases as needed
+  // Additional test cases can be added as needed
 });
 ```
 
 ## 4. Running the Tests
 
-<a name="running-the-tests"></a>
+Before proceeding with running tests, ensure that you are in the directory containing your `hardhat.config.js` file. This configuration file specifies settings for your Hardhat project, including network configurations and plugin integrations.
 
-1. Make sure you are located in the directory where your `hardhat.config.js` file is located.
+### 4.1. Executing Tests
 
-2. Run the following command to execute the tests:
+To execute tests using Hardhat, follow these steps:
+
+1. **Navigate to Project Directory**: Open your terminal or command prompt and navigate to the directory where your Hardhat project is located.
+
+2. **Run Tests**: Use the following command to execute the tests:
+
+   ```bash
+   npx hardhat test
+   ```
+
+   Hardhat will automatically detect and run all test files present in your `test` directory. After executing the tests, it will display the results, indicating whether each test case passed or failed.
+
+### 4.2. Sample Test Output
+
+The output of running tests with Hardhat typically resembles the following:
 
 ```bash
-npx hardhat test
+ CampaignCreator Contract
+
+ Deploying the CampaignCreator contract for each test, and for the second test, creating a new campaign with the CrowdCollab contract instance address provided.
+
+ Deployer Address: 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+
+ Deployed CampaignCreator Contract Address: 0x5FbDB2315678afecb367f032d93F642f64180aa3
+    ✔ TEST:should initially return an empty list of deployed campaigns
+
+ Deploying the CampaignCreator contract for each test, and for the second test, creating a new campaign with the CrowdCollab contract instance address provided.
+
+ Deployer Address: 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+
+ Deployed CampaignCreator Contract Address: 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
+
+ Deployed CrowdCollab Contract instance address, the new campaign: 0xCafac3dD18aC6c6e92c921884f9E4176737C052c
+    ✔ TEST:should create a new campaign with specified parameters and confirm its existence in the campaign list
+
+
+  2 passing (1s)
 ```
 
-Hardhat will automatically detect and run all the test files in your `test` directory. It will then display the test results, indicating whether each test case passed or failed.
+### 4.3. Testing with Hardhat Network
 
-The output should resemble the following:
+For swift testing within the internal Hardhat environment, you can utilize the Hardhat network. Follow these steps:
+
+1. **Start Hardhat Node**: In a separate terminal window, initiate a Hardhat node by running the following command:
+
+   ```bash
+   npx hardhat node
+   ```
+
+2. **Run Tests with Localhost Network**: Execute the tests with the network option specified as localhost:
+
+   ```bash
+   npx hardhat test --network localhost
+   ```
 
 ```bash
-$ npx hardhat test
+CampaignCreator Contract
 
-  CampaignCreator
-    ✔ should initially return an empty list of deployed campaigns (63ms)
-    ✔ should create a new campaign with specified parameters and then check if a campaign exists in the array of the contract (111ms)
+Deploying the CampaignCreator contract for each test, and for the second test, creating a new campaign with the CrowdCollab contract instance address provided.
 
-  2 passing (2s)
+Deployer Address: 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+
+Deployed CampaignCreator Contract Address: 0x851356ae760d987E095750cCeb3bC6014560891C
+✔ TEST:should initially return an empty list of deployed campaigns
+
+Deploying the CampaignCreator contract for each test, and for the second test, creating a new campaign with the CrowdCollab contract instance address provided.
+
+Deployer Address: 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+
+Deployed CampaignCreator Contract Address: 0xf5059a5D33d5853360D16C683c16e67980206f36
+
+Deployed CrowdCollab Contract instance address, the new campaign: 0x55652FF92Dc17a21AD6810Cce2F4703fa2339CAE
+✔ TEST:should create a new campaign with specified parameters and confirm its existence in the campaign list
+
+2 passing (606ms)
+
 ```
-
----
 
 ### Conclusion
 
-Testing Ethereum smart contracts, such as the `CampaignCreator` contract, is essential for ensuring their reliability and security. By following best practices and writing comprehensive test cases, developers can identify and fix potential issues early in the development process, leading to more robust and secure blockchain applications.
+Testing Ethereum smart contracts, such as the `CampaignCreator` contract, is indispensable for ensuring their reliability and security. By adhering to best practices and crafting comprehensive test cases, developers can identify and rectify potential issues early in the development process, thereby fostering the creation of more robust and secure blockchain applications.
 
 <div style="text-align: center;">
-  <img src="src/s2bc-logo.svg" alt="S2BC Logo" width="96">
-</div>
-```
-
-This adapted documentation provides instructions for testing the `CampaignCreator` smart contract and includes code snippets for writing and running tests using Hardhat.
-
----
-
-# Blockchain & Solidity Lab2 – Crowdfunding dApp Development
-
-### S2BC
-
-<div style="text-align: center;">
-  <img src="src/s2bc-logo.svg" alt="S2BC Logo" width="96">
+<img src="src/s2bc-logo.svg" alt="S2BC Logo" width="96">
 </div>
