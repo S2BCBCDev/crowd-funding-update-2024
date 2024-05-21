@@ -129,26 +129,6 @@ A "deploymentInfoCampaignCreator.txt" file will be created with the CampaignCrea
 
 ---
 
-### Verify contracts (optional)
-
-It is good practice to verify your contract on Etherscan. If you are already on sepolia Testnet, you can verify your contract from hardhat by including your API key into .env file.
-
-If you've added your Etherscan API key, you'll be able to verify the contracts using the following command:
-
-```bash
-npx hardhat verify <FIRST CONTRACT ADDRESS> --network sepolia
-```
-
-This should verify both contracts, but if it is not the case, so you can verify the second contract like this:
-
-Verify second contract: (the second contract take the first contract address as argument)
-
-```bash
-npx hardhat verify <SECOND CONTRACT ADDRESS> <FIRST CONTRACT ADDRESS> --network sepolia
-```
-
----
-
 ## Try Your Contracts on Remix IDE
 
 Remix IDE provides a visual way to interact with your contracts before implementing your frontend. Follow these steps to test your contracts:
@@ -159,7 +139,7 @@ Remix IDE provides a visual way to interact with your contracts before implement
   <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/remix-home-page.png" width="500px">
 </div>
 
-2. Upload your contracts Voting.sol and ElectionNFT.sol:
+2. Upload your contracts CampaignCreator.sol and CrowdCollab.sol:
    - Navigate to the contract folder.
    - Click on one contract and press the compile green arrow.
 
@@ -207,7 +187,7 @@ Remix IDE provides a visual way to interact with your contracts before implement
   <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/injected-metamask-environement.png" width="300px">
 </div>
 
-5. Paste the address of your deployed Voting.sol contract at the bottom of the deploy tab.
+5. Paste the address of your deployed CampaignCreator.sol contract at the bottom of the deploy tab.
 
 <div style="text-align: center;">
   <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/click-address.png" width="300px">
@@ -226,7 +206,9 @@ and click on "address" button
   <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/contract-menu-interaction.png" width="500px">
 </div>
 
-By following these steps, you can effectively test and interact with your contracts using Remix IDE before proceeding with the frontend implementation.
+By adhering to these guidelines, you can efficiently verify and engage with your contracts through Remix IDE before advancing to frontend development.
+
+Once you've established your initial campaign, you may access the CrowdCollab instance address by repeating the earlier procedure, this time selecting the CrowdCollab contract and ensuring it's compiled before invocation.
 
 ---
 

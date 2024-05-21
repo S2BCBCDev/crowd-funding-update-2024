@@ -25,7 +25,7 @@ Follow these steps to run the front-end of your crowdfunding Dapp:
    - Navigate to the `crowd-funding-update-2024/front-end` directory.
    - Run the following command:
      ```bash
-     node server.js
+     npm run dev
      ```
      This will initiate the server for your Dapp's front-end.
 
@@ -47,47 +47,46 @@ These steps ensure that your front-end server is up and running, and you can acc
 
    - Click the connect button. A Metamask popup will appear, asking if you want to connect. Accept using the deployer account.
 
-2. **Check Voting Status:**
+2. **Check Campaign Count:**
 
-   - View the Voting status in the Vote Panel:
+   - View the Campaign Count on the main dashboard:
      <div style="text-align: center;">
        <img src="src/morpheus-screeshoot/votingPanel.png" alt="Voting Panel" style="width:500px">
      </div>
 
-3. **Start an Election:**
+3. **Start a Campaign:**
 
-   - Visit the Administrator Panel to initiate an election:
+   - Create a new Campaign in the main Panel:
      <div style="text-align: center;">
        <img src="src/ui-screenshoot/start-election.jpg" alt="Start Election" style="width:300px">
      </div>
-   - Provide election details (title, candidates, duration) and click the "Start Election" button.
+   - Provide campaign details (description and minimum contribution in wei) and click the "Create Campaign" button.
 
-4. **Register Voters:**
+4. **Contribute:**
+
+   - Participate in the campaign by contributing. (manager or/and supporter)
+
    <div style="text-align: center;">
      <img src="src/ui-screenshoot/register-voters.jpg" alt="Register Voters" style="width:300px">
    </div>
 
-5. **Monitor Ongoing Election:**
+5. **Check balance campaign:**
 
-   - Return to the Vote Panel to view ongoing election information.
+   - Return to the Campaign Panel to view ongoing campaign information.
 
-6. **Cast a Vote:**
+6. **Create a request:**
 
-   - Participate in the election by casting your vote.
+   - Manager can create a request.
 
-7. **End the Election:**
+7. **Approve request:**
 
-   - In the Admin Panel, conclude the election by clicking the "End Election" button.
+   - In Campaign Panel, approve requests made by ccampaign manager.
 
-8. **Mint Results:**
+8. **Finalize request:**
 
-   - Once the election is completed, mint the results using the "Mint Results" button.
+   - Once the campaign is completed, finalize requests to release funds.
 
-9. **Reinitialize Election:**
-
-   - After everything is finished, reinitialize the election by clicking on "Reinitialize" in the Admin Panel.
-
-10. **Console Logs:**
+9. **Console Logs:**
 
 - Open your browser's developer console (F12) to view relevant console logs while navigating the app.
 
@@ -113,7 +112,7 @@ API_KEY="APIKEYFROMETHERSCAN"
 
 Ensure the private key corresponds to the deployer account on Sepolia. You can use any account created with Metamask, and acquire testnet ETH from a faucet like Alkemy faucet.
 
-2.2 Update the `chainID` in your `hardhat.config.js` file from 1303 to 11155111. Then change the network name "votingchain" to "sepolia"
+2.2 Update the `chainID` in your `hardhat.config.js` file from 1303 to 11155111. Then change the network name "poa" to "sepolia"
 
 ```
 require("@nomicfoundation/hardhat-toolbox");
@@ -145,40 +144,6 @@ module.exports = {
 
 Tip: You can select **1305**, then do Ctrl+D several times to get all occurences selected, and then past 11155111.
 
-Certainly! Here's an organized and clear version of your tutorial:
-
----
-
-**2.3 Update ChainID in `front-end/public/script.js` File**
-
-To ensure that your front-end connects to the Sepolia chainID, follow these steps to replace all occurrences of "1303" with "11155111" in the `front-end/public/script.js` file.
-
-**Manual Method:**
-
-1. Open your text editor and navigate to the `front-end/public/script.js` file.
-
-2. Locate the first occurrence of "1303" and position your cursor at the beginning of the number.
-
-3. Press `Ctrl + D` (or `Cmd + D` on macOS) to select the current occurrence.
-
-4. Continue pressing `Ctrl + D` until all instances of "1303" are selected.
-
-5. Type "11155111" to replace the selected occurrences.
-
-6. Save the file.
-
-**Alternative Method using Find and Replace:**
-
-1. Open the `front-end/public/script.js` file in your text editor.
-
-2. Use the find function (`Ctrl + F` or `Cmd + F`) to search for "1303."
-
-3. Click on "Replace" or "Replace All."
-
-4. Enter "11155111" as the replacement and confirm the action.
-
-5. Save the file.
-
 ---
 
 ### Step 3: Redeploy the Contract on Sepolia
@@ -193,12 +158,12 @@ npx hardhat run scripts/deploy.js --network sepolia
 
 ### Step 4: Update Contract Address in front-end
 
-4.1 Once the deployment is complete, locate the voting contract address.
+4.1 Once the deployment is complete, locate the CrampaignCreator contract address.
 
-4.2 Copy the contract address and update the variable in `front-end/public/script.js` as follows:
+4.2 Copy the contract address and update the variable in `front-end/public/interact-contract.js` as follows:
 
 ```javascript
-const contractAddress = "votingcontractaddress";
+const contractAddress = "campaignCreatorcontractaddress";
 ```
 
 ### Step 5: Restart the Server
@@ -206,7 +171,7 @@ const contractAddress = "votingcontractaddress";
 5.1 Start or restart your server using the following command:
 
 ```bash
-node front-end/server.js
+npm run dev
 ```
 
 ### Step 6: Verification on Etherscan
@@ -219,10 +184,10 @@ To verify your contract using Hardhat, follow these steps:
 
 1. Navigate to your Hardhat directory in the terminal.
 
-2. Run the following command, replacing `<votingcontractaddress>` with the actual address of your deployed contract:
+2. Run the following command, replacing `<campaignCreatorcontractaddress>` with the actual address of your deployed contract:
 
 ```bash
-npx hardhat verify <votingcontractaddress> --network sepolia
+npx hardhat verify <campaignCreatorcontractaddress> --network sepolia
 ```
 
 3. Review the response in the terminal to confirm the success or any output related to the verification process.
@@ -243,7 +208,7 @@ Choose the method that best fits your workflow or preference. Successful verific
 
 ### Step 7: Test the New Setup
 
-7.1 Retry launching a new election on this updated setup to ensure seamless functionality.
+7.1 Retry launching a new campaign on this updated setup to ensure seamless functionality.
 
 By following these steps, your dApp should now be successfully migrated to the Sepolia Testnet, utilizing the specified RPC_URL and providing enhanced insights through Etherscan verification.
 

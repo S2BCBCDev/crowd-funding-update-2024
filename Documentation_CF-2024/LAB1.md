@@ -100,8 +100,6 @@ By leveraging blockchain technology and smart contracts, we can create a decentr
 
 ---
 
-## Overview contract CrowdCollab.sol
-
 ## DEVELOPING ETHEREUM SMART CONTRACTS
 
 We'll kick off this development journey with a smart contract designed to address issues commonly encountered in traditional centralized crowdfunding platforms.
