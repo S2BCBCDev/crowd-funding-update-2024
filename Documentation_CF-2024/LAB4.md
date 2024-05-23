@@ -128,6 +128,10 @@ These steps ensure that your front-end server is up and running, and you can acc
 <div style="text-align: center;">
        <img src="src/ui-screenshoot/finalize-request.png" alt="ui-png" style="width:500px">
    </div>
+<p>Check the finalized status on the campaign panel:</p>
+   <div style="text-align: center;">
+       <img src="src/ui-screenshoot/finalize-true.png" alt="ui-png" style="width:500px">
+   </div>
 
 ## 3. Migrating to Sepolia Testnet and Utilizing Etherscan
 
@@ -151,37 +155,41 @@ API_KEY="APIKEYFROMETHERSCAN"
 
 Ensure the private key corresponds to the deployer account on Sepolia. You can use any account created with Metamask, and acquire testnet ETH from a faucet like Alkemy faucet.
 
-2.2 Update the `chainID` in your `hardhat.config.js` file from 1303 to 11155111. Then change the network name "poa" to "sepolia"
+2.2 Update the `chainID` in your `.env` file from 1303 to 11155111, then the PRIVATE_KEY and RPC_URL.
+
+```
+# This is the URL of the Ethereum RPC provider
+RPC_URL="https://sepoliaacces-20885.morpheuslabs.io/XXXXXXX"
+
+# This is a private key for signing transactions
+PRIVATE_KEY="your_private_key_here"
+
+# This is the chain ID for the Sepolia Ethereum network
+CHAIN_ID=11155111
+
+# This is the address of a smart contract
+CONTRACT_ADDRESS='0x1234567890abcdef'
+```
+
+2.3 Then change the network name "poa" to "sepolia" in your `hardhat.config.js`.
 
 ```
 require("@nomicfoundation/hardhat-toolbox");
-
 require("dotenv").config();
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
   solidity: "0.8.22",
   networks: {
+    // Add your network configuration here
     sepolia: {
-      chainId: 11155111,
-      url: process.env.RPC_URL,
-      accounts: [process.env.PRIVATE_KEY],
+      url: process.env.RPC_URL, // RPC URL of your network
+      chainId: parseInt(process.env.CHAIN_ID), // Chain ID of your network
+      accounts: [process.env.PRIVATE_KEY], // Array of private keys to use with this network
     },
   },
-  etherscan: {
-    apiKey: process.env.API_KEY,
-  },
-  paths: {
-    artifacts: "./src/artifacts",
-    contracts: './src/contracts',
-  }
 };
-
 ```
-
-2.3 In your `front-end/public/script.js` file, replace all occurrences of "1303" with "11155111" to ensure the front-end connects to the Sepolia chainID.
-
-Tip: You can select **1305**, then do Ctrl+D several times to get all occurences selected, and then past 11155111.
 
 ---
 
