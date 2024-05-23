@@ -3,7 +3,7 @@
 ### S2BC
 
 <div style="text-align: center;">
-  <img style="border-radius: 12px;"  src="src/s2bc-logo.svg" alt="S2BC Logo" width="96" height="96">
+  <img src="src/s2bc-logo.svg" alt="Alt text" width="96" height="96">
 </div>
 
 ---

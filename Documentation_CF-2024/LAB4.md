@@ -47,48 +47,87 @@ These steps ensure that your front-end server is up and running, and you can acc
 
    - Click the connect button. A Metamask popup will appear, asking if you want to connect. Accept using the deployer account.
 
-2. **Check Campaign Count:**
-
-   - View the Campaign Count on the main dashboard:
-     <div style="text-align: center;">
-       <img src="src/morpheus-screeshoot/votingPanel.png" alt="Voting Panel" style="width:500px">
+   <div style="text-align: center;">
+       <img src="src/ui-screenshoot/connect-button-metamask.png" alt="ui-png" style="width:500px">
      </div>
 
-3. **Start a Campaign:**
-
-   - Create a new Campaign in the main Panel:
      <div style="text-align: center;">
-       <img src="src/ui-screenshoot/start-election.jpg" alt="Start Election" style="width:300px">
+       <img src="src/ui-screenshoot/connected-metamask.png" alt="ui-png" style="width:500px">
      </div>
-   - Provide campaign details (description and minimum contribution in wei) and click the "Create Campaign" button.
 
-4. **Contribute:**
+2. **Create a campaign:**
+
+   - Create a Campaign on the main dashboard:
+     <div style="text-align: center;">
+       <img src="src/ui-screenshoot/campaign-creation.png" alt="ui-png" style="width:500px">
+     </div>
+
+3. **Check count caimpaign number:**
+
+   <div style="text-align: center;">
+       <img src="src/ui-screenshoot/check-count.png" alt="ui-png" style="width:500px">
+     </div>
+
+4. **Refresh if needed:**
+
+   <div style="text-align: center;">
+       <img src="src/ui-screenshoot/refresh.png" alt="ui-png" style="width:500px">
+     </div>
+
+   2. **Check the new campaign:**
+
+   - The campaign's dashboard appeared at bottom:
+     <div style="text-align: center;">
+       <img src="src/ui-screenshoot/tutorial-campaign.png" alt="ui-png" style="width:500px">
+     </div>
+
+5. **Contribute:**
 
    - Participate in the campaign by contributing. (manager or/and supporter)
 
    <div style="text-align: center;">
-     <img src="src/ui-screenshoot/register-voters.jpg" alt="Register Voters" style="width:300px">
+       <img src="src/ui-screenshoot/contribute.png" alt="ui-png" style="width:500px">
    </div>
 
-5. **Check balance campaign:**
+6. **Check balance campaign:**
 
    - Return to the Campaign Panel to view ongoing campaign information.
 
-6. **Create a request:**
+   <div style="text-align: center;">
+       <img src="src/ui-screenshoot/balance.png" alt="ui-png" style="width:500px">
+   </div>
+
+7. **Create a request:**
 
    - Manager can create a request.
 
-7. **Approve request:**
+   <div style="text-align: center;">
+       <img src="src/ui-screenshoot/create-request.png" alt="ui-png" style="width:500px">
+   </div>
 
-   - In Campaign Panel, approve requests made by ccampaign manager.
+8. **Review request:**
 
-8. **Finalize request:**
+   - In Campaign Panel, review requests made by campaign manager.
 
-   - Once the campaign is completed, finalize requests to release funds.
+<div style="text-align: center;">
+       <img src="src/ui-screenshoot/review-request.png" alt="ui-png" style="width:500px">
+   </div>
 
-9. **Console Logs:**
+9. **Approve request:**
 
-- Open your browser's developer console (F12) to view relevant console logs while navigating the app.
+   - In Campaign Panel, approve requests made by campaign manager.
+
+<div style="text-align: center;">
+       <img src="src/ui-screenshoot/approve-request.png" alt="ui-png" style="width:500px">
+   </div>
+
+10. **Finalize request:**
+
+- Once the campaign is completed, finalize requests to release funds. The funds will be transfered to the recipient address.
+
+<div style="text-align: center;">
+       <img src="src/ui-screenshoot/finalize-request.png" alt="ui-png" style="width:500px">
+   </div>
 
 ## 3. Migrating to Sepolia Testnet and Utilizing Etherscan
 

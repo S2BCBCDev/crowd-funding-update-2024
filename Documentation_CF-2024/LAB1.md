@@ -3,7 +3,7 @@
 ### S2BC
 
 <div style="text-align: center;">
-  <img style="border-radius: 12px;"  src="src/s2bc-logo.svg" alt="S2BC Logo" width="96" height="96">
+  <img src="src/s2bc-logo.svg" alt="Alt text" width="96" height="96">
 </div>
 
 ---
@@ -91,12 +91,6 @@ By leveraging blockchain technology and smart contracts, we can create a decentr
 - **Request Approval:** Supporters have the ability to approve funding requests, ensuring transparency and community involvement in the allocation of funds.
 
 - **Request Finalization:** Once a funding request receives sufficient approvals, the campaign manager can finalize it, transferring the requested amount to the designated recipient.# Blockchain & Solidity Lab1 – Crowdfunding dApp Development
-
-### S2BC
-
-<div style="text-align: center;">
-  <img style="border-radius: 12px;"  src="src/s2bc-logo.svg" alt="S2BC Logo" width="96" height="96">
-</div>
 
 ---
 
@@ -1414,8 +1408,6 @@ contract CrowdCollab {
         return false;
     }
 }
-
-
 ```
 
 <div style="text-align: center;">
