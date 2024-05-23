@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Web3 from "web3";
 import crowdCollabArtifact from "../../../hardhat-deployment/artifacts/contracts/CrowdCollab.sol/CrowdCollab.json";
+import styles from "./page.module.css";
 
 const contractAbi = crowdCollabArtifact.abi;
 
@@ -189,45 +190,74 @@ const CampaignInteraction = ({ contractAddress, web3 }) => {
 
   return (
     <div>
-      {/* Campaign details section */}
-      <h4>Campaign details:</h4>
-      <p>
-        Description: <strong>{campaignDescription}</strong>
-      </p>
-      <p style={{ wordBreak: "break-all" }}>
-        Manager: <strong>{manager}</strong>
-      </p>
-      <p style={{ wordBreak: "break-all" }}>
-        Minimum Contribution: <strong>{minimumContribution.toString()}</strong>
-      </p>
-      <p style={{ wordBreak: "break-all" }}>
-        Contract Balance: <strong>{contractBalance.toString()}</strong>
-      </p>
-      <p>
-        Number of Supporters: <strong>{numberSupporters.toString()}</strong>
-      </p>
-      <p>
-        Number of Requests: <strong>{requests.length}</strong>
-      </p>
-
+      <div>
+        <h5>Description:</h5>
+        <h2>
+          <strong>{campaignDescription}</strong>
+        </h2>
+      </div>
+      <div>
+        <h5>Campaign Manager:</h5>
+        <p style={{ wordBreak: "break-all" }}>
+          <strong>{manager}</strong>
+        </p>
+      </div>
+      <div>
+        <h5>Minimum Contribution en wei:</h5>
+        <p style={{ wordBreak: "break-all" }}>
+          <strong>{minimumContribution.toString()}</strong>
+        </p>
+      </div>
+      <div>
+        <h5>Contract Balance en wei:</h5>
+        <p style={{ wordBreak: "break-all" }}>
+          <strong>{contractBalance.toString()}</strong>
+        </p>
+      </div>
+      <div>
+        <h5>Number of Supporters:</h5>
+        <p>
+          <strong>{numberSupporters.toString()}</strong>
+        </p>
+      </div>
+      <div>
+        <h5>Number of Requests:</h5>
+        <p>
+          <strong>{requests.length}</strong>
+        </p>
+      </div>
       {/* Render request descriptions */}
       {requests.map((request, index) => (
         <div key={index}>
           <hr />
-          {/* Request details */}
-          <h4>Request {index + 1}:</h4>
-          <p>
-            Description: <strong>{request.description}</strong>
-          </p>
-          <p>
-            Amount: <strong>{request.amount.toString()}</strong>
-          </p>
-          <p style={{ wordBreak: "break-all" }}>
-            Recipient Address: <strong>{request.recipient}</strong>
-          </p>
-          <p>
-            Finalized ?: <strong>{request.complete.toString()}</strong>
-          </p>
+          <div>
+            {/* Request details */}
+            <h4>Request {index + 1}:</h4>
+          </div>
+          <div>
+            <h5>Description:</h5>
+            <p>
+              <strong>{request.description}</strong>
+            </p>
+          </div>
+          <div>
+            <h5>Amount:</h5>
+            <p>
+              <strong>{request.amount.toString()}</strong>
+            </p>
+          </div>
+          <div>
+            <h5>Recipient Address:</h5>
+            <p>
+              <strong>{request.recipient}</strong>
+            </p>
+          </div>
+          <div>
+            <h5>Finalized status:</h5>
+            <p>
+              <strong>{request.complete.toString()}</strong>
+            </p>
+          </div>
 
           {/* Button to approve request */}
           <button onClick={() => approveRequest(index)}>
@@ -238,39 +268,48 @@ const CampaignInteraction = ({ contractAddress, web3 }) => {
             Finalize <span>&#x1F389;</span>
           </button>
           {/* Note about request finalization */}
-          <h6>
-            <p style={{ fontSize: "smaller" }}>
+          <div>
+            <em style={{ fontSize: "smaller", wordBreak: "keep-all" }}>
               To finalize a request, the number of approvals must exceed half of
               the total supporters.
-            </p>
-          </h6>
+            </em>
+          </div>
         </div>
       ))}
 
       {/* Input field for contribution amount */}
       <hr />
       <h4>Support Campaign:</h4>
-      <input
-        type="number"
-        value={contributionAmount}
-        onChange={(e) => setContributionAmount(e.target.value)}
-        placeholder="Enter contribution amount"
-      />
-      {/* Button to trigger contribution */}
-      <button onClick={handleContribution}>
-        Contribute <span>&#x1F4B8;</span>
-      </button>
-      <p style={{ textAlign: "center", fontSize: "smaller" }}>
-        1 eth = 10^18 wei | Minimum contribution: {contributionAmountETH} ETH
-      </p>
+      <div>
+        <p style={{ textAlign: "right", fontSize: "smaller" }}>
+          {contributionAmountETH} ETH | <em>(1 eth = 10^18 wei)</em>
+        </p>
+        <input
+          type="number"
+          value={contributionAmount}
+          onChange={(e) => setContributionAmount(e.target.value)}
+          placeholder="Enter contribution amount"
+        />
+        {/* Button to trigger contribution */}
+        <button onClick={handleContribution}>
+          Contribute <span>&#x1F4B8;</span>
+        </button>
+      </div>
 
       {/* Create release fund request section */}
+
+      <hr />
+
+      <h4>Create release fund request:</h4>
+      <p style={{ fontSize: "smaller" }}>
+        Campaign manager can propose donation.
+      </p>
       <div>
-        <hr />
-        <h4>Create release fund request:</h4>
-        <p style={{ fontSize: "smaller" }}>
-          Campaign manager can propose donation.
+        <p style={{ textAlign: "right", fontSize: "smaller" }}>
+          {requestAmountETH} ETH | <em>(1 eth = 10^18 wei)</em>
         </p>
+      </div>
+      <div>
         <input
           type="text"
           value={requestDescription}
@@ -283,9 +322,6 @@ const CampaignInteraction = ({ contractAddress, web3 }) => {
           onChange={(e) => setRequestAmount(e.target.value)}
           placeholder="request amount"
         />
-        <p style={{ textAlign: "center", fontSize: "smaller" }}>
-          1 eth = 10^18 wei | {requestAmountETH} ETH
-        </p>
 
         <input
           type="text"
@@ -293,11 +329,12 @@ const CampaignInteraction = ({ contractAddress, web3 }) => {
           onChange={(e) => setRequestRecipient(e.target.value)}
           placeholder="recipient address"
         />
-        {/* Button to create request */}
-        <button onClick={createRequest}>
-          Create Request <span>&#x1F4DD;</span>
-        </button>
       </div>
+
+      {/* Button to create request */}
+      <button onClick={createRequest}>
+        Create Request <span>&#x1F4DD;</span>
+      </button>
     </div>
   );
 };

@@ -56,6 +56,10 @@
 
 }
 
+.card div {
+  margin: 1.5rem 0;
+}
+
 .card input {
   padding: 0.5rem 0.8rem;
   border-radius: var(--border-radius);
@@ -104,11 +108,12 @@
 }
 
 .card p {
-  margin: 1rem 0;
-  opacity: 0.6;
+  margin: 0.3rem 0;
+  opacity: 0.7;
   font-size: 0.9rem;
-  line-height: 1.5;
-  max-width: 30ch;
+  line-height: 1.2;
+  max-width: 60ch;
+  word-break: break-all;
   text-wrap: balance;
 }
 
