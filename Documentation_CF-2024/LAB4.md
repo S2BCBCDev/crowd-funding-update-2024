@@ -39,7 +39,7 @@ Follow these steps to run the front-end of your crowdfunding Dapp:
 
    - Click on the node service to open your web app.
 
-These steps ensure that your front-end server is up and running, and you can access your voting Dapp through Morpheus.
+These steps ensure that your front-end server is up and running, and you can access your crowdfunding Dapp through Morpheus.
 
 ## 2. Trying the Crowdfunding Dapp
 
@@ -264,51 +264,15 @@ https://sepolia.etherscan.io/
 </div>
 
 <div style="text-align: center;">
-  <img style="border-radius: 12px;"  src="src/etherscan-screenshots/start-new-election.png" width="500px">
+  <img style="border-radius: 12px;"  src="src/etherscan-screenshots/tx-on-etherscan.png" width="500px">
 </div>
 
 <div style="text-align: center;">
-  <img style="border-radius: 12px;"  src="src/etherscan-screenshots/voted-front.png" width="500px">
+  <img style="border-radius: 12px;"  src="src/etherscan-screenshots/internal-tx-on-etherscan.png" width="500px">
 </div>
 
 <div style="text-align: center;">
-  <img style="border-radius: 12px;"  src="src/etherscan-screenshots/tx-infos-method.png" width="500px">
-</div>
-
-<div style="text-align: center;">
-  <img style="border-radius: 12px;"  src="src/etherscan-screenshots/tx-info-method-precise.png">
-</div>
-
-<div style="text-align: center;">
-  <img style="border-radius: 12px;"  src="src/etherscan-screenshots/green-arrow-verify.png">
-</div>
-
-<div style="text-align: center;">
-  <img style="border-radius: 12px;"  src="src/etherscan-screenshots/tx-details.png" width="500px">
-</div>
-
-<div style="text-align: center;">
-  <img style="border-radius: 12px;"  src="src/etherscan-screenshots/encoded-data.png" width="300px">
-</div>
-
-<div style="text-align: center;">
-  <img style="border-radius: 12px;"  src="src/etherscan-screenshots/decode-input-data-button.png">
-</div>
-
-<div style="text-align: center;">
-  <img style="border-radius: 12px;"  src="src/etherscan-screenshots/token-uri-decoded.png">
-</div>
-
-<div style="text-align: center;">
-  <img style="border-radius: 12px;"  src="src/etherscan-screenshots/nft-notification.png" width="500px">
-</div>
-
-<div style="text-align: center;">
-  <img style="border-radius: 12px;"  src="src/etherscan-screenshots/nft.png" width="500px">
-</div>
-
-<div style="text-align: center;">
-  <img style="border-radius: 12px;"  src="src/etherscan-screenshots/events-voting.png" width="500px">
+  <img style="border-radius: 12px;"  src="src/etherscan-screenshots/transfert-balance-etherscan.png" width="500px">
 </div>
 
 ---
