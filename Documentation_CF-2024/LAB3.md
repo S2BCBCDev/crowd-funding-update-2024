@@ -68,7 +68,7 @@ module.exports = {
 };
 ```
 
-### Step 3: Create a Combined Deployment Script
+### Step 3: Create a Deployment Script
 
 Create a new file named `deploy.js` inside the `hardhat/scripts` directory. Add the following content to the file:
 
@@ -126,6 +126,8 @@ npx hardhat run scripts/deploy.js --network poa
 The result output from the terminal will provide the contract addresses.
 
 A "deploymentInfoCampaignCreator.txt" file will be created with the CampaignCreator contract address.
+
+That is what you will need to add to the ".env.local" file in the front-end later on.
 
 ---
 
