@@ -138,7 +138,7 @@ Remix IDE provides a visual way to interact with your contracts before implement
 1. Visit the Remix website: [Remix IDE](https://remix.ethereum.org/).
 
 <div style="text-align: center;">
-  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/remix-home-page.png" width="500px">
+  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/remix-home-page.png" width="300px">
 </div>
 
 2. Upload your contracts CampaignCreator.sol and CrowdCollab.sol:
@@ -146,7 +146,7 @@ Remix IDE provides a visual way to interact with your contracts before implement
    - Click on one contract and press the compile green arrow.
 
 <div style="text-align: center;">
-  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/remix-left-menu.png" width="500px">
+  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/remix-left-menu.png" width="300px">
 </div>
 
 <div style="text-align: center;">
@@ -154,7 +154,7 @@ Remix IDE provides a visual way to interact with your contracts before implement
 </div>
 
 <div style="text-align: center;">
-  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/remix-left-menu.png" width="500px">
+  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/remix-left-menu.png" width="300px">
 </div>
 
 <div style="text-align: center;">
@@ -166,7 +166,7 @@ Remix IDE provides a visual way to interact with your contracts before implement
 </div>
 
 <div style="text-align: center;">
-  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/contract-view-large.png" width="500px">
+  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/contract-view-large.png" width="300px">
 </div>
 
 <div style="text-align: center;">
@@ -215,51 +215,51 @@ and click on "address" button
 </div>
 
 <div style="text-align: center;">
-  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/contract-menu-interaction.png" width="500px">
+  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/contract-menu-interaction.png" width="300px">
 </div>
 
 <div style="text-align: center;">
-  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/contract-menu-interaction2.png" width="500px">
+  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/contract-menu-interaction2.png" width="300px">
 </div>
 
 <div style="text-align: center;">
-  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/contract-menu-interaction3.png" width="500px">
+  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/contract-menu-interaction3.png" width="300px">
 </div>
 
 <div style="text-align: center;">
-  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/metamask-tx.png" width="500px">
+  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/metamask-tx.png" width="100px">
 </div>
 
 <div style="text-align: center;">
-  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/check-remix-console.png" width="500px">
+  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/check-remix-console.png" width="300px">
 </div>
 
 <div style="text-align: center;">
-  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/check-remix-console2.png" width="500px">
+  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/check-remix-console2.png" width="300px">
 </div>
 
 <div style="text-align: center;">
-  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/check-remix-console3.png" width="500px">
+  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/check-remix-console3.png" width="300px">
 </div>
 
 <div style="text-align: center;">
-  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/check-remix-console4.png" width="500px">
+  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/check-remix-console4.png" width="300px">
 </div>
 
 <div style="text-align: center;">
-  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/check-contract.png" width="500px">
+  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/check-contract.png" width="300px">
 </div>
 
 <div style="text-align: center;">
-  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/check-contract2.png" width="500px">
+  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/check-contract2.png" width="300px">
 </div>
 
 <div style="text-align: center;">
-  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/check-contract3.png" width="500px">
+  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/check-contract3.png" width="300px">
 </div>
 
 <div style="text-align: center;">
-  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/check-contract4.png" width="500px">
+  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/check-contract4.png" width="300px">
 </div>
 
 By adhering to these guidelines, you can efficiently verify and engage with your contracts through Remix IDE before advancing to frontend development.
