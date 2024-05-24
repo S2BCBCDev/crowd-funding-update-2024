@@ -189,7 +189,13 @@ Remix IDE provides a visual way to interact with your contracts before implement
   <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/injected-metamask-environement.png" width="300px">
 </div>
 
-5. Paste the address of your deployed CampaignCreator.sol contract at the bottom of the deploy tab.
+<em>Depending on your wallet network, poa, hardhat node or sepolia.</em>
+
+<div style="text-align: center;">
+  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/injected-metamask-environement2.png" width="300px">
+</div>
+
+5. Paste the address of your deployed CampaignCreator.sol contract at the bottom of the deploy tab. (contract need to compiled at that point)
 
 <div style="text-align: center;">
   <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/click-address.png" width="300px">
@@ -205,12 +211,62 @@ and click on "address" button
 </div>
 
 <div style="text-align: center;">
+  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/menu-revealed2.png" width="300px">
+</div>
+
+<div style="text-align: center;">
   <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/contract-menu-interaction.png" width="500px">
+</div>
+
+<div style="text-align: center;">
+  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/contract-menu-interaction2.png" width="500px">
+</div>
+
+<div style="text-align: center;">
+  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/contract-menu-interaction3.png" width="500px">
+</div>
+
+<div style="text-align: center;">
+  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/metamask-tx.png" width="500px">
+</div>
+
+<div style="text-align: center;">
+  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/check-remix-console.png" width="500px">
+</div>
+
+<div style="text-align: center;">
+  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/check-remix-console2.png" width="500px">
+</div>
+
+<div style="text-align: center;">
+  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/check-remix-console3.png" width="500px">
+</div>
+
+<div style="text-align: center;">
+  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/check-remix-console4.png" width="500px">
+</div>
+
+<div style="text-align: center;">
+  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/check-contract.png" width="500px">
+</div>
+
+<div style="text-align: center;">
+  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/check-contract2.png" width="500px">
+</div>
+
+<div style="text-align: center;">
+  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/check-contract3.png" width="500px">
+</div>
+
+<div style="text-align: center;">
+  <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/check-contract4.png" width="500px">
 </div>
 
 By adhering to these guidelines, you can efficiently verify and engage with your contracts through Remix IDE before advancing to frontend development.
 
 Once you've established your initial campaign, you may access the CrowdCollab instance address by repeating the earlier procedure, this time selecting the CrowdCollab contract and ensuring it's compiled before invocation.
+
+You can test your contract like this before front-end integration.
 
 ---
 
