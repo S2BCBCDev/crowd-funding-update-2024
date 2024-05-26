@@ -12,9 +12,8 @@ import Image from "next/image";
 import campaignCreatorArtifact from "../../../hardhat-deployment/artifacts/contracts/CampaignCreator.sol/CampaignCreator.json"; // Import the JSON file
 import CampaignInteraction from "./CampaignInteraction";
 
-const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS; // Replace with your contract address Campaign Creator
-
-export default function InteractContract() {
+const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS; // Replace with your contract address Campaign Creator in env.local or here
+export default function Home() {
   const [web3, setWeb3] = useState(null);
   const [contract, setContract] = useState(null);
   const [campaignCount, setCampaignCount] = useState(0);
@@ -263,12 +262,7 @@ export default function InteractContract() {
             <hr />
 
             {/* Interact with campaign */}
-            <CampaignInteraction
-              contractAddress={campaign}
-              isConnected={isConnected}
-              userAddress={userAddress}
-              web3={web3}
-            />
+            <CampaignInteraction contractAddress={campaign} web3={web3} />
             <hr />
             <div>
               <h5>Full Contract Instance address:</h5>
