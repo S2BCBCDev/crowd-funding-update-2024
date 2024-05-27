@@ -974,11 +974,11 @@ This sets the stage for implementing the remaining functionality of the `CrowdCo
 
 Now you have the complete structure for both the `CampaignCreator` and `CrowdCollab` contracts, ready to be deployed and used for crowdfunding on the Ethereum blockchain.
 
-## Step 3: Implementing the Crowdfunding System Logic part 1
+### Step 3: Implementing the Crowdfunding System Logic part 1
 
 In this step, we'll dive into the actual implementation of the decentralized crowdfunding system. This encompasses defining essential data structures, setting up manager roles, managing campaigns, registering contributors, and orchestrating the entire crowdfunding process.
 
-### Defining Data Structures
+#### Defining Data Structures
 
 We begin by defining the necessary data structures that will facilitate the functioning of our crowdfunding system.
 
@@ -1003,7 +1003,7 @@ contract CrowdCollab {
 
 Here, we've defined a `Request` struct to represent funding requests made by the campaign manager. It includes fields such as description, amount, recipient, completion status, and approvals. Additionally, we have variables like `manager`, `minimumContribution`, `campaignDescription`, `supporters`, `numberSupporters`, and `requests` that will be crucial throughout the crowdfunding process.
 
-### Setting Access Modifiers
+#### Setting Access Modifiers
 
 Access modifiers are essential for controlling who can execute certain functions. We'll use modifiers to restrict access to specific actions.
 
@@ -1024,7 +1024,7 @@ Access modifiers are essential for controlling who can execute certain functions
 
 The `managerOnly` modifier ensures that only the campaign manager can call certain functions, while the `supporterOnly` modifier restricts certain functions to be callable only by supporters of the campaign.
 
-### Implementing Functions
+#### Implementing Functions
 
 We'll create functions to perform crucial tasks, such as initiating a campaign, accepting contributions, managing requests, and finalizing the campaign.
 
@@ -1040,11 +1040,11 @@ The `contribute` function, for instance, allows contributors to make contributio
 
 ---
 
-## Step 4: Implementing the Crowdfunding System Logic part 2
+### Step 4: Implementing the Crowdfunding System Logic part 2
 
 Now that we've established the fundamental structure of our crowdfunding system in the `CrowdCollab.sol` contract, let's dive deeper into implementing the logic that governs the crowdfunding process. In this step, we'll enhance our contract with additional functionalities such as managing funding requests, approving requests, finalizing requests, and providing summary information about the campaign.
 
-### Managing Funding Requests
+#### Managing Funding Requests
 
 In our crowdfunding system, the campaign manager can create funding requests to specify the purpose and amount required for particular activities. We'll implement functions to handle the creation, approval, and finalization of funding requests.
 
@@ -1085,7 +1085,7 @@ function finalizeRequest(uint256 requestId) public managerOnly {
 
 These functions allow the manager to create funding requests, supporters to approve them, and the manager to finalize them once they receive sufficient approvals.
 
-### Providing Campaign Summary
+#### Providing Campaign Summary
 
 We'll add functions to retrieve summary information about the campaign, including the minimum contribution, total funding, number of funding requests, number of supporters, and the campaign manager's address.
 
@@ -1117,7 +1117,7 @@ function getRequestsCount() public view returns (uint256) {
 
 These functions provide transparency and insight into the campaign's progress and status.
 
-### Auxiliary Function
+#### Auxiliary Function
 
 We'll also implement an auxiliary function to check whether a specific supporter has already approved a funding request.
 
@@ -1154,9 +1154,9 @@ This marks the completion of the implementation of the voting system logic in ou
 
 ---
 
-## Step 5: Managing Campaigns and Reviewing Results
+### Step 5: Managing Campaigns and Reviewing Results
 
-### Managing Campaign Requests
+#### Managing Campaign Requests
 
 The `CrowdCollab` contract allows the manager to create requests for specific actions, such as withdrawing funds or executing project tasks. These requests are submitted through the `createRequest` function.
 
@@ -1245,7 +1245,7 @@ This section provides a detailed explanation of managing campaign requests, revi
 ```
 ````
 
-### Full CampaignCreator.sol contract code
+#### Full CampaignCreator.sol contract code
 
 Your smart contract CampaignCreator.sol should looks like this:
 
@@ -1288,7 +1288,7 @@ contract CampaignCreator {
 
 ```
 
-### Full CrowdCollab.sol contract code
+#### Full CrowdCollab.sol contract code
 
 Your smart contract CrowdCollab.sol should looks like this:
 
