@@ -68,7 +68,7 @@ module.exports = {
 };
 ```
 
-### Step 3: Create a Deployment Script
+#### Step 3: Create a Deployment Script
 
 Create a new file named `deploy.js` inside the `hardhat/scripts` directory. Add the following content to the file:
 
@@ -131,9 +131,9 @@ That is what you will need to add to the ".env.local" file in the front-end late
 
 ---
 
-## Try Your Contracts on Remix IDE
+### Try Your Contracts on Remix IDE
 
-Remix IDE provides a visual way to interact with your contracts before implementing your frontend. Follow these steps to test your contracts:
+Remix IDE provides a visual way to interact with your contracts before implementing your front-end. Follow these steps to test your contracts:
 
 1. Visit the Remix website: [Remix IDE](https://remix.ethereum.org/).
 
@@ -262,7 +262,7 @@ and click on "address" button
   <img style="border-radius: 12px;"  src="src/remix-ide-screenshots/check-contract4.png" width="300px">
 </div>
 
-By adhering to these guidelines, you can efficiently verify and engage with your contracts through Remix IDE before advancing to frontend development.
+By adhering to these guidelines, you can efficiently verify and engage with your contracts through Remix IDE before advancing to front-end development.
 
 Once you've established your initial campaign, you may access the CrowdCollab instance address by repeating the earlier procedure, this time selecting the CrowdCollab contract and ensuring it's compiled before invocation.
 
@@ -270,110 +270,104 @@ You can test your contract like this before front-end integration.
 
 ---
 
-# Frontend integration
+## front-end integration
 
-## UI-Screenshoots :
+### UI-Screenshoots :
 
-Crowdfund panel :
+**Crowdfund Panel:**
 
 <div style="text-align: center;">
-  <img style="border-radius: 12px;"  src="src/ui-screenshoot/home-m.png" width="500px">
+  <img style="border-radius: 12px;"  src="src/ui-screenshoot/home-m.png" width="600px">
 </div>
 
-Create panel :
+**Create Panel:**
 
 <div style="text-align: center;">
   <img style="border-radius: 12px;"  src="src/ui-screenshoot/create-campaign.png" width="300px">
 </div>
 
-Campaign panel :
+**Campaign Panel:**
 
 <div style="text-align: center;">
   <img style="border-radius: 12px;"  src="src/ui-screenshoot/campaign-panel.png" width="300px">
 </div>
 
-Description section:
+**Description Section:**
 
 <div style="text-align: center;">
   <img style="border-radius: 12px;"  src="src/ui-screenshoot/description.png" width="300px">
 </div>
 
-Description section:
-
-<div style="text-align: center;">
-  <img style="border-radius: 12px;"  src="src/ui-screenshoot/description.png" width="300px">
-</div>
-
-Support / Contribute section:
+**Support/Contribute Section:**
 
 <div style="text-align: center;">
   <img style="border-radius: 12px;"  src="src/ui-screenshoot/contribute2.png" width="300px">
 </div>
 
-Create request:
+**Create Request:**
 
 <div style="text-align: center;">
   <img style="border-radius: 12px;"  src="src/ui-screenshoot/create-request2.png" width="300px">
 </div>
 
-Request description:
+**Request Description:**
 
 <div style="text-align: center;">
   <img style="border-radius: 12px;"  src="src/ui-screenshoot/request-description.png" width="300px">
 </div>
 
-Aproove:
+**Approve:**
 
 <div style="text-align: center;">
   <img style="border-radius: 12px;"  src="src/ui-screenshoot/approve-request.png" width="300px">
   <img style="border-radius: 12px;"  src="src/ui-screenshoot/approve-request-done.png" width="300px">
 </div>
 
-Finalize:
+**Finalize:**
 
 <div style="text-align: center;">
   <img style="border-radius: 12px;"  src="src/ui-screenshoot/finalize-request.png" width="300px">
   <img style="border-radius: 12px;"  src="src/ui-screenshoot/finalize-request-done.png" width="300px">
 </div>
 
-## Setting Up the Frontend
+### Setting Up the Front-end
 
-In this section, we will guide you through setting up the frontend of your Crowdfunding dApp. Follow these steps to create the necessary folders and files:
+In this section, we will guide you through setting up the front-end of your Crowdfunding dApp. Follow these steps to create the necessary folders and files:
 
-### 1. Create a Frontend Folder
+#### 1. Create a front-end Folder
 
-Begin by creating a folder named `frontend` within your project directory. This folder will house all the files related to the frontend of your dApp.
+Begin by creating a folder named `front-end` within your project directory. This folder will house all the files related to the front-end of your dApp.
 
 Your tree folder should be like:
 
-```
+```bash
 - crowdfunding-dapp-2024
    - hardhat
-   - frontend
+   - front-end
 ```
 
 So if you were in hardhat folder, come back to your root folder:
 
-```
+```bash
 cd ..
 ```
 
-then create the frontend folder
+then create the front-end folder
 
-```
-mkdir frontend
-cd frontend
+```bash
+mkdir front-end
+cd front-end
 ```
 
-### 2. Let's initiate Nextjs
+#### 2. Let's initiate Nextjs
 
-```
+```bash
 npx create-next-app@latest .
 ```
 
 Choose:
 
-```
+```bash
 ✔ Would you like to use TypeScript? … No / Yes  (NO)
 ✔ Would you like to use ESLint? … No / Yes  (NO)
 ✔ Would you like to use Tailwind CSS? … No / Yes  (NO)
@@ -382,15 +376,15 @@ Choose:
 ✔ Would you like to customize the default import alias (@/*)? … No / Yes  (NO)
 ```
 
-### 3. **Initialization and Setup dependencies**: The code begins by importing necessary dependencies like Web3, and the contract artifact. It also retrieves the contract address from the `.env.local` file.
+#### 3. **Initialization and Setup dependencies**: The code begins by importing necessary dependencies like Web3, and the contract artifact. It also retrieves the contract address from the `.env.local` file.
 
-```
+```bash
 npm install web3 dotenv
 ```
 
 Check in your root folder package.json, it should look like this:
 
-```
+```json
 {
   "name": "front-end",
   "version": "0.1.0",
@@ -409,18 +403,17 @@ Check in your root folder package.json, it should look like this:
     "web3": "^4.9.0"
   }
 }
-
 ```
 
 Let's create a ".env.local" file at root of front-end folder where we will put the CampaignCreator contract address:
 
-```
+```bash
 nano .env.local
 ```
 
 Replace by the relevant contract address:
 
-```
+```bash
 NEXT_PUBLIC_CONTRACT_ADDRESS='0xf9e783781273b94eeaD12001b2105546efE1D1Fc'
 ```
 
@@ -428,7 +421,7 @@ Then let's go to /src/app/ folder and edit page.js (our homepage)
 
 First, just delete/clear the whole page, then add this to the top:
 
-```
+```javascript
 "use client";
 
 import dotenv from "dotenv";
@@ -439,7 +432,7 @@ console.log(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS);
 
 Then we will import dependencies and call contract addresse variable:
 
-```
+```javascript
 import React, { useEffect, useState } from "react";
 import Web3 from "web3"; // Import web3 library
 import styles from "./page.module.css";
@@ -448,12 +441,11 @@ import campaignCreatorArtifact from "../../../hardhat-deployment/artifacts/contr
 import CampaignInteraction from "./CampaignInteraction";
 
 const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
-
 ```
 
-### 3. **Component State**: The component defines several state variables using the `useState` hook to manage the application's state, including web3 instance, contract instance, campaign count, deployed campaigns, connection status, user address, campaign description, and minimum contribution.
+#### 4. **Component State**: The component defines several state variables using the `useState` hook to manage the application's state, including web3 instance, contract instance, campaign count, deployed campaigns, connection status, user address, campaign description, and minimum contribution.
 
-```
+```javascript
 export default function Home() {
   const [web3, setWeb3] = useState(null);
   const [contract, setContract] = useState(null);
@@ -466,159 +458,152 @@ export default function Home() {
   const [minContribution, setMinContribution] = useState("");
 ```
 
-### 4. **Connect to MetaMask**: The `connectMetaMask` function is used to connect to MetaMask and initialize the contract instance. It prompts the user to connect their MetaMask wallet and retrieves their account address.
+#### 5. **Connect to MetaMask**: The `connectMetaMask` function is used to connect to MetaMask and initialize the contract instance. It prompts the user to connect their MetaMask wallet and retrieves their account address.
 
-```
- const connectMetaMask = async () => {
-    if (window.ethereum) {
-      const web3Instance = new Web3(window.ethereum);
-      try {
-        await window.ethereum.request({ method: "eth_requestAccounts" });
-        // Initialize your contract
-        const contractABI = campaignCreatorArtifact.abi; // Replace with your contract ABI
-        const contractInstance = new web3Instance.eth.Contract(
-          contractABI,
-          contractAddress
-        );
-        setWeb3(web3Instance);
-        setContract(contractInstance);
-        setIsConnected(true);
-        const accounts = await web3Instance.eth.getAccounts();
-        setUserAddress(accounts[0]);
-        console.log("Connected to MetaMask!", accounts[0]);
-      } catch (error) {
-        console.error(
-          "User denied account access or an error occurred:",
-          error
-        );
-      }
-    } else {
-      console.log("MetaMask not found. Please install MetaMask to connect.");
-    }
-  };
-
-
-  // Add this function to handle the connection
-  const handleConnectButtonClick = () => {
-    connectMetaMask();
-    setIsConnected(true); // Update isConnected state when connected
-  };
-```
-
-### 5. **UseEffect Hook**: The `useEffect` hook is utilized to initialize Web3 and fetch campaign count and deployed campaigns when the component mounts.
-
-```
-  useEffect(() => {
-    const initializeWeb3 = async () => {
-      try {
-        if (window.ethereum) {
-          await connectMetaMask();
-        } else {
-          console.log(
-            "MetaMask not found. Please install MetaMask to connect."
-          );
-          setIsConnected(false);
-        }
-      } catch (error) {
-        console.error("Error initializing web3:", error);
-      }
-      const web3Instance = new Web3(window.ethereum);
+```javascript
+const connectMetaMask = async () => {
+  if (window.ethereum) {
+    const web3Instance = new Web3(window.ethereum);
+    try {
+      await window.ethereum.request({ method: "eth_requestAccounts" });
+      // Initialize your contract
+      const contractABI = campaignCreatorArtifact.abi; // Replace with your contract ABI
+      const contractInstance = new web3Instance.eth.Contract(
+        contractABI,
+        contractAddress
+      );
       setWeb3(web3Instance);
-      const accounts = await web3Instance.eth.getAccounts();
-      setUserAddress(accounts[0]); // Assuming the first account is the user's address
+      setContract(contractInstance);
       setIsConnected(true);
-      // getCampaignCount();
-    };
+      const accounts = await web3Instance.eth.getAccounts();
+      setUserAddress(accounts[0]);
+      console.log("Connected to MetaMask!", accounts[0]);
+    } catch (error) {
+      console.error("User denied account access or an error occurred:", error);
+    }
+  } else {
+    console.log("MetaMask not found. Please install MetaMask to connect.");
+  }
+};
 
-    initializeWeb3();
-  }, []);
+// Add this function to handle the connection
+const handleConnectButtonClick = () => {
+  connectMetaMask();
+  setIsConnected(true); // Update isConnected state when connected
+};
 ```
 
-### 6. **Interacting with the Contract**: Functions like `getCampaignCount`, `createCampaign`, and `getDeployedCampaigns` interact with the deployed contract to retrieve data and create new campaigns.
+#### 6. **UseEffect Hook**: The `useEffect` hook is utilized to initialize Web3 and fetch campaign count and deployed campaigns when the component mounts.
 
+```javascript
+useEffect(() => {
+  const initializeWeb3 = async () => {
+    try {
+      if (window.ethereum) {
+        await connectMetaMask();
+      } else {
+        console.log("MetaMask not found. Please install MetaMask to connect.");
+        setIsConnected(false);
+      }
+    } catch (error) {
+      console.error("Error initializing web3:", error);
+    }
+    const web3Instance = new Web3(window.ethereum);
+    setWeb3(web3Instance);
+    const accounts = await web3Instance.eth.getAccounts();
+    setUserAddress(accounts[0]); // Assuming the first account is the user's address
+    setIsConnected(true);
+    // getCampaignCount();
+  };
+
+  initializeWeb3();
+}, []);
 ```
-  const getCampaignCount = async () => {
-    if (!contract) return;
 
-    try {
-      const count = await contract.methods.getDeployedCampaigns().call();
-      setCampaignCount(count.length);
-      console.log("count", campaignCount);
-    } catch (error) {
-      console.error("Error fetching campaign count:", error);
-    }
-  };
+#### 7. **Interacting with the Contract**: Functions like `getCampaignCount`, `createCampaign`, and `getDeployedCampaigns` interact with the deployed contract to retrieve data and create new campaigns.
 
-  useEffect(() => {
-    if (contract) {
-      getCampaignCount();
-      getDeployedCampaigns();
-    }
-  }, [contract]);
+```javascript
+const getCampaignCount = async () => {
+  if (!contract) return;
 
-  const createCampaign = async () => {
-    if (!contract) return;
+  try {
+    const count = await contract.methods.getDeployedCampaigns().call();
+    setCampaignCount(count.length);
+    console.log("count", campaignCount);
+  } catch (error) {
+    console.error("Error fetching campaign count:", error);
+  }
+};
 
-    // Check if connected variable is not true, then call connectMetaMask()
-    if (!isConnected) {
-      connectMetaMask();
-      return; // Stop execution until connection is established
-    }
-
-    try {
-      await contract.methods
-        .createCampaign(parseInt(minContribution), description)
-        .send({ from: userAddress });
-      console.log("Campaign created successfully!");
-    } catch (error) {
-      console.error("Error creating campaign:", error);
-    }
-    window.location.reload();
-  };
-
-  const handleDescriptionChange = (event) => {
-    setDescription(event.target.value);
-  };
-
-  const handleMinContributionChange = (event) => {
-    setMinContribution(event.target.value);
-  };
-
-  // New function to interact with the contract
-  const getDeployedCampaigns = async () => {
-    if (!contract) return;
-
-    try {
-      // connectMetaMask();
-      const deployedCampaigns = await contract.methods
-        .getDeployedCampaigns()
-        .call();
-      console.log("Deployed Campaigns:", deployedCampaigns);
-      setDeployedCampaigns(deployedCampaigns);
-    } catch (error) {
-      console.error("Error fetching deployed campaigns:", error);
-    }
-  };
-
-  // Utility function to truncate Ethereum addresses
-  const truncateAddress = (address) => {
-    const start = address.substring(0, 7);
-    const end = address.substring(address.length - 4, address.length);
-    return `${start}...${end}`;
-  };
-
-  const handleRefreshButtonClick = () => {
+useEffect(() => {
+  if (contract) {
+    getCampaignCount();
     getDeployedCampaigns();
-    window.location.reload(); // Reload the page after fetching deployed campaigns
-  };
+  }
+}, [contract]);
 
-    const minContributionETH = minContribution / 10 ** 18;
+const createCampaign = async () => {
+  if (!contract) return;
 
+  // Check if connected variable is not true, then call connectMetaMask()
+  if (!isConnected) {
+    connectMetaMask();
+    return; // Stop execution until connection is established
+  }
+
+  try {
+    await contract.methods
+      .createCampaign(parseInt(minContribution), description)
+      .send({ from: userAddress });
+    console.log("Campaign created successfully!");
+  } catch (error) {
+    console.error("Error creating campaign:", error);
+  }
+  window.location.reload();
+};
+
+const handleDescriptionChange = (event) => {
+  setDescription(event.target.value);
+};
+
+const handleMinContributionChange = (event) => {
+  setMinContribution(event.target.value);
+};
+
+// New function to interact with the contract
+const getDeployedCampaigns = async () => {
+  if (!contract) return;
+
+  try {
+    // connectMetaMask();
+    const deployedCampaigns = await contract.methods
+      .getDeployedCampaigns()
+      .call();
+    console.log("Deployed Campaigns:", deployedCampaigns);
+    setDeployedCampaigns(deployedCampaigns);
+  } catch (error) {
+    console.error("Error fetching deployed campaigns:", error);
+  }
+};
+
+// Utility function to truncate Ethereum addresses
+const truncateAddress = (address) => {
+  const start = address.substring(0, 7);
+  const end = address.substring(address.length - 4, address.length);
+  return `${start}...${end}`;
+};
+
+const handleRefreshButtonClick = () => {
+  getDeployedCampaigns();
+  window.location.reload(); // Reload the page after fetching deployed campaigns
+};
+
+const minContributionETH = minContribution / 10 ** 18;
 ```
 
-### 7. **UI Rendering**: The JSX code renders various UI elements like buttons, input fields, and campaign cards to display information and interact with the contract.
+#### 8. **UI Rendering**: The JSX code renders various UI elements like buttons, input fields, and campaign cards to display information and interact with the contract.
 
-```
+```javascript
 return (
     <main className={styles.main}>
       {/* Logo */}
@@ -739,9 +724,9 @@ return (
 
 ```
 
-### Integrating Campaign Interaction Component
+#### 9. Integrating Campaign Interaction Component
 
-To enhance the functionality of your Crowdfunding dApp frontend, it's essential to integrate the `CampaignInteraction` component. This component facilitates interaction with individual campaigns deployed on the Ethereum blockchain. Here's how you can include it in your application:
+To enhance the functionality of your Crowdfunding dApp front-end, it's essential to integrate the `CampaignInteraction` component. This component facilitates interaction with individual campaigns deployed on the Ethereum blockchain. Here's how you can include it in your application:
 
 1. **Import the Component**: Make sure to import the `CampaignInteraction` component into your main page or any other relevant component where you intend to display campaign details and allow user interaction.
 
@@ -759,11 +744,11 @@ To enhance the functionality of your Crowdfunding dApp frontend, it's essential 
 
 ---
 
-By integrating the `CampaignInteraction` component, you provide users with a seamless experience to interact with individual campaigns, contributing to the overall success and effectiveness of your Crowdfunding dApp frontend.
+By integrating the `CampaignInteraction` component, you provide users with a seamless experience to interact with individual campaigns, contributing to the overall success and effectiveness of your Crowdfunding dApp front-end.
 
 CampaignInteraction.js coponent:
 
-```
+```javascript
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -1108,11 +1093,42 @@ const CampaignInteraction = ({ contractAddress, web3 }) => {
 export default CampaignInteraction;
 ```
 
-Launch the dapp:
-`npm run dev`
+### Running the front-end
 
-It should start your app at port :3000, with morpheus you have the node:3000 address that you can find on your dashboard:
+#### Development Mode
 
-node:3000 address:
+To launch the dapp in development mode, run the following command:
 
-![alt text](src/morpheus-screeshoot/node-address.png)
+```bash
+npm run dev
+```
+
+This command starts your application on port 3000. If you're using Morpheus, you can find the address for your node on the dashboard:
+
+Node (port 3000) address:
+
+<div style="text-align: center;">
+  <img style="border-radius: 12px;"  src="src/morpheus-screeshoot/node-address.png" width="800px">
+</div>
+
+Here's a screenshot of what the home page might look like:
+
+<div style="text-align: center;">
+  <img style="border-radius: 12px;"  src="src/ui-screenshoot/home-m.png" width="600px">
+</div>
+
+#### Production Mode
+
+To build the dapp for production, use the following command:
+
+```bash
+npm run build
+```
+
+Then, start the production server with:
+
+```bash
+npm run start
+```
+
+This will optimize your application for production and serve it accordingly.
