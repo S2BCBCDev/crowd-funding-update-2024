@@ -226,6 +226,8 @@ Here a video example of how to use console:
 
 https://github.com/S2BCBCDev/crowd-funding-update-2024/blob/main/Documentation_CF-2024/src/video/use-console-hardhat.webm
 
+[Direct Link to Video](https://github.com/S2BCBCDev/crowd-funding-update-2024/raw/main/Documentation_CF-2024/src/video/use-console-hardhat.webm)
+
 ##### With script:
 
 Use script with hardhat instead of using the console:
@@ -306,6 +308,8 @@ main()
 Here a video example of how to use script with hardhat:
 
 https://github.com/S2BCBCDev/crowd-funding-update-2024/blob/main/Documentation_CF-2024/src/video/run-scrit-hardhat.webm
+
+[Direct Link to Video](https://github.com/S2BCBCDev/crowd-funding-update-2024/raw/main/Documentation_CF-2024/src/video/run-scrit-hardhat.webm)
 
 ### Try Your Contracts on Remix IDE
 
