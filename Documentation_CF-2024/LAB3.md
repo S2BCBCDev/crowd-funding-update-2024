@@ -222,6 +222,12 @@ Once you're done interacting with the contract or sending Ether, you can exit th
 
 This concludes the process of deploying, interacting with contracts, and sending Ether using Hardhat console.
 
+Here a video example of how to use console:
+
+https://github.com/S2BCBCDev/crowd-funding-update-2024/blob/main/Documentation_CF-2024/src/video/use-console-hardhat.webm
+
+##### With script:
+
 Use script with hardhat instead of using the console:
 
 ```javascript
@@ -296,6 +302,10 @@ main()
 ```
 
 `npx hardhat run scripts/sendAmount.js --network localhost`
+
+Here a video example of how to use script with hardhat:
+
+https://github.com/S2BCBCDev/crowd-funding-update-2024/blob/main/Documentation_CF-2024/src/video/run-scrit-hardhat.webm
 
 ### Try Your Contracts on Remix IDE
 
