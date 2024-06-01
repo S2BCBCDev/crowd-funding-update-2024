@@ -198,13 +198,13 @@ const [sender] = await ethers.getSigners();
 
 ```javascript
 // Send Ether to a specific address
-const receiverAddress = "<Receiver_Address>";
+const receiverAddress = "0x65d493425fD6d67993FF90375375139FCd2D36E0";
 ```
 
 Replace `<Receiver_Address>` with the Ethereum address to which you want to send Ether.
 
 ```javascript
-const amountToSend = ethers.utils.parseEther("1"); // Sending 1 Ether
+const amountToSend = 9000000000000000; // Amount in wei
 ```
 
 ```javascript
