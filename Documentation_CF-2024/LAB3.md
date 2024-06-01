@@ -131,6 +131,172 @@ That is what you will need to add to the ".env.local" file in the front-end late
 
 ---
 
+#### Step 4: Using Hardhat Console to Interact with Contracts
+
+Hardhat provides a console interface that allows you to interact with your Ethereum network and deployed contracts in a REPL (Read-Eval-Print Loop) environment, serving as a development blockchain.
+
+To start the console, run the following command in your terminal:
+
+For a local development environment:
+
+```bash
+npx hardhat console --network localhost
+```
+
+For connection to an external blockchain:
+
+```bash
+npx hardhat console --network poa
+```
+
+This command will initiate the Hardhat console connected to your specified network (`localhost` or `poa` in this case).
+
+Once the console is running, you can interact with your deployed contract using JavaScript commands. Here's an example of how to interact with the deployed `CampaignCreator` contract:
+
+You need to copy/past all those line in the console, one by one:
+
+```javascript
+// Load the ethers module
+const hre = require("hardhat");
+```
+
+```javascript
+// Retrieve the deployed CampaignCreator contract instance
+const CampaignCreator = await ethers.getContractFactory("CampaignCreator");
+const campaignCreator = await CampaignCreator.attach(
+  "<CampaignCreator_Address>"
+);
+```
+
+Replace `<CampaignCreator_Address>` with the actual address of your deployed `CampaignCreator` contract.
+
+```javascript
+// Call contract functions
+const result = await campaignCreator.createCampaign("Campaign Name", 1000000); // Example function call
+```
+
+```javascript
+// Interact with the result
+console.log("Transaction hash:", result.hash);
+console.log("Block number:", result.blockNumber);
+console.log("Campaign created:", result.events[0].args.name); // Assuming an event is emitted upon campaign creation
+```
+
+With the console, you can call functions on your contracts, read state variables, and interact with events emitted by the contracts.
+
+To send money with Hardhat console, you can use the following method:
+
+```javascript
+// Load the ethers module
+const hre = require("hardhat");
+```
+
+```javascript
+// Get the signer
+const [sender] = await ethers.getSigners();
+```
+
+```javascript
+// Send Ether to a specific address
+const receiverAddress = "<Receiver_Address>";
+```
+
+Replace `<Receiver_Address>` with the Ethereum address to which you want to send Ether.
+
+```javascript
+const amountToSend = ethers.utils.parseEther("1"); // Sending 1 Ether
+```
+
+```javascript
+const transaction = await sender.sendTransaction({
+  to: receiverAddress,
+  value: amountToSend,
+});
+```
+
+```javascript
+console.log("Transaction hash:", transaction.hash);
+```
+
+Once you're done interacting with the contract or sending Ether, you can exit the console by typing `.exit` or pressing `Ctrl + D`.
+
+This concludes the process of deploying, interacting with contracts, and sending Ether using Hardhat console.
+
+Use script with hardhat instead of using the console:
+
+```javascript
+// Load the ethers module
+const { ethers } = require("hardhat");
+
+async function main() {
+  // Retrieve the deployed CampaignCreator contract instance
+  const CampaignCreator = await ethers.getContractFactory("CampaignCreator");
+  const campaignCreator = await CampaignCreator.attach(
+    "0x5FbDB2315678afecb367f032d93F642f64180aa3"
+  );
+
+  // Call contract functions
+  const result = await campaignCreator.createCampaign(1000000, "Campaign Name"); // Example function call
+
+  // Interact with the result
+  console.log("Transaction hash:", result.hash);
+  console.log("Block number:", result.blockNumber);
+  console.log("Campaign created:", result.events[0].args.name); // Assuming an event is emitted upon campaign creation
+}
+
+// Execute the main function
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
+```
+
+Use it by:
+`npx hardhat run scripts/showValue.js --network localhost`
+
+and for send money to other account with script:
+
+create a file in script/ name sendAmount.js
+
+```javascript
+// Load Hardhat environment
+const hre = require("hardhat");
+
+async function main() {
+  // Get the first account from the Hardhat network
+  const [sender] = await hre.ethers.getSigners();
+
+  // Define recipient address
+  const recipientAddress = "0x65d493425fD6d67993FF90375375139FCd2D36E0"; // Replace with the recipient's address
+
+  // Define amount to send (in wei)
+  const amountToSend = 9000000000000000; // Sending 1 Ether
+
+  // Send transaction
+  const tx = await sender.sendTransaction({
+    to: recipientAddress,
+    value: amountToSend,
+  });
+
+  // Wait for transaction receipt
+  await tx.wait();
+
+  console.log("Transaction sent successfully!");
+}
+
+// Run the function
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
+```
+
+`npx hardhat run scripts/sendAmount.js --network localhost`
+
 ### Try Your Contracts on Remix IDE
 
 Remix IDE provides a visual way to interact with your contracts before implementing your front-end. Follow these steps to test your contracts:
